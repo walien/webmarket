@@ -21,6 +21,7 @@ import fr.webmarket.backend.features.search.ISearchCriterion;
 import fr.webmarket.backend.features.search.ItemSearchEngine;
 import fr.webmarket.backend.features.search.SearchAccuracy;
 import fr.webmarket.backend.features.search.SearchStrategy;
+import fr.webmarket.backend.features.search.criteria.ItemBrandCriterion;
 import fr.webmarket.backend.features.search.criteria.ItemNameCriterion;
 import fr.webmarket.backend.marshalling.JSONMarshaller;
 import fr.webmarket.backend.model.Item;
@@ -44,6 +45,11 @@ public class QueryREST {
 			ISearchCriterion nameCriterion = new ItemNameCriterion(params.get(
 					"name").get(0), SearchAccuracy.FLEXIBLE);
 			criteria.add(nameCriterion);
+		}
+		if (params.containsKey("brand")) {
+			ISearchCriterion brandCriterion = new ItemBrandCriterion(params
+					.get("brand").get(0), SearchAccuracy.FLEXIBLE);
+			criteria.add(brandCriterion);
 		}
 
 		// Launch research

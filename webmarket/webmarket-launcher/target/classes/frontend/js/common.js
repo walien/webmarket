@@ -11,4 +11,5 @@ var currency = '€';
 // Global variables
 // =========================
 var globalItems = [];
+var currentItems = [];
 

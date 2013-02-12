@@ -30,11 +30,12 @@ function loadAllItemsList() {
 	$.get(serverBase + allItemsURL, function(items) {
 		// Global array of items
 		globalItems = items;
+		currentItems = items;
 		console.log("Retrieving " + items.length
 				+ " items from the server (REST resources)...");
 
 		// Display all items
-		displayItems(globalItems);
+		displayItems(items);
 	});
 
 }
@@ -103,7 +104,7 @@ function displayItems(items) {
 function displayItemDetails(id) {
 
 	// Retrieve the selected item
-	var selectedItem = globalItems[id];
+	var selectedItem = currentItems[id];
 
 	// Build the template context
 	var context = {

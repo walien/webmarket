@@ -44,6 +44,7 @@ public class MemoryDataSource {
 		ItemTag laveVaisselle = new ItemTag("Lave-Vaisselle");
 		ItemTag lecteurSalon = new ItemTag("Lecteur Salon");
 		ItemTag hifi = new ItemTag("HiFi");
+		ItemTag tv = new ItemTag("TV");
 		ItemTag baladeur = new ItemTag("Baladeur");
 
 		Item item1 = new Item("Lave-Vaisselle PV123", "Miele", description, 250);
@@ -76,12 +77,36 @@ public class MemoryDataSource {
 		item6.getTags().add(laveVaisselle);
 		item6.setBase64Image(base64Image);
 
+		Item item7 = new Item("TV LCD-LED", "Samsung", description, 670);
+		item7.getTags().add(hifi);
+		item7.getTags().add(tv);
+		item7.setBase64Image(base64Image);
+
+		Item item8 = new Item("TV Plasma SXH-819", "Sony", description, 670);
+		item8.getTags().add(hifi);
+		item8.getTags().add(tv);
+		item8.setBase64Image(base64Image);
+
+		Item item9 = new Item("TV Plasma SRF-876", "LG", description, 670);
+		item9.getTags().add(hifi);
+		item9.getTags().add(tv);
+		item9.setBase64Image(base64Image);
+
+		Item item10 = new Item("TV LCD-LED YTG-789", "Loewe", description, 670);
+		item10.getTags().add(hifi);
+		item10.getTags().add(tv);
+		item10.setBase64Image(base64Image);
+
 		catalog.addItem(item1);
 		catalog.addItem(item2);
 		catalog.addItem(item3);
 		catalog.addItem(item4);
 		catalog.addItem(item5);
 		catalog.addItem(item6);
+		catalog.addItem(item7);
+		catalog.addItem(item8);
+		catalog.addItem(item9);
+		catalog.addItem(item10);
 
 		System.out.println(catalog.getItems());
 	}
