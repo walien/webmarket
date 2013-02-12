@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>WebMarket - Browse items</title>
 
+<!-- CSS Styles  -->
 <style>
 body {
 	padding-top: 60px;
@@ -11,8 +12,9 @@ body {
 </style>
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/webmarket-frontend.css" rel="stylesheet">
+
 </head>
-<body>
+<body ng-controller="displayItemDetails">
 
 	<!-- Top Page navbar -->
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -55,21 +57,34 @@ body {
 							<!-- Add dynamically some items into thumb format-->
 						</div>
 					</div>
+					<!-- Item Details Modal Box -->
+					<div id="modal-item-details" class="modal hide fade" tabindex="-1"
+						role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+						<div class="modal-header">
+							<h3 id="modal-label">Item Details</h3>
+						</div>
+						<div class="modal-body"></div>
+						<div class="modal-footer">
+							<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+							<button class="btn btn-primary">Add to Cart</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
+	<!-- Templates -->
+	<script src="js/templates/item-templates.js"></script>
 
 	<!-- JS Scripts -->
 	<script
 		src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script
-		src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.1/angular.min.js"></script>
+		src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.rc.2/handlebars.min.js"></script>
 	<script
 		src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
 	<script src="js/common.js"></script>
-	<script src="js/controllers.js"></script>
 	<script src="js/items.js"></script>
 </body>
 </html>

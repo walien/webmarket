@@ -40,10 +40,15 @@ function displayAllItems() {
 		var item = globalItems[i];
 
 		// Build thumb content
+		// Image
 		var content = "<img alt='300x200' style='width:100px;' src='data:image/png;base64,"
 				+ item.base64Image + "'>";
-		content += "<div class='caption'>", content += "<a href='#'><h3>" + item.brand
-				+ " - " + item.name + "</h3></a>";
+
+		// Title
+		content += "<div class='caption'>",
+				content += "<a href='#' onclick='displayItemDetails(" + i
+						+ ");'><h3>" + item.brand + " - " + item.name
+						+ "</h3></a>";
 
 		// Tags
 		var tags = item.tags;
@@ -78,4 +83,26 @@ function displayAllItems() {
 			gridCounter = 1;
 		}
 	}
+}
+
+/**
+ * Display items details
+ * 
+ * @param id
+ */
+
+function displayItemDetails(id) {
+
+	// Retrieve the selected item
+	var selectedItem = globalItems[id];
+
+	// Compile the handlebars template and push data into it
+	var template = Handlebars.compile(item_details_template);
+	var context = selectedItem;
+	var html = template(context);
+
+	// Show modal box (item details)
+	$('#modal-item-details .modal-body').empty();
+	$('#modal-item-details .modal-body').append(html);
+	$('#modal-item-details').modal('show');
 }
