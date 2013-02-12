@@ -50,13 +50,6 @@ function displayAllItems() {
 						+ ");'><h3>" + item.brand + " - " + item.name
 						+ "</h3></a>";
 
-		// Tags
-		var tags = item.tags;
-		for ( var j = 0; j < tags.length; j++) {
-			content += "<span class='label label-success'>" + tags[j].name
-					+ "</span> ";
-		}
-
 		// Description & Price
 		content += "</p><p>" + item.description + "</p>";
 		content += "<span class='label label-info'>" + item.price + " "
@@ -96,9 +89,14 @@ function displayItemDetails(id) {
 	// Retrieve the selected item
 	var selectedItem = globalItems[id];
 
+	// Build the template context
+	var context = {
+		item : selectedItem,
+		currency : currency
+	};
+
 	// Compile the handlebars template and push data into it
 	var template = Handlebars.compile(item_details_template);
-	var context = selectedItem;
 	var html = template(context);
 
 	// Show modal box (item details)
