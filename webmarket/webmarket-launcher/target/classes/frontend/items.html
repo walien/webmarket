@@ -16,6 +16,7 @@ body {
 </head>
 <body>
 
+
 	<!-- Top Page navbar -->
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
@@ -34,34 +35,35 @@ body {
 		<div class="row-fluid">
 			<!-- Navigation List -->
 			<div class="span2">
-				<ul id="webmarket-nav-list" class="nav nav-list">
+				<ul id="webmarket-nav-list" class="nav nav-list well">
 					<li class="nav-header">Global Navigation</li>
 					<li><a href="index.html">Home</a></li>
 					<li><a href="#">Logout</a></li>
 
 					<li class="nav-header">Browse Items</li>
 					<li><a href="items.html">Full List</a></li>
-					<li><a href="#">Advanced Search</a></li>
 
 					<li class="nav-header">Administer</li>
 					<li><a href="#">Global Configuration</a></li>
 					<li><a href="#">Manage Items</a></li>
 				</ul>
 			</div>
+
 			<!-- Main Container -->
 			<div class="span10">
 				<div id="webmarket-content">
 
-					<!-- Search bar -->
-					<div id="search-bar" class="pull-right">
-						<input id="search-text" type="text" class="search-query"
-							placeholder="Search" /> <i id="search-button"
-							class="icon-search" onclick="do_simple_search()"></i>
+					<!-- Filter Bar -->
+					<div id="filter-bar" class="well container" style="width: auto;">
+						<div id="search-bar" class="pull-right">
+							<input id="search-text" type="text" class="search-query"
+								placeholder="Search" /> <i id="search-button"
+								class="icon-search" onclick="do_simple_search()"></i> <i
+								id="search-button" class="icon-remove" onclick="clear_search()"></i>
+						</div>
 					</div>
 
-					<!-- Title -->
-					<h1>Items</h1>
-
+					<!-- Add items dynamically -->
 					<div class="row-fluid">
 						<div id="items-list">
 							<!-- Add dynamically some items into thumb format-->

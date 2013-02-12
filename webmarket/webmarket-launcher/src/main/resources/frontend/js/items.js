@@ -1,9 +1,24 @@
 $(document).ready(function() {
 
+	// Init all control handlers
+	initHandlers();
+
 	// Load all items
 	loadAllItemsList();
-
 });
+
+/**
+ * Initialize all handlers
+ */
+function initHandlers() {
+
+	// Init searching on 'ENTER' key press
+	$("#search-text").keypress(function(event) {
+		if (event.keyCode == 13) {
+			do_simple_search();
+		}
+	});
+}
 
 /**
  * Make a request to the server
@@ -19,7 +34,7 @@ function loadAllItemsList() {
 				+ " items from the server (REST resources)...");
 
 		// Display all items
-		displayAllItems();
+		displayItems(globalItems);
 	});
 
 }
@@ -28,16 +43,17 @@ function loadAllItemsList() {
  * Display all items
  */
 
-function displayAllItems() {
+function displayItems(items) {
 
 	// The HTML list (retrieved by a jquery CSS selector)
 	var htmlItemsList = $("#items-list");
+	htmlItemsList.empty();
 
 	// Iterate over the items list
 	var gridCounter = 1;
 	var list;
-	for ( var i = 0; i < globalItems.length; i++) {
-		var item = globalItems[i];
+	for ( var i = 0; i < items.length; i++) {
+		var item = items[i];
 
 		// Build thumb content
 		// Image
