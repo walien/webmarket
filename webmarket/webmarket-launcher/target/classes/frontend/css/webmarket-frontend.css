@@ -13,6 +13,11 @@
 	padding-right: 30px;
 }
 
+/* Item Searching */
+#search-button {
+	cursor: pointer;
+}
+
 /* Left Side */
 #webmarket-left-container {
 	float: left;

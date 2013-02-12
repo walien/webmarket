@@ -14,7 +14,7 @@ body {
 <link href="css/webmarket-frontend.css" rel="stylesheet">
 
 </head>
-<body ng-controller="displayItemDetails">
+<body>
 
 	<!-- Top Page navbar -->
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -41,17 +41,27 @@ body {
 
 					<li class="nav-header">Browse Items</li>
 					<li><a href="items.html">Full List</a></li>
+					<li><a href="#">Advanced Search</a></li>
 
 					<li class="nav-header">Administer</li>
 					<li><a href="#">Global Configuration</a></li>
 					<li><a href="#">Manage Items</a></li>
-					<li><a href="#"></a></li>
 				</ul>
 			</div>
 			<!-- Main Container -->
 			<div class="span10">
 				<div id="webmarket-content">
+
+					<!-- Search bar -->
+					<div id="search-bar" class="pull-right">
+						<input id="search-text" type="text" class="search-query"
+							placeholder="Search" /> <i id="search-button"
+							class="icon-search" onclick="do_simple_search()"></i>
+					</div>
+
+					<!-- Title -->
 					<h1>Items</h1>
+
 					<div class="row-fluid">
 						<div id="items-list">
 							<!-- Add dynamically some items into thumb format-->
@@ -85,6 +95,7 @@ body {
 	<script
 		src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
 	<script src="js/common.js"></script>
+	<script src="js/search.js"></script>
 	<script src="js/items.js"></script>
 </body>
 </html>
