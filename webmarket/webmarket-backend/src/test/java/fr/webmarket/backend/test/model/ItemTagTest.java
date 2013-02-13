@@ -2,16 +2,15 @@ package fr.webmarket.backend.test.model;
 
 import static org.junit.Assert.*;
 
-import java.util.UUID;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.webmarket.backend.datasource.EntitySequences;
 import fr.webmarket.backend.model.ItemTag;
 
 public class ItemTagTest {
 
-	private static final UUID ITEM_TAG_ID = UUID.randomUUID();
+	private static final int ITEM_TAG_ID = EntitySequences.getNewTagId();
 	private static final String ITEM_TAG_NAME = "Electroménager";
 	private static final String ITEM_TAG_STRING_FORM = "ItemTag [name=Electroménager]";
 
@@ -34,7 +33,7 @@ public class ItemTagTest {
 
 	@Test
 	public void testSetId() {
-		UUID newId = UUID.randomUUID();
+		int newId = EntitySequences.getNewTagId();
 		tag.setId(newId);
 		assertEquals(newId, tag.getId());
 	}

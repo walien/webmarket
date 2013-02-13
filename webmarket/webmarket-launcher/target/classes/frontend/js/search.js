@@ -7,22 +7,6 @@ function toggle_search_panel() {
 }
 
 /**
- * Load all item tags
- */
-function load_all_tags_list() {
-
-	// Load all tags
-	$.get(serverBase + allTagsURL, function(tags) {
-		$.each(tags, function(index, tag) {
-			$("#tags-select").append(
-					"<option value='" + tag.name + "'>" + tag.name
-							+ "</option>")
-		});
-		$("#tags-select").trigger("liszt:updated");
-	});
-}
-
-/**
  * Initialize all handlers
  */
 function init_handlers() {
@@ -32,6 +16,38 @@ function init_handlers() {
 		if (event.keyCode == 13) {
 			do_simple_search();
 		}
+	});
+
+	// Init change on tags selection
+	$("#tags-select").chosen().change(function() {
+		var tags = [];
+		$("#tags-select option:selected").each(function(index, option) {
+			tags.push(option.value);
+		});
+		if (tags.length == 0) {
+			clear_search();
+			return;
+		}
+		do_filter_by_tags(tags);
+	});
+}
+
+// =================================================
+// SIMPLE SEARCH FEATURES
+// =================================================
+
+/**
+ * Load all item tags
+ */
+function load_all_tags_list() {
+
+	// Load all tags
+	$.get(serverBase + allTagsURL, function(tags) {
+		$.each(tags, function(index, tag) {
+			$("#tags-select").append(
+					"<option value='" + tag.id + "'>" + tag.name + "</option>")
+		});
+		$("#tags-select").trigger("liszt:updated");
 	});
 }
 
@@ -48,7 +64,7 @@ function do_simple_search() {
 	// Build the query url based on the name, brand, description, ... attributes
 	var params = "?name=" + text + "&brand=" + text + "&description=" + text;
 
-	$.get(serverBase + queryItemsURL + params, function(items) {
+	$.get(serverBase + queryItemByDataURL + params, function(items) {
 		currentItems = items;
 		display_items(items);
 	});
@@ -69,4 +85,21 @@ function clear_search() {
 
 	// Display items into the view
 	display_items(globalItems);
+}
+
+// =================================================
+// FILTER FEATURES
+// =================================================
+
+function do_filter_by_tags(tags) {
+
+	var tags = tags.join('+');
+
+	// Build the query url based on the name, brand, description, ... attributes
+	var params = "?tags=" + tags;
+
+	$.get(serverBase + queryItemByDataURL + params, function(items) {
+		currentItems = items;
+		display_items(items);
+	});
 }

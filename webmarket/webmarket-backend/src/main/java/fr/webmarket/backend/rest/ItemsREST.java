@@ -1,7 +1,6 @@
 package fr.webmarket.backend.rest;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,7 +14,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import fr.webmarket.backend.datasource.MemoryDataSource;
 import fr.webmarket.backend.marshalling.JSONMarshaller;
-import fr.webmarket.backend.model.Item;
 
 @Path("/items")
 public class ItemsREST {
@@ -32,14 +30,10 @@ public class ItemsREST {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public String getItem(@PathParam("id") String id)
+	public String getItem(@PathParam("id") int id)
 			throws JsonGenerationException, JsonMappingException, IOException {
-		UUID uuid = UUID.fromString(id);
-		Item item = MemoryDataSource.getInstance().getItemsCatalog().getItems()
-				.get(uuid);
-		if (item == null) {
-			return JSONMarshaller.getDefaultMapper().writeValueAsString(false);
-		}
-		return JSONMarshaller.getDefaultMapper().writeValueAsString(item);
+		return JSONMarshaller.getDefaultMapper().writeValueAsString(
+				MemoryDataSource.getInstance().getItemsCatalog().getItems()
+						.get(id));
 	}
 }

@@ -2,11 +2,10 @@ package fr.webmarket.backend.test.model;
 
 import static org.junit.Assert.*;
 
-import java.util.UUID;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.webmarket.backend.datasource.EntitySequences;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemsCatalog;
 
@@ -26,7 +25,7 @@ public class ItemCatalogTest {
 
 	@Test
 	public void testAddAndGetItem() {
-		UUID id = UUID.randomUUID();
+		int id = EntitySequences.getNewItemId();
 		Item p = new Item(id, "iPhone", "Apple", "iPhone 5 - 2012", 840.0);
 		catalog.addItem(p);
 		assertNotNull(catalog.getItems().get(id));

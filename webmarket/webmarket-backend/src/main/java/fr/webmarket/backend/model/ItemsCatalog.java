@@ -1,19 +1,18 @@
 package fr.webmarket.backend.model;
 
 import java.util.Map;
-import java.util.UUID;
 
 import com.google.common.collect.Maps;
 
 public class ItemsCatalog {
 
-	private Map<UUID, Item> products;
+	private Map<Integer, Item> products;
 
 	public ItemsCatalog() {
 		products = Maps.newHashMap();
 	}
 
-	public Map<UUID, Item> getItems() {
+	public Map<Integer, Item> getItems() {
 		return products;
 	}
 

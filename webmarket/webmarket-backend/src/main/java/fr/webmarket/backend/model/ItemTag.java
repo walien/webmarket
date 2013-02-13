@@ -1,30 +1,30 @@
 package fr.webmarket.backend.model;
 
-import java.util.UUID;
+import fr.webmarket.backend.datasource.EntitySequences;
 
 public class ItemTag {
 
-	private UUID id;
+	private int id;
 
 	private String name;
 
 	private ItemTag parent;
 
 	public ItemTag(String name) {
-		this(UUID.randomUUID(), name, null);
+		this(EntitySequences.getNewTagId(), name, null);
 	}
 
-	public ItemTag(UUID id, String name, ItemTag parent) {
+	public ItemTag(int id, String name, ItemTag parent) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
 
-	public UUID getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -48,7 +48,7 @@ public class ItemTag {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -61,10 +61,7 @@ public class ItemTag {
 		if (getClass() != obj.getClass())
 			return false;
 		ItemTag other = (ItemTag) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
+		if (id != other.id)
 			return false;
 		return true;
 	}

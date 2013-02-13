@@ -1,19 +1,18 @@
 package fr.webmarket.backend.model;
 
 import java.util.Map;
-import java.util.UUID;
 
 import com.google.common.collect.Maps;
 
 public class TagsCatalog {
 
-	private Map<UUID, ItemTag> tags;
+	private Map<Integer, ItemTag> tags;
 
 	public TagsCatalog() {
 		tags = Maps.newHashMap();
 	}
 
-	public Map<UUID, ItemTag> getTags() {
+	public Map<Integer, ItemTag> getTags() {
 		return tags;
 	}
 

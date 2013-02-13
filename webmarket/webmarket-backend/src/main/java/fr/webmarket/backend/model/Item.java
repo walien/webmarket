@@ -1,13 +1,14 @@
 package fr.webmarket.backend.model;
 
 import java.util.Set;
-import java.util.UUID;
 
 import com.google.common.collect.Sets;
 
+import fr.webmarket.backend.datasource.EntitySequences;
+
 public class Item {
 
-	private UUID id;
+	private int id;
 
 	private String name;
 
@@ -22,10 +23,32 @@ public class Item {
 	private String base64Image;
 
 	public Item(String name, String brand, String description, double price) {
-		this(UUID.randomUUID(), name, brand, description, price);
+		this(EntitySequences.getNewItemId(), name, brand, description, price);
 	}
 
-	public Item(UUID id, String name, String brand, String description,
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	public Item(int id, String name, String brand, String description,
 			double price) {
 		super();
 		this.id = id;
@@ -36,11 +59,11 @@ public class Item {
 		this.tags = Sets.newHashSet();
 	}
 
-	public UUID getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
