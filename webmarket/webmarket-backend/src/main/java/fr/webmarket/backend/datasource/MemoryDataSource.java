@@ -86,7 +86,8 @@ public class MemoryDataSource {
 		item5.getTags().add(electroMenager);
 		item5.setBase64Image(base64Image);
 
-		Item item6 = new Item("Lave-Vaisselle PV567", "Miele", description, 280);
+		Item item6 = new Item("Lave-Vaisselle PV567", "Miele", description
+				+ "pouet", 280);
 		item6.getTags().add(electroMenager);
 		item6.getTags().add(laveVaisselle);
 		item6.setBase64Image(base64Image);

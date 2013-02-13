@@ -5,14 +5,14 @@ $(document).ready(function() {
 
 	// Load all items
 	load_all_items_list();
+	
+	// Load all tags
+	load_all_tags_list();
 
 	// Render the tags select
 	$(".chzn-select").chosen();
 });
 
-function load_all_tags_list(){
-	
-}
 
 /**
  * Make a request to the server in order to retrieve items

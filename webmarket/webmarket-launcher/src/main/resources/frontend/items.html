@@ -60,14 +60,17 @@ body {
 						<button class="btn btn-danger" onclick="clear_search();">
 							Clear | <i class="icon-remove icon-white"></i>
 						</button>
+
 						<div id="search-bar" class="pull-right">
 							<input id="search-text" type="text" class="search-query"
-								placeholder="Search" /> <i id="search-button"
-								class="icon-search" onclick="do_simple_search()"></i>
+								placeholder="Search" />
+							<button class="btn btn-success" onclick="do_simple_search()">
+								Search | <i class="icon-search icon-white"></i>
+							</button>
 						</div>
 						<div id="search-panel" class="hide">
-							<select id="tags-select" data-placeholder="Some tags"
-								class="chzn-select" multiple></select>
+							<label for="tags-select">Tags : </label> <select id="tags-select"
+								data-placeholder="Some tags" style="width:500px;"  class="chzn-select" multiple></select>
 						</div>
 					</div>
 

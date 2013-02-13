@@ -7,6 +7,22 @@ function toggle_search_panel() {
 }
 
 /**
+ * Load all item tags
+ */
+function load_all_tags_list() {
+
+	// Load all tags
+	$.get(serverBase + allTagsURL, function(tags) {
+		$.each(tags, function(index, tag) {
+			$("#tags-select").append(
+					"<option value='" + tag.name + "'>" + tag.name
+							+ "</option>")
+		});
+		$("#tags-select").trigger("liszt:updated");
+	});
+}
+
+/**
  * Initialize all handlers
  */
 function init_handlers() {
@@ -30,7 +46,7 @@ function do_simple_search() {
 	console.log("Searching text : " + text);
 
 	// Build the query url based on the name, brand, description, ... attributes
-	var params = "?name=" + text + "&brand=" + text;
+	var params = "?name=" + text + "&brand=" + text + "&description=" + text;
 
 	$.get(serverBase + queryItemsURL + params, function(items) {
 		currentItems = items;
