@@ -5,11 +5,11 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import fr.webmarket.backend.model.Item;
-import fr.webmarket.backend.model.ItemCatalog;
+import fr.webmarket.backend.model.ItemsCatalog;
 
 public class ItemSearchEngine {
 
-	public List<Item> searchFor(ItemCatalog catalog,
+	public List<Item> searchFor(ItemsCatalog catalog,
 			List<ISearchCriterion> criteria, SearchStrategy globalStrategy) {
 
 		List<Item> result = Lists.newArrayList();

@@ -21,7 +21,7 @@ public class ItemNameCriterion implements ISearchCriterion {
 
 		switch (accuracy) {
 		case FLEXIBLE:
-			return item.getName().contains(name);
+			return item.getName().toLowerCase().contains(name.toLowerCase());
 		case STRICT:
 			return item.getName().equalsIgnoreCase(name);
 		}

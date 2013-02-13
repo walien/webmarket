@@ -11,12 +11,11 @@ body {
 }
 </style>
 <link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/chosen.css" rel="stylesheet">
 <link href="css/webmarket-frontend.css" rel="stylesheet">
 
 </head>
 <body>
-
-
 	<!-- Top Page navbar -->
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
@@ -55,11 +54,20 @@ body {
 
 					<!-- Filter Bar -->
 					<div id="filter-bar" class="well container" style="width: auto;">
+						<button class="btn btn-info" onclick="toggle_search_panel();">
+							Expand | <i class="icon-chevron-down icon-white"></i>
+						</button>
+						<button class="btn btn-danger" onclick="clear_search();">
+							Clear | <i class="icon-remove icon-white"></i>
+						</button>
 						<div id="search-bar" class="pull-right">
 							<input id="search-text" type="text" class="search-query"
 								placeholder="Search" /> <i id="search-button"
-								class="icon-search" onclick="do_simple_search()"></i> <i
-								id="search-button" class="icon-remove" onclick="clear_search()"></i>
+								class="icon-search" onclick="do_simple_search()"></i>
+						</div>
+						<div id="search-panel" class="hide">
+							<select id="tags-select" data-placeholder="Some tags"
+								class="chzn-select" multiple></select>
 						</div>
 					</div>
 
@@ -96,6 +104,7 @@ body {
 		src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.rc.2/handlebars.min.js"></script>
 	<script
 		src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
+	<script src="lib/chosen/chosen.jquery.min.js"></script>
 	<script src="js/common.js"></script>
 	<script src="js/search.js"></script>
 	<script src="js/items.js"></script>

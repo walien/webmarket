@@ -4,17 +4,21 @@ import java.io.IOException;
 
 import fr.webmarket.backend.marshalling.ImageToBase64Transformer;
 import fr.webmarket.backend.model.Item;
-import fr.webmarket.backend.model.ItemCatalog;
 import fr.webmarket.backend.model.ItemTag;
+import fr.webmarket.backend.model.ItemsCatalog;
+import fr.webmarket.backend.model.TagsCatalog;
 
 public class MemoryDataSource {
 
 	private static MemoryDataSource INSTANCE;
 
-	private ItemCatalog catalog;
+	private TagsCatalog tagsCatalog;
+
+	private ItemsCatalog itemsCatalog;
 
 	private MemoryDataSource() {
-		catalog = new ItemCatalog();
+		tagsCatalog = new TagsCatalog();
+		itemsCatalog = new ItemsCatalog();
 		initMockData();
 	}
 
@@ -39,6 +43,7 @@ public class MemoryDataSource {
 		// Initialize mock objects
 		String description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae ultrices quam. Sed eu ante at ipsum ultrices volutpat vel in nibh. Nullam at ipsum eu massa ultrices euismod. Proin ligula dolor, tincidunt eu viverra id, ultricies sit amet risus. Sed et eros vel ligula fermentum aliquam et at lorem.";
 
+		// 1. Tags
 		ItemTag electroMenager = new ItemTag("Electroménager");
 		ItemTag aspirateur = new ItemTag("Aspirateur");
 		ItemTag laveVaisselle = new ItemTag("Lave-Vaisselle");
@@ -47,6 +52,15 @@ public class MemoryDataSource {
 		ItemTag tv = new ItemTag("TV");
 		ItemTag baladeur = new ItemTag("Baladeur");
 
+		tagsCatalog.addTag(electroMenager);
+		tagsCatalog.addTag(aspirateur);
+		tagsCatalog.addTag(laveVaisselle);
+		tagsCatalog.addTag(lecteurSalon);
+		tagsCatalog.addTag(hifi);
+		tagsCatalog.addTag(tv);
+		tagsCatalog.addTag(baladeur);
+
+		// 2. Items
 		Item item1 = new Item("Lave-Vaisselle PV123", "Miele", description, 250);
 		item1.getTags().add(electroMenager);
 		item1.getTags().add(laveVaisselle);
@@ -97,22 +111,27 @@ public class MemoryDataSource {
 		item10.getTags().add(tv);
 		item10.setBase64Image(base64Image);
 
-		catalog.addItem(item1);
-		catalog.addItem(item2);
-		catalog.addItem(item3);
-		catalog.addItem(item4);
-		catalog.addItem(item5);
-		catalog.addItem(item6);
-		catalog.addItem(item7);
-		catalog.addItem(item8);
-		catalog.addItem(item9);
-		catalog.addItem(item10);
+		itemsCatalog.addItem(item1);
+		itemsCatalog.addItem(item2);
+		itemsCatalog.addItem(item3);
+		itemsCatalog.addItem(item4);
+		itemsCatalog.addItem(item5);
+		itemsCatalog.addItem(item6);
+		itemsCatalog.addItem(item7);
+		itemsCatalog.addItem(item8);
+		itemsCatalog.addItem(item9);
+		itemsCatalog.addItem(item10);
 
-		System.out.println(catalog.getItems());
+		System.out.println(tagsCatalog.getTags());
+		System.out.println(itemsCatalog.getItems());
 	}
 
-	public ItemCatalog getCatalog() {
-		return catalog;
+	public ItemsCatalog getItemsCatalog() {
+		return itemsCatalog;
+	}
+
+	public TagsCatalog getTagsCatalog() {
+		return tagsCatalog;
 	}
 
 }

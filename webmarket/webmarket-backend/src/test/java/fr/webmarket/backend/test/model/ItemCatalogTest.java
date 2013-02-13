@@ -8,15 +8,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.webmarket.backend.model.Item;
-import fr.webmarket.backend.model.ItemCatalog;
+import fr.webmarket.backend.model.ItemsCatalog;
 
 public class ItemCatalogTest {
 
-	private ItemCatalog catalog;
+	private ItemsCatalog catalog;
 
 	@Before
 	public void initTest() {
-		catalog = new ItemCatalog();
+		catalog = new ItemsCatalog();
 	}
 
 	@Test

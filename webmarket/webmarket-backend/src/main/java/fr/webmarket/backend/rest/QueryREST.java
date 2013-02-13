@@ -54,7 +54,7 @@ public class QueryREST {
 
 		// Launch research
 		List<Item> result = engine.searchFor(MemoryDataSource.getInstance()
-				.getCatalog(), criteria, SearchStrategy.ONE_OF_CRITERION);
+				.getItemsCatalog(), criteria, SearchStrategy.ONE_OF_CRITERION);
 
 		return JSONMarshaller.getDefaultMapper().writeValueAsString(result);
 	}

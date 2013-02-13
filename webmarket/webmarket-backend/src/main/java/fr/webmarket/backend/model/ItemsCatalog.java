@@ -5,11 +5,11 @@ import java.util.UUID;
 
 import com.google.common.collect.Maps;
 
-public class ItemCatalog {
+public class ItemsCatalog {
 
 	private Map<UUID, Item> products;
 
-	public ItemCatalog() {
+	public ItemsCatalog() {
 		products = Maps.newHashMap();
 	}
 

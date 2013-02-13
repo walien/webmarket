@@ -20,12 +20,12 @@ import fr.webmarket.backend.features.search.criteria.ItemNameCriterion;
 import fr.webmarket.backend.features.search.criteria.ItemPriceCriterion;
 import fr.webmarket.backend.features.search.criteria.ItemTagCriterion;
 import fr.webmarket.backend.model.Item;
-import fr.webmarket.backend.model.ItemCatalog;
+import fr.webmarket.backend.model.ItemsCatalog;
 import fr.webmarket.backend.model.ItemTag;
 
 public class ItemSearchingTest {
 
-	ItemCatalog catalog;
+	ItemsCatalog catalog;
 	ItemSearchEngine engine;
 
 	private Item item1;
@@ -45,7 +45,7 @@ public class ItemSearchingTest {
 	@Before
 	public void init() {
 
-		catalog = new ItemCatalog();
+		catalog = new ItemsCatalog();
 		engine = new ItemSearchEngine();
 
 		electroMenager = new ItemTag("Electroménager");

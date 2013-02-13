@@ -22,6 +22,10 @@
 	cursor: pointer;
 }
 
+#search-panel {
+	padding-top: 20px;
+}
+
 /* Left Side */
 #webmarket-left-container {
 	float: left;

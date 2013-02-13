@@ -1,30 +1,24 @@
 $(document).ready(function() {
 
 	// Init all control handlers
-	initHandlers();
+	init_handlers();
 
 	// Load all items
-	loadAllItemsList();
+	load_all_items_list();
+
+	// Render the tags select
+	$(".chzn-select").chosen();
 });
 
-/**
- * Initialize all handlers
- */
-function initHandlers() {
-
-	// Init searching on 'ENTER' key press
-	$("#search-text").keypress(function(event) {
-		if (event.keyCode == 13) {
-			do_simple_search();
-		}
-	});
+function load_all_tags_list(){
+	
 }
 
 /**
- * Make a request to the server
+ * Make a request to the server in order to retrieve items
  */
 
-function loadAllItemsList() {
+function load_all_items_list() {
 
 	// Retrieve all items (JSON format) from the server
 	$.get(serverBase + allItemsURL, function(items) {
@@ -35,7 +29,7 @@ function loadAllItemsList() {
 				+ " items from the server (REST resources)...");
 
 		// Display all items
-		displayItems(items);
+		display_items(items);
 	});
 
 }
@@ -44,7 +38,7 @@ function loadAllItemsList() {
  * Display all items
  */
 
-function displayItems(items) {
+function display_items(items) {
 
 	// The HTML list (retrieved by a jquery CSS selector)
 	var htmlItemsList = $("#items-list");
@@ -63,7 +57,7 @@ function displayItems(items) {
 
 		// Title
 		content += "<div class='caption'>",
-				content += "<a href='#' onclick='displayItemDetails(" + i
+				content += "<a href='#' onclick='display_item_details(" + i
 						+ ");'><h3>" + item.brand + " - " + item.name
 						+ "</h3></a>";
 
@@ -101,7 +95,7 @@ function displayItems(items) {
  * @param id
  */
 
-function displayItemDetails(id) {
+function display_item_details(id) {
 
 	// Retrieve the selected item
 	var selectedItem = currentItems[id];

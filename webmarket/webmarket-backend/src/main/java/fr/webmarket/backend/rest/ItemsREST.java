@@ -26,7 +26,7 @@ public class ItemsREST {
 	public String getAllItems() throws JsonGenerationException,
 			JsonMappingException, IOException {
 		return new ObjectMapper().writeValueAsString(MemoryDataSource
-				.getInstance().getCatalog().getItems().values());
+				.getInstance().getItemsCatalog().getItems().values());
 	}
 
 	@GET
@@ -35,7 +35,7 @@ public class ItemsREST {
 	public String getItem(@PathParam("id") String id)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		UUID uuid = UUID.fromString(id);
-		Item item = MemoryDataSource.getInstance().getCatalog().getItems()
+		Item item = MemoryDataSource.getInstance().getItemsCatalog().getItems()
 				.get(uuid);
 		if (item == null) {
 			return JSONMarshaller.getDefaultMapper().writeValueAsString(false);

@@ -21,7 +21,8 @@ public class ItemBrandCriterion implements ISearchCriterion {
 
 		switch (accuracy) {
 		case FLEXIBLE:
-			return this.brand.contains(item.getBrand());
+			return this.brand.toLowerCase().contains(
+					item.getBrand().toLowerCase());
 		case STRICT:
 			return this.brand.equalsIgnoreCase(item.getBrand());
 		}
