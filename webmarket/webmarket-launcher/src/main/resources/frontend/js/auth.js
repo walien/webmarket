@@ -8,16 +8,16 @@ $(document)
 					if (is_connected() == false) {
 						$('#auth-form')
 								.append(
-										"<form class='navbar-form pull-right'><input id='username-tf' class='span2' type='text' placeholder='Email'> "
+										"<div class='navbar-form pull-right'><input id='username-tf' class='span2' type='text' placeholder='Email'> "
 												+ "<input id='pwd-tf' class='span2' type='password' placeholder='Password'>"
-												+ "<button class='btn' onclick='do_login();'>Sign in</button></form>");
+												+ "<button class='btn' onclick='do_login();'>Sign in</button></div>");
 
 					} else {
 						$('#auth-form')
 								.append(
-										"<form class='navbar-form pull-right'><button class='btn span2' onclick='do_logout();'>"
+										"<div class='navbar-form pull-right'><button class='btn span2' onclick='do_logout();'>"
 												+ get_current_username()
-												+ " / Sign out</button></form>");
+												+ " / Sign out</button></div>");
 					}
 				});
 
@@ -47,14 +47,15 @@ function do_login() {
 
 function do_logout() {
 
-	console.log("Logout with : " + get_current_username());
+	var username = get_current_username();
+	console.log("Logout with : " + username);
+
+	// Destroy the session (remove data from the local storage)
+	destroy_session();
 
 	$.post(serverBase + logoutURL, {
-		username : get_current_username(),
+		username : username,
 	}, function(result) {
-
-		// Destroy the session (remove data from the local storage)
-		destroy_session();
 
 		// If the returned state is bad : throw an alert
 		if (result == 'false') {
@@ -67,7 +68,8 @@ function do_logout() {
 }
 
 function is_connected() {
-	return localStorage['sessionID'] != "undefined";
+	return localStorage['sessionID'] != "undefined"
+			&& localStorage['sessionID'] != undefined;
 }
 
 function get_current_session_id() {
@@ -84,6 +86,5 @@ function create_session(username, id) {
 }
 
 function destroy_session() {
-	localStorage['username'] = undefined;
-	localStorage['sessionID'] = undefined;
+	localStorage.clear();
 }
