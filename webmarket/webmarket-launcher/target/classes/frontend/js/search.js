@@ -78,7 +78,7 @@ function clear_search() {
 
 	// Empty the search box
 	$("#search-text").val("");
-	$("#tags-select").val("");
+	$("#tags-select").val("").trigger("liszt:updated");
 
 	// The items list is now the global one (not filtered)
 	currentItems = globalItems;
