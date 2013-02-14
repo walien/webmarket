@@ -98,7 +98,7 @@ function do_filter_by_tags(tags) {
 	// Build the query url based on the name, brand, description, ... attributes
 	var params = "?tags=" + tags;
 
-	$.get(serverBase + queryItemByDataURL + params, function(items) {
+	$.get(serverBase + queryItemByTagsURL + params, function(items) {
 		currentItems = items;
 		display_items(items);
 	});
