@@ -1,12 +1,16 @@
 package fr.webmarket.backend.datasource;
 
 import java.io.IOException;
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 import fr.webmarket.backend.marshalling.ImageToBase64Transformer;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.ItemsCatalog;
 import fr.webmarket.backend.model.TagsCatalog;
+import fr.webmarket.backend.model.User;
 
 public class MemoryDataSource {
 
@@ -16,9 +20,12 @@ public class MemoryDataSource {
 
 	private ItemsCatalog itemsCatalog;
 
+	private Map<String, User> users;
+
 	private MemoryDataSource() {
 		tagsCatalog = new TagsCatalog();
 		itemsCatalog = new ItemsCatalog();
+		users = Maps.newHashMap();
 		initMockData();
 	}
 
@@ -30,6 +37,9 @@ public class MemoryDataSource {
 	}
 
 	private void initMockData() {
+
+		// Initialize users
+		addUser(new User("eoriou", "pass", "Elian", "ORIOU", "eoriou@gmail.com"));
 
 		// Initialize default image
 		String imagePath = "src/main/resources/frontend/static/default-image.png";
@@ -125,6 +135,7 @@ public class MemoryDataSource {
 
 		System.out.println(tagsCatalog.getTags());
 		System.out.println(itemsCatalog.getItems());
+		System.out.println(users);
 	}
 
 	public ItemsCatalog getItemsCatalog() {
@@ -133,6 +144,14 @@ public class MemoryDataSource {
 
 	public TagsCatalog getTagsCatalog() {
 		return tagsCatalog;
+	}
+
+	public Map<String, User> getUsers() {
+		return users;
+	}
+
+	public void addUser(User u) {
+		users.put(u.getLogin(), u);
 	}
 
 }
