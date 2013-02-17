@@ -48,7 +48,7 @@ public class ItemSearchingTest {
 		catalog = new ItemsCatalog();
 		engine = new ItemSearchEngine();
 
-		electroMenager = new ItemTag("Electroménager");
+		electroMenager = new ItemTag("ElectromÃ©nager");
 		aspirateur = new ItemTag("Aspirateur");
 		laveVaisselle = new ItemTag("Lave-Vaisselle");
 		lecteurSalon = new ItemTag("Lecteur Salon");

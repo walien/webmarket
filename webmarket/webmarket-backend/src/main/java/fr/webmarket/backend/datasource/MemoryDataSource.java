@@ -54,7 +54,7 @@ public class MemoryDataSource {
 		String description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae ultrices quam. Sed eu ante at ipsum ultrices volutpat vel in nibh. Nullam at ipsum eu massa ultrices euismod. Proin ligula dolor, tincidunt eu viverra id, ultricies sit amet risus. Sed et eros vel ligula fermentum aliquam et at lorem.";
 
 		// 1. Tags
-		ItemTag electroMenager = new ItemTag("Electroménager");
+		ItemTag electroMenager = new ItemTag("ElectromÃ©nager");
 		ItemTag aspirateur = new ItemTag("Aspirateur");
 		ItemTag laveVaisselle = new ItemTag("Lave-Vaisselle");
 		ItemTag lecteurSalon = new ItemTag("Lecteur Salon");

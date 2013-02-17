@@ -11,8 +11,8 @@ import fr.webmarket.backend.model.ItemTag;
 public class ItemTagTest {
 
 	private static final int ITEM_TAG_ID = EntitySequences.getNewTagId();
-	private static final String ITEM_TAG_NAME = "Electroménager";
-	private static final String ITEM_TAG_STRING_FORM = "ItemTag [name=Electroménager]";
+	private static final String ITEM_TAG_NAME = "ElectromÃ©nager";
+	private static final String ITEM_TAG_STRING_FORM = "ItemTag [name=ElectromÃ©nager]";
 
 	private ItemTag tag;
 
