@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.webmarket.backend.datasource.EntitySequences;
-import fr.webmarket.backend.marshalling.ImageToBase64Transformer;
+import fr.webmarket.backend.marshalling.MarshallingUtils;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 
@@ -100,7 +100,7 @@ public class ItemTest {
 	public void testSetAndGetImage() throws IOException {
 
 		String imagePath = "src/test/resources/webmarket-logo.png";
-		String base64String = ImageToBase64Transformer.transform(imagePath);
+		String base64String = MarshallingUtils.transformImageToBase64(imagePath);
 		System.out.println(base64String);
 
 		item.setBase64Image(base64String);
