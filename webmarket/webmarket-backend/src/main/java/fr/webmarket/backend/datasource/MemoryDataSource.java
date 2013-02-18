@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import fr.webmarket.backend.marshalling.ImageToBase64Transformer;
+import fr.webmarket.backend.marshalling.MarshallingUtils;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.ItemsCatalog;
@@ -45,7 +45,7 @@ public class MemoryDataSource {
 		String imagePath = "src/main/resources/frontend/static/default-image.png";
 		String base64Image = null;
 		try {
-			base64Image = ImageToBase64Transformer.transform(imagePath);
+			base64Image = MarshallingUtils.transformImageToBase64(imagePath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
