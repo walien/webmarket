@@ -111,13 +111,13 @@ public class ItemTest {
 	public void testAddAndGetTag() {
 
 		ItemTag tag = new ItemTag(EntitySequences.getNewTagId(),
-				"Electroménager", null);
+				"ElectromÃ©nager", null);
 		ItemTag tag2 = new ItemTag(EntitySequences.getNewTagId(),
 				"Lave-Vaisselle", tag);
 		ItemTag tag3 = new ItemTag(EntitySequences.getNewTagId(),
 				"Lave-Vaisselle", tag);
 		ItemTag tag4 = new ItemTag(EntitySequences.getNewTagId(),
-				"Fer à repasser", tag);
+				"Fer Ã  repasser", tag);
 
 		item.getTags().add(tag);
 		item.getTags().add(tag2);

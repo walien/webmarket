@@ -29,6 +29,8 @@ public class ItemTagCriterion implements ISearchCriterion {
 			return item.getTags().containsAll(tags);
 		case ONE_OF_CRITERION:
 			return Sets.intersection(item.getTags(), tags).size() != 0;
+		case NONE:
+			return true;
 		}
 
 		return false;
