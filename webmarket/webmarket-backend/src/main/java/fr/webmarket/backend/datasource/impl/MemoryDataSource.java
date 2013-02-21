@@ -142,18 +142,8 @@ public class MemoryDataSource implements DataSource {
 	}
 
 	@Override
-	public void addItem(Item item) {
-		itemsCatalog.addItem(item);
-	}
-
-	@Override
 	public TagsCatalog getTagsCatalog() {
 		return tagsCatalog;
-	}
-
-	@Override
-	public void addItemTag(ItemTag tag) {
-		tagsCatalog.addTag(tag);
 	}
 
 	@Override

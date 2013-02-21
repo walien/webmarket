@@ -6,18 +6,22 @@ import com.google.common.collect.Maps;
 
 public class ItemsCatalog {
 
-	private Map<Integer, Item> products;
+	private Map<Integer, Item> items;
 
 	public ItemsCatalog() {
-		products = Maps.newHashMap();
+		items = Maps.newHashMap();
 	}
 
 	public Map<Integer, Item> getItems() {
-		return products;
+		return items;
+	}
+
+	public void setItems(Map<Integer, Item> items) {
+		this.items = items;
 	}
 
 	public void addItem(Item p) {
-		products.put(p.getId(), p);
+		items.put(p.getId(), p);
 	}
 
 }

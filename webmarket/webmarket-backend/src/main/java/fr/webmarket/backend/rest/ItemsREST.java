@@ -3,6 +3,7 @@ package fr.webmarket.backend.rest;
 import java.io.IOException;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -51,7 +52,7 @@ public class ItemsREST {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public boolean addItem(String itemJson) throws JsonParseException,
+	public String addItem(String itemJson) throws JsonParseException,
 			JsonMappingException, IOException {
 
 		Item item = JSONMarshaller.getDefaultMapper().readValue(itemJson,
@@ -59,6 +60,20 @@ public class ItemsREST {
 		DataSourcesBundle.getDefaultDataSource().getItemsCatalog()
 				.addItem(item);
 
-		return false;
+		return Boolean.toString(true);
+	}
+
+	// ///////////////////////////////
+	// //// DELETE METHODS
+	// ///////////////////////////////
+
+	@DELETE
+	@Path("{id}")
+	public String removeItem(@PathParam("id") int id)
+			throws JsonParseException, JsonMappingException, IOException {
+
+		boolean result = (DataSourcesBundle.getDefaultDataSource()
+				.getItemsCatalog().getItems().remove(id) != null);
+		return Boolean.toString(result);
 	}
 }
