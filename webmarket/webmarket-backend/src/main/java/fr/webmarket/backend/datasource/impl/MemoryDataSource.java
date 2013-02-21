@@ -1,10 +1,11 @@
-package fr.webmarket.backend.datasource;
+package fr.webmarket.backend.datasource.impl;
 
 import java.io.IOException;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
+import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
@@ -12,15 +13,15 @@ import fr.webmarket.backend.model.ItemsCatalog;
 import fr.webmarket.backend.model.TagsCatalog;
 import fr.webmarket.backend.model.User;
 
-public class MemoryDataSource {
+public class MemoryDataSource implements DataSource {
 
 	private static MemoryDataSource INSTANCE;
 
-	private TagsCatalog tagsCatalog;
+	private final TagsCatalog tagsCatalog;
 
-	private ItemsCatalog itemsCatalog;
+	private final ItemsCatalog itemsCatalog;
 
-	private Map<String, User> users;
+	private final Map<String, User> users;
 
 	private MemoryDataSource() {
 		tagsCatalog = new TagsCatalog();
@@ -29,7 +30,7 @@ public class MemoryDataSource {
 		initMockData();
 	}
 
-	public static MemoryDataSource getInstance() {
+	public static DataSource getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new MemoryDataSource();
 		}
@@ -54,7 +55,7 @@ public class MemoryDataSource {
 		String description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae ultrices quam. Sed eu ante at ipsum ultrices volutpat vel in nibh. Nullam at ipsum eu massa ultrices euismod. Proin ligula dolor, tincidunt eu viverra id, ultricies sit amet risus. Sed et eros vel ligula fermentum aliquam et at lorem.";
 
 		// 1. Tags
-		ItemTag electroMenager = new ItemTag("ElectromÃ©nager");
+		ItemTag electroMenager = new ItemTag("Electroménager");
 		ItemTag aspirateur = new ItemTag("Aspirateur");
 		ItemTag laveVaisselle = new ItemTag("Lave-Vaisselle");
 		ItemTag lecteurSalon = new ItemTag("Lecteur Salon");
@@ -133,23 +134,34 @@ public class MemoryDataSource {
 		itemsCatalog.addItem(item9);
 		itemsCatalog.addItem(item10);
 
-		System.out.println(tagsCatalog.getTags());
-		System.out.println(itemsCatalog.getItems());
-		System.out.println(users);
 	}
 
+	@Override
 	public ItemsCatalog getItemsCatalog() {
 		return itemsCatalog;
 	}
 
+	@Override
+	public void addItem(Item item) {
+		itemsCatalog.addItem(item);
+	}
+
+	@Override
 	public TagsCatalog getTagsCatalog() {
 		return tagsCatalog;
 	}
 
+	@Override
+	public void addItemTag(ItemTag tag) {
+		tagsCatalog.addTag(tag);
+	}
+
+	@Override
 	public Map<String, User> getUsers() {
 		return users;
 	}
 
+	@Override
 	public void addUser(User u) {
 		users.put(u.getLogin(), u);
 	}

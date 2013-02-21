@@ -16,11 +16,10 @@ import javax.ws.rs.core.UriInfo;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import com.google.common.collect.Lists;
 
-import fr.webmarket.backend.datasource.MemoryDataSource;
+import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.features.search.ISearchCriterion;
 import fr.webmarket.backend.features.search.ItemSearchEngine;
 import fr.webmarket.backend.features.search.SearchAccuracy;
@@ -76,8 +75,8 @@ public class QueryREST {
 		if (ONE_OF_SEARCH_STRATEGY.equalsIgnoreCase(searchStrategy)) {
 			strategy = SearchStrategy.ONE_OF_CRITERION;
 		}
-		List<Item> result = engine.searchFor(MemoryDataSource.getInstance()
-				.getItemsCatalog(), criteria, strategy);
+		List<Item> result = engine.searchFor(DataSourcesBundle
+				.getDefaultDataSource().getItemsCatalog(), criteria, strategy);
 
 		return JSONMarshaller.getDefaultMapper().writeValueAsString(result);
 	}
@@ -97,11 +96,11 @@ public class QueryREST {
 		}
 
 		// The item tag catalog
-		Map<Integer, ItemTag> tags = MemoryDataSource.getInstance()
+		Map<Integer, ItemTag> tags = DataSourcesBundle.getDefaultDataSource()
 				.getTagsCatalog().getTags();
 
 		// The item list
-		Collection<Item> items = MemoryDataSource.getInstance()
+		Collection<Item> items = DataSourcesBundle.getDefaultDataSource()
 				.getItemsCatalog().getItems().values();
 
 		// The result list
@@ -126,6 +125,6 @@ public class QueryREST {
 			}
 		}
 
-		return new ObjectMapper().writeValueAsString(result);
+		return JSONMarshaller.getDefaultMapper().writeValueAsString(result);
 	}
 }

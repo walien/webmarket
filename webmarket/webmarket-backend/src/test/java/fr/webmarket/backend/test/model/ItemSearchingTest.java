@@ -20,8 +20,8 @@ import fr.webmarket.backend.features.search.criteria.ItemNameCriterion;
 import fr.webmarket.backend.features.search.criteria.ItemPriceCriterion;
 import fr.webmarket.backend.features.search.criteria.ItemTagCriterion;
 import fr.webmarket.backend.model.Item;
-import fr.webmarket.backend.model.ItemsCatalog;
 import fr.webmarket.backend.model.ItemTag;
+import fr.webmarket.backend.model.ItemsCatalog;
 
 public class ItemSearchingTest {
 

@@ -22,30 +22,12 @@ public class Item {
 
 	private String base64Image;
 
+	public Item() {
+
+	}
+
 	public Item(String name, String brand, String description, double price) {
 		this(EntitySequences.getNewItemId(), name, brand, description, price);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Item other = (Item) obj;
-		if (id != other.id)
-			return false;
-		return true;
 	}
 
 	public Item(int id, String name, String brand, String description,
@@ -120,6 +102,28 @@ public class Item {
 		return "Item [id=" + id + ", name=" + name + ", brand=" + brand
 				+ ", description=" + description + ", price=" + price
 				+ ", tags=" + tags + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 }

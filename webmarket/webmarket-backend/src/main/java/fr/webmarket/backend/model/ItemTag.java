@@ -10,6 +10,10 @@ public class ItemTag {
 
 	private ItemTag parent;
 
+	public ItemTag() {
+
+	}
+
 	public ItemTag(String name) {
 		this(EntitySequences.getNewTagId(), name, null);
 	}

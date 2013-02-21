@@ -8,7 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import fr.webmarket.backend.datasource.MemoryDataSource;
+import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.User;
 
 @Path("/auth")
@@ -21,7 +21,8 @@ public class AuthREST {
 			@FormParam("pwd") String pwd) {
 
 		// Retrieve the user
-		User u = MemoryDataSource.getInstance().getUsers().get(username);
+		User u = DataSourcesBundle.getDefaultDataSource().getUsers()
+				.get(username);
 		if (u == null) {
 			return null;
 		}
@@ -47,7 +48,8 @@ public class AuthREST {
 	@Path("logout")
 	public String logout(@FormParam("username") String username) {
 
-		User u = MemoryDataSource.getInstance().getUsers().get(username);
+		User u = DataSourcesBundle.getDefaultDataSource().getUsers()
+				.get(username);
 		if (u == null) {
 			return new Boolean(false).toString();
 		}

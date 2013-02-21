@@ -100,7 +100,8 @@ public class ItemTest {
 	public void testSetAndGetImage() throws IOException {
 
 		String imagePath = "src/test/resources/webmarket-logo.png";
-		String base64String = MarshallingUtils.transformImageToBase64(imagePath);
+		String base64String = MarshallingUtils
+				.transformImageToBase64(imagePath);
 		System.out.println(base64String);
 
 		item.setBase64Image(base64String);
@@ -111,13 +112,13 @@ public class ItemTest {
 	public void testAddAndGetTag() {
 
 		ItemTag tag = new ItemTag(EntitySequences.getNewTagId(),
-				"ElectromÃ©nager", null);
+				"Electroménager", null);
 		ItemTag tag2 = new ItemTag(EntitySequences.getNewTagId(),
 				"Lave-Vaisselle", tag);
 		ItemTag tag3 = new ItemTag(EntitySequences.getNewTagId(),
 				"Lave-Vaisselle", tag);
 		ItemTag tag4 = new ItemTag(EntitySequences.getNewTagId(),
-				"Fer Ã  repasser", tag);
+				"Fer à repasser", tag);
 
 		item.getTags().add(tag);
 		item.getTags().add(tag2);

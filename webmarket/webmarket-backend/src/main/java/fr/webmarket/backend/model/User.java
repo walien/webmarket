@@ -12,6 +12,10 @@ public class User {
 
 	private String email;
 
+	public User() {
+
+	}
+
 	public User(String login, String pwd, String firstName, String lastName,
 			String email) {
 		super();

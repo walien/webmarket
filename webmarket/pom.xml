@@ -62,5 +62,12 @@
 			<artifactId>jetty-servlet</artifactId>
 			<version>8.1.0.RC5</version>
 		</dependency>
+
+		<!-- HTTP Client for REST Tests -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3-alpha1</version>
+		</dependency>
 	</dependencies>
 </project>
