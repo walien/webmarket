@@ -1,10 +1,12 @@
 package fr.webmarket.backend.rest;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -18,6 +20,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.marshalling.JSONMarshaller;
 import fr.webmarket.backend.model.Item;
+import fr.webmarket.backend.rest.auth.AuthUtils;
+import fr.webmarket.backend.rest.auth.ClientSessionManager;
 
 @Path("/items")
 public class ItemsREST {
@@ -37,23 +41,31 @@ public class ItemsREST {
 	}
 
 	@GET
-	@Path("{id}")
+	@Path("{item-id}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public String getItem(@PathParam("id") int id)
+	public String getItem(@PathParam("item-id") int itemID)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		return JSONMarshaller.getDefaultMapper().writeValueAsString(
 				DataSourcesBundle.getDefaultDataSource().getItemsCatalog()
-						.getItems().get(id));
+						.getItems().get(itemID));
 	}
 
-	// ///////////////////////////////
-	// //// POST METHODS
-	// ///////////////////////////////
+	// ///////////////////////////////////////////
+	// //// POST METHODS (needs authentication)
+	// ///////////////////////////////////////////
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public String addItem(String itemJson) throws JsonParseException,
-			JsonMappingException, IOException {
+	public String addItem(@HeaderParam("Session-ID") String sessionID,
+			String itemJson) throws JsonParseException, JsonMappingException,
+			IOException {
+
+		UUID id = AuthUtils.parseSessionID(sessionID);
+
+		if (id == null
+				|| ClientSessionManager.getInstance().checkSession(id) == false) {
+			return Boolean.toString(false);
+		}
 
 		Item item = JSONMarshaller.getDefaultMapper().readValue(itemJson,
 				Item.class);
@@ -63,17 +75,26 @@ public class ItemsREST {
 		return Boolean.toString(true);
 	}
 
-	// ///////////////////////////////
-	// //// DELETE METHODS
-	// ///////////////////////////////
+	// /////////////////////////////////////////////
+	// //// DELETE METHODS (needs authentication)
+	// /////////////////////////////////////////////
 
 	@DELETE
-	@Path("{id}")
-	public String removeItem(@PathParam("id") int id)
-			throws JsonParseException, JsonMappingException, IOException {
+	@Path("{item-id}")
+	public String removeItem(@HeaderParam("Session-ID") String sessionID,
+			@PathParam("item-id") int itemID) throws JsonParseException,
+			JsonMappingException, IOException {
+
+		UUID id = AuthUtils.parseSessionID(sessionID);
+
+		if (id == null
+				|| ClientSessionManager.getInstance().checkSession(id) == false) {
+			return Boolean.toString(false);
+		}
 
 		boolean result = (DataSourcesBundle.getDefaultDataSource()
-				.getItemsCatalog().getItems().remove(id) != null);
+				.getItemsCatalog().getItems().remove(itemID) != null);
 		return Boolean.toString(result);
 	}
+
 }

@@ -34,8 +34,8 @@ public class ClientSessionManager {
 		return newID;
 	}
 
-	public boolean checkSession(User u, UUID id) {
-		return sessions.get(u) == id;
+	public boolean checkSession(UUID id) {
+		return sessions.values().contains(id);
 	}
 
 	public UUID destroySession(User u) {
