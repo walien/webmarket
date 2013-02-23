@@ -4,18 +4,24 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Ignore;
@@ -29,6 +35,9 @@ import fr.webmarket.backend.model.Item;
 public class ItemRESTTest {
 
 	private static final String SERVER_BASE = "http://localhost:8080";
+
+	private static final String LOGIN_AUTH_URL = SERVER_BASE
+			+ "/rest/auth/login";
 
 	private static final String ITEMS_BASE = SERVER_BASE + "/rest/items";
 
@@ -119,15 +128,44 @@ public class ItemRESTTest {
 	// 2. POST
 	// //////////////////////////
 
+	private UUID doAuth() throws ClientProtocolException, IOException {
+
+		// HTTP client
+		HttpClient httpclient = HttpClientBuilder.create().build();
+		HttpPost httpPost = new HttpPost(LOGIN_AUTH_URL);
+
+		// Push user/pwd
+		List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+		postParams.add(new BasicNameValuePair("username", "eoriou"));
+		postParams.add(new BasicNameValuePair("pwd", "pass"));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParams);
+		httpPost.setEntity(entity);
+
+		// Execute the request
+		HttpResponse response = httpclient.execute(httpPost);
+
+		// Read the content of the response
+		HttpEntity responseEntity = response.getEntity();
+		InputStream contentResult = responseEntity.getContent();
+
+		String result = new String(ByteStreams.toByteArray(contentResult));
+
+		return UUID.fromString(result);
+	}
+
 	private String doPost(String path, String content)
 			throws ClientProtocolException, IOException {
 
 		String result = null;
 
+		// For POST request : authentication is required
+		UUID sessionID = doAuth();
+
 		// HTTP client
 		HttpClient httpclient = HttpClientBuilder.create().build();
 		HttpPost httpPost = new HttpPost(path);
 		httpPost.addHeader("Content-Type", "application/json");
+		httpPost.addHeader("Session-ID", sessionID.toString());
 
 		// Push the content
 		httpPost.setEntity(new StringEntity(content));
