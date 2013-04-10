@@ -1,17 +1,12 @@
 package fr.webmarket.backend.datasource.impl;
 
-import java.io.IOException;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
-
 import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
-import fr.webmarket.backend.model.Item;
-import fr.webmarket.backend.model.ItemTag;
-import fr.webmarket.backend.model.ItemsCatalog;
-import fr.webmarket.backend.model.TagsCatalog;
-import fr.webmarket.backend.model.User;
+import fr.webmarket.backend.model.*;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class MemoryDataSource implements DataSource {
 
@@ -55,7 +50,7 @@ public class MemoryDataSource implements DataSource {
 		String description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae ultrices quam. Sed eu ante at ipsum ultrices volutpat vel in nibh. Nullam at ipsum eu massa ultrices euismod. Proin ligula dolor, tincidunt eu viverra id, ultricies sit amet risus. Sed et eros vel ligula fermentum aliquam et at lorem.";
 
 		// 1. Tags
-		ItemTag electroMenager = new ItemTag("Electroménager");
+		ItemTag electroMenager = new ItemTag("ElectromÃ©nager");
 		ItemTag aspirateur = new ItemTag("Aspirateur");
 		ItemTag laveVaisselle = new ItemTag("Lave-Vaisselle");
 		ItemTag lecteurSalon = new ItemTag("Lecteur Salon");

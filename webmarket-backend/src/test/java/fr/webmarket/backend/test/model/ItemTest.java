@@ -1,16 +1,15 @@
 package fr.webmarket.backend.test.model;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import fr.webmarket.backend.datasource.EntitySequences;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.*;
 
 public class ItemTest {
 
@@ -112,13 +111,13 @@ public class ItemTest {
 	public void testAddAndGetTag() {
 
 		ItemTag tag = new ItemTag(EntitySequences.getNewTagId(),
-				"Electroménager", null);
+				"ElectromÃ©nager", null);
 		ItemTag tag2 = new ItemTag(EntitySequences.getNewTagId(),
 				"Lave-Vaisselle", tag);
 		ItemTag tag3 = new ItemTag(EntitySequences.getNewTagId(),
 				"Lave-Vaisselle", tag);
 		ItemTag tag4 = new ItemTag(EntitySequences.getNewTagId(),
-				"Fer à repasser", tag);
+				"Fer Ã  repasser", tag);
 
 		item.getTags().add(tag);
 		item.getTags().add(tag2);
