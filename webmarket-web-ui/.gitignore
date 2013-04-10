@@ -1,1 +1,10 @@
-/target
+node_modules
+dist
+.tmp
+.sass-cache
+app/components
+npm-debug.log
+
+.settings
+.classpath
+.project

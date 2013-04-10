@@ -1,0 +1,37 @@
+@CHARSET "ISO-8859-1";
+
+/* Heading */
+#webmarket-head-logo {
+    width: 20px;
+    padding-left: 15px;
+    padding-right: 10px;
+}
+
+#webmarket-cart-logo {
+    width: 40px;
+    cursor: pointer;
+    padding-right: 20px;
+}
+
+/* Item Searching */
+#filter-bar {
+    background-color: #dceaf4;
+}
+
+#search-button {
+    cursor: pointer;
+}
+
+#search-panel {
+    padding-top: 20px;
+}
+
+/* Left Side */
+#webmarket-left-container {
+    float: left;
+}
+
+/* Content */
+#webmarket-content {
+    padding-left: 10px;
+}
