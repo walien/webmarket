@@ -38,7 +38,7 @@ public class MemoryDataSource implements DataSource {
 		addUser(new User("eoriou", "pass", "Elian", "ORIOU", "eoriou@gmail.com"));
 
 		// Initialize default image
-		String imagePath = "src/main/resources/frontend/static/default-image.png";
+		String imagePath = "webmarket-backend/src/main/resources/default-image.png";
 		String base64Image = null;
 		try {
 			base64Image = MarshallingUtils.transformImageToBase64(imagePath);

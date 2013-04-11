@@ -9,7 +9,7 @@ angular.module('webmarketWebUi', [])
             })
             .when('/items', {
                 templateUrl: 'views/items.html',
-                controller: 'MainCtrl'
+                controller: 'ItemsCtrl'
             })
             .otherwise({
                 redirectTo: '/'

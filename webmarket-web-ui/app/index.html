@@ -31,15 +31,18 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ng-view></div>
+    <div ng-view ng-controller="GlobalCtrl"></div>
 
     <script src="components/jquery/jquery.min.js"></script>
     <script src="components/angular/angular.min.js"></script>
     <script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
 
     <!-- build:js scripts/scripts.js -->
+    <script src="scripts/constants.js"></script>
     <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/global.js"></script>
     <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/items.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

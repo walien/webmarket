@@ -10,6 +10,34 @@
         <!-- Main Container -->
         <div id="webmarket-content" class="span10">
             <h1>Items</h1>
+
+            <div class="row-fluid">
+                <div id="items-list">
+                    <ul class="thumbnails">
+                        <li ng-repeat="item in items">
+                            <div class="thumbnail">
+
+                                <img alt='300x200' style='width:100px; float:right;' ng-src='data:image/png;base64,{{item.base64Image}}'>
+
+                                <div class=' caption'>
+                                    <a href='#' ng-click="displayItemDetails(item)">
+                                        <h3>{{item.brand}} - {{item.name}}</h3>
+                                    </a>
+                                    <p>{{item.description}}</p>
+
+                                    <p>
+                                        <span ng-repeat="tag in item.tags"
+                                              style="margin-right:5px;" class='label label-success'>{{tag.name}}</span>
+                                    </p>
+                                    <p>
+                                        <span class='label label-info'>{{item.price}} {{currency}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
