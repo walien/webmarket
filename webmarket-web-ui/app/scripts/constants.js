@@ -1,4 +1,3 @@
-
 ///////////////////////////
 // APPLICATIVE CONSTANTS
 ///////////////////////////
@@ -9,4 +8,8 @@ var defaultCurrency = '€';
 // URLS
 ///////////////////////////
 
-var allItemsURL = "http://localhost:8080/rest/items/all";
+var itemResourceBaseURL = "http://localhost:8080/rest/items";
+
+var allItemsURL = itemResourceBaseURL + "/all";
+
+

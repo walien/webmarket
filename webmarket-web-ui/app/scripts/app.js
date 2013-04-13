@@ -7,8 +7,12 @@ angular.module('webmarketWebUi', [])
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
             })
+            .when('/items/:id/details', {
+                templateUrl: 'views/item/details.html',
+                controller: 'ItemDetailsCtrl'
+            })
             .when('/items', {
-                templateUrl: 'views/items.html',
+                templateUrl: 'views/item/items.html',
                 controller: 'ItemsCtrl'
             })
             .otherwise({

@@ -1,0 +1,29 @@
+<!-- Header -->
+<div ng-include src="'views/header.html'"></div>
+
+<!-- Content -->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <!-- Navigation Bar (Left-Side) -->
+        <div ng-include src="'views/navigation.html'"></div>
+
+        <!-- Main Container -->
+        <div id="webmarket-content" class="span10">
+
+            <button class="btn btn-mini btn-info" ng-click="backToList()">Back To List</button>
+            <img alt='300x200' style='width:100px; float:right;' ng-src='data:image/png;base64,{{item.base64Image}}'>
+            <h1>{{item.name}}</h1>
+            <h3>{{item.brand}}</h3>
+            <p class="hero-unit">
+                {{item.description}}
+            <p>
+                <span ng-repeat="tag in item.tags"
+                      style="margin-right:5px;" class='label label-success'>{{tag.name}}</span>
+            </p>
+            <p>
+                <span class='label label-info' style="font-size: 20px">{{item.price}} {{currency}}</span>
+            </p>
+            </p>
+        </div>
+    </div>
+</div>

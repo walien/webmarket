@@ -9,7 +9,6 @@
 
         <!-- Main Container -->
         <div id="webmarket-content" class="span10">
-            <h1>Items</h1>
 
             <div class="row-fluid">
                 <div id="items-list">
@@ -20,7 +19,7 @@
                                 <img alt='300x200' style='width:100px; float:right;' ng-src='data:image/png;base64,{{item.base64Image}}'>
 
                                 <div class=' caption'>
-                                    <a href='#' ng-click="displayItemDetails(item)">
+                                    <a href='' ng-click="showItemDetails(item.id)">
                                         <h3>{{item.brand}} - {{item.name}}</h3>
                                     </a>
                                     <p>{{item.description}}</p>

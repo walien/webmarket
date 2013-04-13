@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('webmarketWebUi')
-    .controller('ItemsCtrl', function ($scope) {
+    .controller('ItemsCtrl', function ($scope, $location) {
 
         $scope.items = [];
 
@@ -10,7 +10,6 @@ angular.module('webmarketWebUi')
         //////////////////////////////
 
         $.get(allItemsURL, function (response) {
-            console.log(response);
             $scope.items = response;
             $scope.$apply();
         });
@@ -21,12 +20,10 @@ angular.module('webmarketWebUi')
 
         /**
          * Display details about a selected item
-         * @param item
+         * @param id
          */
 
-        $scope.displayItemDetails = function (item) {
-
+        $scope.showItemDetails = function (id) {
+            $location.path("/items/" + id + "/details");
         }
-
-
     });
