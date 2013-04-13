@@ -10,10 +10,16 @@
         <!-- Main Container -->
         <div id="webmarket-content" class="span10">
 
+            <!-- Search bar -->
+            <form class="form-search">
+                <input type="text" class="input-medium search-query" ng-model="query" style="float:right; margin-bottom:10px;">
+            </form>
+
+            <!-- Items displayed as thumbnail -->
             <div class="row-fluid">
                 <div id="items-list">
                     <ul class="thumbnails">
-                        <li ng-repeat="item in items">
+                        <li ng-repeat="item in items | filter:query">
                             <div class="thumbnail">
 
                                 <img alt='300x200' style='width:100px; float:right;' ng-src='data:image/png;base64,{{item.base64Image}}'>
