@@ -16,43 +16,50 @@ public class AuthREST {
 
     @POST
     @Path("login")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String login(@FormParam("username") String username,
-                        @FormParam("pwd") String pwd) {
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public AuthResult login(@FormParam("username") String username,
+                            @FormParam("pwd") String pwd) {
+
+        // Auth result
+        AuthResult authResult = new AuthResult();
 
         // Retrieve the user
         User u = DataSourcesBundle.getDefaultDataSource().getUsers()
                 .get(username);
         if (u == null) {
-            return null;
-        }
-
-        // Check if the session doesn't exists yet
-        UUID sessionID = ClientSessionManager.getInstance().getSessionID(u);
-        if (sessionID != null) {
-            return sessionID.toString();
+            return authResult.setAuth(false);
         }
 
         // Check the password (compare MD5)
         String md5Pwd = DigestUtils.computeMD5(pwd);
         if (!u.getPwd().equals(md5Pwd)) {
-            return null;
+            return authResult.setAuth(false);
         }
 
-        return ClientSessionManager.getInstance()
-                .createSession(u).toString();
+        // Check if the session doesn't exists yet
+        UUID sessionID = ClientSessionManager.getInstance().getSessionID(u);
+        if (sessionID != null) {
+            return authResult.setAuth(true).setSessionID(sessionID.toString());
+        }
+
+        return authResult.setSessionID(ClientSessionManager.getInstance()
+                .createSession(u).toString());
     }
 
     @POST
     @Path("logout")
-    public boolean logout(@FormParam("username") String username) {
+    public AuthResult logout(@FormParam("username") String username) {
+
+        AuthResult authResult = new AuthResult();
 
         User u = DataSourcesBundle.getDefaultDataSource().getUsers()
                 .get(username);
         if (u == null) {
-            return false;
+            return authResult.setAuth(false);
         }
 
-        return ClientSessionManager.getInstance().destroySession(u) != null;
+        ClientSessionManager.getInstance().destroySession(u);
+        return authResult.setAuth(false);
+
     }
 }

@@ -3,10 +3,12 @@ package fr.webmarket.backend.datasource.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fr.webmarket.backend.datasource.DataSource;
+import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.User;
+import fr.webmarket.backend.utils.DigestUtils;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -129,6 +131,9 @@ public class MemoryDataSource implements DataSource {
         addItem(item8);
         addItem(item9);
         addItem(item10);
+
+        // Print the content of the data store
+        LoggerBundle.getDefaultLogger().info("Data store " + this.getClass().getSimpleName() + " : " + dumpData());
     }
 
     @Override
@@ -195,6 +200,9 @@ public class MemoryDataSource implements DataSource {
 
     @Override
     public boolean addUser(User u) {
+        // Hash the pwd before adding it into the datastore
+        u.setPwd(DigestUtils.computeMD5(u.getPwd()));
+        // Persist the user
         users.put(u.getUsername(), u);
         return true;
     }

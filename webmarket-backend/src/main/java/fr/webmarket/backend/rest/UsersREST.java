@@ -8,7 +8,6 @@ package fr.webmarket.backend.rest;
 
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.User;
-import fr.webmarket.backend.utils.DigestUtils;
 
 import javax.ws.rs.*;
 import java.util.ArrayList;
@@ -24,9 +23,6 @@ public class UsersREST {
 
     @POST
     public boolean addUser(User user) {
-        // Hash the pwd
-        user.setPwd(DigestUtils.computeMD5(user.getPwd()));
-        // Add the user to the datasource
         return DataSourcesBundle.getDefaultDataSource().addUser(user);
     }
 
