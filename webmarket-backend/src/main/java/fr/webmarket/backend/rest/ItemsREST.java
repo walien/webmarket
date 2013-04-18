@@ -1,7 +1,6 @@
 package fr.webmarket.backend.rest;
 
 import fr.webmarket.backend.datasource.DataSourcesBundle;
-import fr.webmarket.backend.marshalling.JSONMarshaller;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.rest.auth.AuthUtils;
 import fr.webmarket.backend.rest.auth.ClientSessionManager;
@@ -41,7 +40,7 @@ public class ItemsREST {
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public boolean addItem(@HeaderParam("Session-ID") String sessionID,
-                           String itemJson) throws IOException {
+                           Item item) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
 
@@ -49,9 +48,6 @@ public class ItemsREST {
                 || !ClientSessionManager.getInstance().checkSession(id)) {
             return false;
         }
-
-        Item item = JSONMarshaller.getDefaultMapper().readValue(itemJson,
-                Item.class);
 
         return DataSourcesBundle.getDefaultDataSource().addItem(item);
     }
