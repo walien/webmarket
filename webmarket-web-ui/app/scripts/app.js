@@ -1,11 +1,30 @@
 'use strict';
 
-angular.module('webmarketWebUi', [])
+
+/////////////////
+// MAIN MODULE
+/////////////////
+angular.module('webmarket', ['webmarket.ui', 'webmarket.resources']);
+
+/////////////////
+// MODULE NAMES
+/////////////////
+var webmarketUIModuleName = 'webmarket.ui';
+var webmarketResourcesModuleName = 'webmarket.resources';
+
+/////////////////
+// MODULES
+/////////////////
+angular.module(webmarketUIModuleName, ['webmarket.resources'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
+            })
+            .when('/login', {
+                templateUrl: 'views/admin/login.html',
+                controller: 'LoginCtrl'
             })
             .when('/items/:id/details', {
                 templateUrl: 'views/item/details.html',
@@ -15,7 +34,13 @@ angular.module('webmarketWebUi', [])
                 templateUrl: 'views/item/items.html',
                 controller: 'ItemsCtrl'
             })
+            .when('/admin/items', {
+                templateUrl: 'views/admin/items.admin.html',
+                controller: 'ItemsAdminCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });
     });
+
+angular.module(webmarketResourcesModuleName, ['ngResource']);

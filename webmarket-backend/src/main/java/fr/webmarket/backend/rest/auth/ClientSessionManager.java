@@ -1,45 +1,43 @@
 package fr.webmarket.backend.rest.auth;
 
+import com.google.common.collect.Maps;
+import fr.webmarket.backend.model.User;
+
 import java.util.Map;
 import java.util.UUID;
 
-import com.google.common.collect.Maps;
-
-import fr.webmarket.backend.model.User;
-
 public class ClientSessionManager {
 
-	private static ClientSessionManager INSTANCE;
+    private static ClientSessionManager INSTANCE;
+    private Map<User, UUID> sessions;
 
-	private Map<User, UUID> sessions;
+    private ClientSessionManager() {
+        sessions = Maps.newConcurrentMap();
+    }
 
-	private ClientSessionManager() {
-		sessions = Maps.newHashMap();
-	}
+    public static ClientSessionManager getInstance() {
+        if (null == INSTANCE) {
+            INSTANCE = new ClientSessionManager();
+        }
+        return INSTANCE;
+    }
 
-	public static ClientSessionManager getInstance() {
-		if (null == INSTANCE) {
-			INSTANCE = new ClientSessionManager();
-		}
-		return INSTANCE;
-	}
+    public UUID getSessionID(User u) {
+        return sessions.get(u);
+    }
 
-	public UUID getSessionID(User u) {
-		return sessions.get(u);
-	}
+    public UUID createSession(User u) {
+        UUID newID = UUID.randomUUID();
+        sessions.put(u, newID);
+        return newID;
+    }
 
-	public UUID createSession(User u) {
-		UUID newID = UUID.randomUUID();
-		sessions.put(u, newID);
-		return newID;
-	}
+    public boolean checkSession(UUID id) {
+        return sessions.values().contains(id);
+    }
 
-	public boolean checkSession(UUID id) {
-		return sessions.values().contains(id);
-	}
-
-	public UUID destroySession(User u) {
-		return sessions.remove(u);
-	}
+    public UUID destroySession(User u) {
+        return sessions.remove(u);
+    }
 
 }

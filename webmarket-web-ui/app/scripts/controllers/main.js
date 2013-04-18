@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webmarketWebUi')
+angular.module(webmarketUIModuleName)
   .controller('MainCtrl', function ($scope) {
 
 

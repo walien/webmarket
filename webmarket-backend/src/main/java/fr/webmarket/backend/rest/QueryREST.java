@@ -9,7 +9,6 @@ import fr.webmarket.backend.features.search.SearchStrategy;
 import fr.webmarket.backend.features.search.criteria.ItemBrandCriterion;
 import fr.webmarket.backend.features.search.criteria.ItemDescriptionCriterion;
 import fr.webmarket.backend.features.search.criteria.ItemNameCriterion;
-import fr.webmarket.backend.marshalling.JSONMarshaller;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 
@@ -23,6 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public class QueryREST {
     @GET
     @Path("/by-data/{search-strategy}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String queryItemsByData(
+    public List<Item> queryItemsByData(
             @PathParam("search-strategy") String searchStrategy,
             @Context UriInfo uri) throws IOException {
 
@@ -69,32 +69,31 @@ public class QueryREST {
         if (ONE_OF_SEARCH_STRATEGY.equalsIgnoreCase(searchStrategy)) {
             strategy = SearchStrategy.ONE_OF_CRITERION;
         }
-        List<Item> result = engine.searchFor(DataSourcesBundle
-                .getDefaultDataSource().getItemsCatalog(), criteria, strategy);
 
-        return JSONMarshaller.getDefaultMapper().writeValueAsString(result);
+        return engine.searchFor(DataSourcesBundle
+                .getDefaultDataSource().getItems(), criteria, strategy);
     }
 
     @GET
     @Path("by-tags")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String queryItemsByTags(@Context UriInfo uri) throws IOException {
+    public List<Item> queryItemsByTags(@Context UriInfo uri) throws IOException {
 
         // Get parameters
         MultivaluedMap<String, String> params = uri.getQueryParameters();
 
         // Retrieve tags list
-        if (params.containsKey("tags") == false) {
-            return "";
+        if (!params.containsKey("tags")) {
+            return Collections.EMPTY_LIST;
         }
 
         // The item tag catalog
         Map<Integer, ItemTag> tags = DataSourcesBundle.getDefaultDataSource()
-                .getTagsCatalog().getTags();
+                .getItemTags();
 
         // The item list
         Collection<Item> items = DataSourcesBundle.getDefaultDataSource()
-                .getItemsCatalog().getItems().values();
+                .getItems().values();
 
         // The result list
         List<Item> result = Lists.newArrayList();
@@ -111,13 +110,13 @@ public class QueryREST {
 
             // Check if the tag is linked to an item
             for (Item item : items) {
-                if (item.getTags().contains(tag) == false) {
+                if (!item.getTags().contains(tag)) {
                     continue;
                 }
                 result.add(item);
             }
         }
 
-        return JSONMarshaller.getDefaultMapper().writeValueAsString(result);
+        return result;
     }
 }

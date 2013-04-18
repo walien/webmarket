@@ -1,7 +1,11 @@
 'use strict';
 
-angular.module('webmarketWebUi')
-    .controller('ItemsCtrl', function ($scope, $location) {
+angular.module(webmarketUIModuleName)
+    .controller('ItemsCtrl', function ($scope, $location, Item) {
+
+        /////////////////
+        // SCOPE INIT
+        /////////////////
 
         $scope.items = [];
 
@@ -9,9 +13,8 @@ angular.module('webmarketWebUi')
         // RETRIEVE ITEMS FROM SERVER
         //////////////////////////////
 
-        $.get(allItemsURL, function (response) {
-            $scope.items = response;
-            $scope.$apply();
+        var items = Item.getAll(function () {
+            $scope.items = items;
         });
 
         //////////////////////////////

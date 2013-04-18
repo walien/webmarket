@@ -2,7 +2,7 @@ package fr.webmarket.backend.datasource;
 
 public class EntitySequences {
 
-	private static int ITEM_ENTITY_SEQUENCE = 0;
+	private static int ITEM_ENTITY_SEQUENCE = 100777;
 
 	private static int TAG_ENTITY_SEQUENCE = 0;
 

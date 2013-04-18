@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webmarketWebUi')
+angular.module(webmarketUIModuleName)
     .controller('GlobalCtrl', function ($scope) {
 
         /////////////////////////////
@@ -8,5 +8,7 @@ angular.module('webmarketWebUi')
         /////////////////////////////
 
         $scope.currency = defaultCurrency;
+
+        $scope.session = {};
 
     });

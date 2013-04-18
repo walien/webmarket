@@ -1,154 +1,216 @@
 package fr.webmarket.backend.datasource.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
-import fr.webmarket.backend.model.*;
+import fr.webmarket.backend.model.Item;
+import fr.webmarket.backend.model.ItemTag;
+import fr.webmarket.backend.model.User;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 public class MemoryDataSource implements DataSource {
 
-	private static MemoryDataSource INSTANCE;
+    private static MemoryDataSource INSTANCE;
+    private final Map<String, User> users;
+    private final Map<Integer, ItemTag> tags;
+    private final Map<Integer, Item> items;
 
-	private final TagsCatalog tagsCatalog;
+    private MemoryDataSource() {
+        this.tags = Maps.newHashMap();
+        this.items = Maps.newHashMap();
+        this.users = Maps.newHashMap();
+        initMockData();
+    }
 
-	private final ItemsCatalog itemsCatalog;
+    public static DataSource getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new MemoryDataSource();
+        }
+        return INSTANCE;
+    }
 
-	private final Map<String, User> users;
+    private void initMockData() {
 
-	private MemoryDataSource() {
-		tagsCatalog = new TagsCatalog();
-		itemsCatalog = new ItemsCatalog();
-		users = Maps.newHashMap();
-		initMockData();
-	}
+        // Initialize users
+        addUser(new User("eoriou", "pass", "Elian", "ORIOU", "eoriou@gmail.com"));
 
-	public static DataSource getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new MemoryDataSource();
-		}
-		return INSTANCE;
-	}
+        // Initialize default image
+        String imagePath = "webmarket-backend/src/main/resources/default-image.png";
+        String base64Image = null;
+        try {
+            base64Image = MarshallingUtils.transformImageToBase64(imagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	private void initMockData() {
+        // Initialize mock objects
+        String description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae ultrices quam. Sed eu ante at ipsum ultrices volutpat vel in nibh. Nullam at ipsum eu massa ultrices euismod. Proin ligula dolor, tincidunt eu viverra id, ultricies sit amet risus. Sed et eros vel ligula fermentum aliquam et at lorem.";
 
-		// Initialize users
-		addUser(new User("eoriou", "pass", "Elian", "ORIOU", "eoriou@gmail.com"));
+        // 1. Tags
+        ItemTag electroMenager = new ItemTag("Electroménager");
+        ItemTag aspirateur = new ItemTag("Aspirateur");
+        ItemTag laveVaisselle = new ItemTag("Lave-Vaisselle");
+        ItemTag lecteurSalon = new ItemTag("Lecteur Salon");
+        ItemTag hifi = new ItemTag("HiFi");
+        ItemTag tv = new ItemTag("TV");
+        ItemTag baladeur = new ItemTag("Baladeur");
 
-		// Initialize default image
-		String imagePath = "webmarket-backend/src/main/resources/default-image.png";
-		String base64Image = null;
-		try {
-			base64Image = MarshallingUtils.transformImageToBase64(imagePath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        addItemTag(electroMenager);
+        addItemTag(aspirateur);
+        addItemTag(laveVaisselle);
+        addItemTag(lecteurSalon);
+        addItemTag(hifi);
+        addItemTag(tv);
+        addItemTag(baladeur);
 
-		// Initialize mock objects
-		String description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae ultrices quam. Sed eu ante at ipsum ultrices volutpat vel in nibh. Nullam at ipsum eu massa ultrices euismod. Proin ligula dolor, tincidunt eu viverra id, ultricies sit amet risus. Sed et eros vel ligula fermentum aliquam et at lorem.";
+        // 2. Items
+        Item item1 = new Item("Lave-Vaisselle PV123", "Miele", description, 250);
+        item1.getTags().add(electroMenager);
+        item1.getTags().add(laveVaisselle);
+        item1.setBase64Image(base64Image);
 
-		// 1. Tags
-		ItemTag electroMenager = new ItemTag("Electroménager");
-		ItemTag aspirateur = new ItemTag("Aspirateur");
-		ItemTag laveVaisselle = new ItemTag("Lave-Vaisselle");
-		ItemTag lecteurSalon = new ItemTag("Lecteur Salon");
-		ItemTag hifi = new ItemTag("HiFi");
-		ItemTag tv = new ItemTag("TV");
-		ItemTag baladeur = new ItemTag("Baladeur");
+        Item item2 = new Item("Lave-Vaisselle", "Wirpool", description, 190);
+        item2.getTags().add(electroMenager);
+        item2.getTags().add(laveVaisselle);
+        item2.setBase64Image(base64Image);
 
-		tagsCatalog.addTag(electroMenager);
-		tagsCatalog.addTag(aspirateur);
-		tagsCatalog.addTag(laveVaisselle);
-		tagsCatalog.addTag(lecteurSalon);
-		tagsCatalog.addTag(hifi);
-		tagsCatalog.addTag(tv);
-		tagsCatalog.addTag(baladeur);
+        Item item3 = new Item("iPod", "Apple", description, 340);
+        item3.getTags().add(hifi);
+        item3.getTags().add(baladeur);
+        item3.setBase64Image(base64Image);
 
-		// 2. Items
-		Item item1 = new Item("Lave-Vaisselle PV123", "Miele", description, 250);
-		item1.getTags().add(electroMenager);
-		item1.getTags().add(laveVaisselle);
-		item1.setBase64Image(base64Image);
+        Item item4 = new Item("Lecteur Blu-Ray", "Samsung", description, 190);
+        item4.getTags().add(hifi);
+        item4.getTags().add(lecteurSalon);
+        item4.setBase64Image(base64Image);
 
-		Item item2 = new Item("Lave-Vaisselle", "Wirpool", description, 190);
-		item2.getTags().add(electroMenager);
-		item2.getTags().add(laveVaisselle);
-		item2.setBase64Image(base64Image);
+        Item item5 = new Item("Aspirateur SupraPlus", "Dyson", description, 450);
+        item5.getTags().add(aspirateur);
+        item5.getTags().add(electroMenager);
+        item5.setBase64Image(base64Image);
 
-		Item item3 = new Item("iPod", "Apple", description, 340);
-		item3.getTags().add(hifi);
-		item3.getTags().add(baladeur);
-		item3.setBase64Image(base64Image);
+        Item item6 = new Item("Lave-Vaisselle PV567", "Miele", description
+                + "pouet", 280);
+        item6.getTags().add(electroMenager);
+        item6.getTags().add(laveVaisselle);
+        item6.setBase64Image(base64Image);
 
-		Item item4 = new Item("Lecteur Blu-Ray", "Samsung", description, 190);
-		item4.getTags().add(hifi);
-		item4.getTags().add(lecteurSalon);
-		item4.setBase64Image(base64Image);
+        Item item7 = new Item("TV LCD-LED", "Samsung", description, 670);
+        item7.getTags().add(hifi);
+        item7.getTags().add(tv);
+        item7.setBase64Image(base64Image);
 
-		Item item5 = new Item("Aspirateur SupraPlus", "Dyson", description, 450);
-		item5.getTags().add(aspirateur);
-		item5.getTags().add(electroMenager);
-		item5.setBase64Image(base64Image);
+        Item item8 = new Item("TV Plasma SXH-819", "Sony", description, 670);
+        item8.getTags().add(hifi);
+        item8.getTags().add(tv);
+        item8.setBase64Image(base64Image);
 
-		Item item6 = new Item("Lave-Vaisselle PV567", "Miele", description
-				+ "pouet", 280);
-		item6.getTags().add(electroMenager);
-		item6.getTags().add(laveVaisselle);
-		item6.setBase64Image(base64Image);
+        Item item9 = new Item("TV Plasma SRF-876", "LG", description, 670);
+        item9.getTags().add(hifi);
+        item9.getTags().add(tv);
+        item9.setBase64Image(base64Image);
 
-		Item item7 = new Item("TV LCD-LED", "Samsung", description, 670);
-		item7.getTags().add(hifi);
-		item7.getTags().add(tv);
-		item7.setBase64Image(base64Image);
+        Item item10 = new Item("TV LCD-LED YTG-789", "Loewe", description, 670);
+        item10.getTags().add(hifi);
+        item10.getTags().add(tv);
+        item10.setBase64Image(base64Image);
 
-		Item item8 = new Item("TV Plasma SXH-819", "Sony", description, 670);
-		item8.getTags().add(hifi);
-		item8.getTags().add(tv);
-		item8.setBase64Image(base64Image);
+        addItem(item1);
+        addItem(item2);
+        addItem(item3);
+        addItem(item4);
+        addItem(item5);
+        addItem(item6);
+        addItem(item7);
+        addItem(item8);
+        addItem(item9);
+        addItem(item10);
+    }
 
-		Item item9 = new Item("TV Plasma SRF-876", "LG", description, 670);
-		item9.getTags().add(hifi);
-		item9.getTags().add(tv);
-		item9.setBase64Image(base64Image);
+    @Override
+    public ImmutableMap<Integer, Item> getItems() {
+        return ImmutableMap.<Integer, Item>builder().putAll(this.items).build();
+    }
 
-		Item item10 = new Item("TV LCD-LED YTG-789", "Loewe", description, 670);
-		item10.getTags().add(hifi);
-		item10.getTags().add(tv);
-		item10.setBase64Image(base64Image);
+    @Override
+    public Item getItem(int id) {
+        return items.get(id);
+    }
 
-		itemsCatalog.addItem(item1);
-		itemsCatalog.addItem(item2);
-		itemsCatalog.addItem(item3);
-		itemsCatalog.addItem(item4);
-		itemsCatalog.addItem(item5);
-		itemsCatalog.addItem(item6);
-		itemsCatalog.addItem(item7);
-		itemsCatalog.addItem(item8);
-		itemsCatalog.addItem(item9);
-		itemsCatalog.addItem(item10);
+    @Override
+    public boolean addItem(Item item) {
+        items.put(item.getId(), item);
+        return true;
+    }
 
-	}
+    @Override
+    public boolean removeItem(int id) {
+        return items.remove(id) != null;
+    }
 
-	@Override
-	public ItemsCatalog getItemsCatalog() {
-		return itemsCatalog;
-	}
+    @Override
+    public boolean updateItem(int id, Item item) {
+        return items.put(id, item) != null;
+    }
 
-	@Override
-	public TagsCatalog getTagsCatalog() {
-		return tagsCatalog;
-	}
+    @Override
+    public ImmutableMap<Integer, ItemTag> getItemTags() {
+        return ImmutableMap.<Integer, ItemTag>builder().putAll(this.tags).build();
+    }
 
-	@Override
-	public Map<String, User> getUsers() {
-		return users;
-	}
+    @Override
+    public ItemTag getItemTag(int id) {
+        return tags.get(id);
+    }
 
-	@Override
-	public void addUser(User u) {
-		users.put(u.getLogin(), u);
-	}
+    @Override
+    public boolean addItemTag(ItemTag tag) {
+        tags.put(tag.getId(), tag);
+        return true;
+    }
 
+    @Override
+    public boolean removeItemTag(int id) {
+        return tags.remove(id) != null;
+    }
+
+    @Override
+    public boolean updateItemTag(int id, ItemTag tag) {
+        return tags.put(id, tag) != null;
+    }
+
+    @Override
+    public Map<String, User> getUsers() {
+        return Collections.unmodifiableMap(this.users);
+    }
+
+    @Override
+    public User getUser(String username) {
+        return users.get(username);
+    }
+
+    @Override
+    public boolean addUser(User u) {
+        users.put(u.getUsername(), u);
+        return true;
+    }
+
+    @Override
+    public boolean updateUser(String username, User user) {
+        return users.put(user.getUsername(), user) != null;
+    }
+
+    @Override
+    public boolean removeUser(String username) {
+        return users.remove(username) != null;
+    }
+
+    @Override
+    public String dumpData() {
+        return "\n* Users : " + users + "\n" + "* Items : " + items + "\n" + "* Tags : " + tags + "\n";
+    }
 }

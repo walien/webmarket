@@ -1,17 +1,30 @@
 'use strict';
 
-angular.module('webmarketWebUi')
-    .controller('ItemDetailsCtrl', function ($scope, $routeParams, $location) {
+angular.module(webmarketUIModuleName)
+    .controller('ItemDetailsCtrl', function ($scope, $routeParams, $location, Item) {
+
+        /////////////////
+        // SCOPE INIT
+        /////////////////
 
         $scope.item = {};
         $scope.item.id = $routeParams.id;
 
-        $.get(itemResourceBaseURL + "/" + $scope.item.id, function (data) {
-            $scope.item = data;
-            $scope.$apply();
+        // Retrieve items list from server
+        var item = Item.get({id: $scope.item.id}, function () {
+            $scope.item = item;
         });
+
+        /////////////////
+        // USER ACTIONS
+        /////////////////
 
         $scope.backToList = function () {
             $location.path("/items");
         }
+
+        $scope.addToCart = function () {
+
+        }
+
     });

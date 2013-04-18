@@ -9,6 +9,8 @@ import fr.webmarket.backend.rest.auth.ClientSessionManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Path("/items")
@@ -19,21 +21,17 @@ public class ItemsREST {
     // ///////////////////////////////
 
     @GET
-    @Path("all")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String getAllItems() throws IOException {
-        return JSONMarshaller.getDefaultMapper().writeValueAsString(
-                DataSourcesBundle.getDefaultDataSource().getItemsCatalog()
-                        .getItems().values());
+    public List<Item> getAllItems() throws IOException {
+        return new ArrayList<Item>(DataSourcesBundle.getDefaultDataSource().getItems().values());
     }
 
     @GET
     @Path("{item-id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String getItem(@PathParam("item-id") int itemID) throws IOException {
-        return JSONMarshaller.getDefaultMapper().writeValueAsString(
-                DataSourcesBundle.getDefaultDataSource().getItemsCatalog()
-                        .getItems().get(itemID));
+    public Item getItem(@PathParam("item-id") int itemID) throws IOException {
+        return DataSourcesBundle.getDefaultDataSource()
+                .getItems().get(itemID);
     }
 
     // ///////////////////////////////////////////
@@ -42,22 +40,20 @@ public class ItemsREST {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String addItem(@HeaderParam("Session-ID") String sessionID,
-                          String itemJson) throws IOException {
+    public boolean addItem(@HeaderParam("Session-ID") String sessionID,
+                           String itemJson) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
 
         if (id == null
-                || ClientSessionManager.getInstance().checkSession(id) == false) {
-            return Boolean.toString(false);
+                || !ClientSessionManager.getInstance().checkSession(id)) {
+            return false;
         }
 
         Item item = JSONMarshaller.getDefaultMapper().readValue(itemJson,
                 Item.class);
-        DataSourcesBundle.getDefaultDataSource().getItemsCatalog()
-                .addItem(item);
 
-        return Boolean.toString(true);
+        return DataSourcesBundle.getDefaultDataSource().addItem(item);
     }
 
     // /////////////////////////////////////////////
@@ -66,19 +62,17 @@ public class ItemsREST {
 
     @DELETE
     @Path("{item-id}")
-    public String removeItem(@HeaderParam("Session-ID") String sessionID,
-                             @PathParam("item-id") int itemID) throws IOException {
+    public boolean removeItem(@HeaderParam("Session-ID") String sessionID,
+                              @PathParam("item-id") int itemID) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
 
         if (id == null
-                || ClientSessionManager.getInstance().checkSession(id) == false) {
-            return Boolean.toString(false);
+                || !ClientSessionManager.getInstance().checkSession(id)) {
+            return false;
         }
-
-        boolean result = (DataSourcesBundle.getDefaultDataSource()
-                .getItemsCatalog().getItems().remove(itemID) != null);
-        return Boolean.toString(result);
+        return DataSourcesBundle.getDefaultDataSource()
+                .removeItem(itemID);
     }
 
 }

@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/bootstrap.css">
+    <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap.css">
 
     <style>
       body {
@@ -20,7 +20,7 @@
     </style>
 
   </head>
-  <body ng-app="webmarketWebUi">
+  <body ng-app="webmarket.ui">
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
     <![endif]-->
@@ -35,15 +35,20 @@
 
     <script src="components/jquery/jquery.min.js"></script>
     <script src="components/angular/angular.min.js"></script>
+    <script src="components/angular-resource/angular-resource.min.js"></script>
     <script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
 
     <!-- build:js scripts/scripts.js -->
     <script src="scripts/constants.js"></script>
     <script src="scripts/app.js"></script>
+
+    <script src="scripts/resources/resources.js"></script>
+
     <script src="scripts/controllers/global.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/item/items.js"></script>
     <script src="scripts/controllers/item/details.js"></script>
+    <script src="scripts/controllers/admin/items.admin.js"></script>
 
     <!-- endbuild -->
 

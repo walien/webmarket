@@ -2,7 +2,7 @@ package fr.webmarket.backend.model;
 
 public class User {
 
-	private String login;
+	private String username;
 
 	private String pwd;
 
@@ -19,19 +19,19 @@ public class User {
 	public User(String login, String pwd, String firstName, String lastName,
 			String email) {
 		super();
-		this.login = login;
+		this.username = login;
 		this.pwd = pwd;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPwd() {
@@ -68,7 +68,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [login=" + login + ", pwd=" + pwd + ", firstName="
+		return "User [username=" + username + ", pwd=" + pwd + ", firstName="
 				+ firstName + ", lastName=" + lastName + ", email=" + email
 				+ "]";
 	}
@@ -77,7 +77,7 @@ public class User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -90,10 +90,10 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (login == null) {
-			if (other.login != null)
+		if (username == null) {
+			if (other.username != null)
 				return false;
-		} else if (!login.equals(other.login))
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}

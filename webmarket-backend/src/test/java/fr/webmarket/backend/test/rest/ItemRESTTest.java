@@ -1,19 +1,11 @@
 package fr.webmarket.backend.test.rest;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.google.common.io.ByteStreams;
+import fr.webmarket.backend.datasource.DataSourcesBundle;
+import fr.webmarket.backend.model.Item;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
@@ -27,244 +19,234 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.io.ByteStreams;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
-import fr.webmarket.backend.datasource.DataSourcesBundle;
-import fr.webmarket.backend.model.Item;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ItemRESTTest {
 
-	private static final String SERVER_BASE = "http://localhost:8080";
+    private static final String SERVER_BASE = "http://localhost:8080";
+    private static final String LOGIN_AUTH_URL = SERVER_BASE
+            + "/rest/auth/login";
+    private static final String ITEMS_BASE = SERVER_BASE + "/rest/items";
+    private static final String ALL_ITEMS_REST_URL = ITEMS_BASE + "/all";
 
-	private static final String LOGIN_AUTH_URL = SERVER_BASE
-			+ "/rest/auth/login";
+    // //////////////////////////
+    // 1. GET
+    // //////////////////////////
 
-	private static final String ITEMS_BASE = SERVER_BASE + "/rest/items";
+    private String doGet(String path) throws IOException {
 
-	private static final String ALL_ITEMS_REST_URL = ITEMS_BASE + "/all";
+        String result = null;
 
-	// //////////////////////////
-	// 1. GET
-	// //////////////////////////
+        // HTTP client
+        HttpClient httpclient = HttpClientBuilder.create().build();
+        HttpGet httpGet = new HttpGet(path);
+        HttpResponse response = httpclient.execute(httpGet);
 
-	private String doGet(String path) throws ClientProtocolException,
-			IOException {
+        try {
 
-		String result = null;
+            // Read the content of the response
+            HttpEntity entity = response.getEntity();
+            InputStream content = entity.getContent();
+            result = new String(ByteStreams.toByteArray(content));
 
-		// HTTP client
-		HttpClient httpclient = HttpClientBuilder.create().build();
-		HttpGet httpGet = new HttpGet(path);
-		HttpResponse response = httpclient.execute(httpGet);
+            // Consume the content and close the stream
+            EntityUtils.consume(entity);
+            content.close();
+        } finally {
+            httpGet.releaseConnection();
+        }
 
-		try {
+        return result;
+    }
 
-			// Read the content of the response
-			HttpEntity entity = response.getEntity();
-			InputStream content = entity.getContent();
-			result = new String(ByteStreams.toByteArray(content));
+    @Test
+    public void testGetAllItemsREST() throws
+            IOException {
 
-			// Consume the content and close the stream
-			EntityUtils.consume(entity);
-			content.close();
-		} finally {
-			httpGet.releaseConnection();
-		}
+        // Retrieve the content doing an HTTP request to the REST API
+        String content = doGet(ALL_ITEMS_REST_URL);
 
-		return result;
-	}
+        // Unserialize the JSON content
+        Item[] items = new ObjectMapper().readValue(content, Item[].class);
 
-	@Test
-	public void testGetAllItemsREST() throws ClientProtocolException,
-			IOException {
+        // The items catalog
+        Map<Integer, Item> itemCatalog = DataSourcesBundle
+                .getDefaultDataSource().getItems();
 
-		// Retrieve the content doing an HTTP request to the REST API
-		String content = doGet(ALL_ITEMS_REST_URL);
+        // Check the number of items
+        assertEquals(items.length, itemCatalog.size());
 
-		// Unserialize the JSON content
-		Item[] items = new ObjectMapper().readValue(content, Item[].class);
+        // Check the content
+        for (Item item : items) {
 
-		// The items catalog
-		Map<Integer, Item> itemCatalog = DataSourcesBundle
-				.getDefaultDataSource().getItemsCatalog().getItems();
+            // Retrieve the original item into the catalog
+            Item originalItem = itemCatalog.get(item.getId());
+            assertNotNull(originalItem);
 
-		// Check the number of items
-		assertEquals(items.length, itemCatalog.size());
+            // And compare it with the retrieved one
+            assertEquals(originalItem, item);
+        }
+    }
 
-		// Check the content
-		for (Item item : items) {
+    @Test
+    public void testGetItemREST() throws IOException {
 
-			// Retrieve the original item into the catalog
-			Item originalItem = itemCatalog.get(item.getId());
-			assertNotNull(originalItem);
+        // The items catalog
+        Map<Integer, Item> itemCatalog = DataSourcesBundle
+                .getDefaultDataSource().getItems();
 
-			// And compare it with the retrieved one
-			assertEquals(originalItem, item);
-		}
-	}
+        // Iterate over item catalog and retrieve the same item from the API
+        for (Item item : itemCatalog.values()) {
 
-	@Test
-	public void testGetItemREST() throws ClientProtocolException, IOException {
+            // Retrieve the content doing an HTTP request to the REST API
+            String content = doGet(ITEMS_BASE + "/" + item.getId());
 
-		// The items catalog
-		Map<Integer, Item> itemCatalog = DataSourcesBundle
-				.getDefaultDataSource().getItemsCatalog().getItems();
+            // Unserialize the JSON content
+            Item restItem = new ObjectMapper().readValue(content, Item.class);
 
-		// Iterate over item catalog and retrieve the same item from the API
-		for (Item item : itemCatalog.values()) {
+            // Check the number of items
+            assertEquals(item, restItem);
+        }
+    }
 
-			// Retrieve the content doing an HTTP request to the REST API
-			String content = doGet(ITEMS_BASE + "/" + item.getId());
+    // //////////////////////////
+    // 2. POST
+    // //////////////////////////
 
-			// Unserialize the JSON content
-			Item restItem = new ObjectMapper().readValue(content, Item.class);
+    private UUID doAuth() throws IOException {
 
-			// Check the number of items
-			assertEquals(item, restItem);
-		}
-	}
+        // HTTP client
+        HttpClient httpclient = HttpClientBuilder.create().build();
+        HttpPost httpPost = new HttpPost(LOGIN_AUTH_URL);
 
-	// //////////////////////////
-	// 2. POST
-	// //////////////////////////
+        // Push user/pwd
+        List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+        postParams.add(new BasicNameValuePair("username", "eoriou"));
+        postParams.add(new BasicNameValuePair("pwd", "pass"));
+        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParams);
+        httpPost.setEntity(entity);
 
-	private UUID doAuth() throws ClientProtocolException, IOException {
+        // Execute the request
+        HttpResponse response = httpclient.execute(httpPost);
 
-		// HTTP client
-		HttpClient httpclient = HttpClientBuilder.create().build();
-		HttpPost httpPost = new HttpPost(LOGIN_AUTH_URL);
+        // Read the content of the response
+        HttpEntity responseEntity = response.getEntity();
+        InputStream contentResult = responseEntity.getContent();
 
-		// Push user/pwd
-		List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-		postParams.add(new BasicNameValuePair("username", "eoriou"));
-		postParams.add(new BasicNameValuePair("pwd", "pass"));
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParams);
-		httpPost.setEntity(entity);
+        String result = new String(ByteStreams.toByteArray(contentResult));
 
-		// Execute the request
-		HttpResponse response = httpclient.execute(httpPost);
+        return UUID.fromString(result);
+    }
 
-		// Read the content of the response
-		HttpEntity responseEntity = response.getEntity();
-		InputStream contentResult = responseEntity.getContent();
+    private String doPost(String path, String content) throws IOException {
 
-		String result = new String(ByteStreams.toByteArray(contentResult));
+        String result = null;
 
-		return UUID.fromString(result);
-	}
+        // For POST request : authentication is required
+        UUID sessionID = doAuth();
 
-	private String doPost(String path, String content)
-			throws ClientProtocolException, IOException {
+        // HTTP client
+        HttpClient httpclient = HttpClientBuilder.create().build();
+        HttpPost httpPost = new HttpPost(path);
+        httpPost.addHeader("Content-Type", "application/json");
+        httpPost.addHeader("Session-ID", sessionID.toString());
 
-		String result = null;
+        // Push the content
+        httpPost.setEntity(new StringEntity(content));
 
-		// For POST request : authentication is required
-		UUID sessionID = doAuth();
+        // Execute the request
+        HttpResponse response = httpclient.execute(httpPost);
 
-		// HTTP client
-		HttpClient httpclient = HttpClientBuilder.create().build();
-		HttpPost httpPost = new HttpPost(path);
-		httpPost.addHeader("Content-Type", "application/json");
-		httpPost.addHeader("Session-ID", sessionID.toString());
+        try {
 
-		// Push the content
-		httpPost.setEntity(new StringEntity(content));
+            // Read the content of the response
+            HttpEntity entity = response.getEntity();
+            InputStream contentResult = entity.getContent();
+            result = new String(ByteStreams.toByteArray(contentResult));
 
-		// Execute the request
-		HttpResponse response = httpclient.execute(httpPost);
+            // Consume the content and close the stream
+            EntityUtils.consume(entity);
+            contentResult.close();
+        } finally {
+            httpPost.releaseConnection();
+        }
 
-		try {
+        return result;
+    }
 
-			// Read the content of the response
-			HttpEntity entity = response.getEntity();
-			InputStream contentResult = entity.getContent();
-			result = new String(ByteStreams.toByteArray(contentResult));
+    @Test
+    public void testAddItemREST() throws IOException {
 
-			// Consume the content and close the stream
-			EntityUtils.consume(entity);
-			contentResult.close();
-		} finally {
-			httpPost.releaseConnection();
-		}
+        // The items catalog
+        Map<Integer, Item> itemCatalog = DataSourcesBundle
+                .getDefaultDataSource().getItems();
 
-		return result;
-	}
+        // Iterate over the items catalog
+        for (Item item : itemCatalog.values()) {
 
-	@Test
-	public void testAddItemREST() throws ClientProtocolException, IOException {
+            // Generate a JSON format of an item
+            String itemJSON = new ObjectMapper().writeValueAsString(item);
 
-		// The items catalog
-		Map<Integer, Item> itemCatalog = DataSourcesBundle
-				.getDefaultDataSource().getItemsCatalog().getItems();
+            // Do POST request to the server
+            String response = doPost(ITEMS_BASE, itemJSON);
 
-		// Iterate over the items catalog
-		for (Item item : itemCatalog.values()) {
+            // Check the response
+            assertEquals(Boolean.toString(true), response);
+        }
+    }
 
-			// Generate a JSON format of an item
-			String itemJSON = new ObjectMapper().writeValueAsString(item);
+    // //////////////////////////
+    // 3. DELETE
+    // //////////////////////////
 
-			// Do POST request to the server
-			String response = doPost(ITEMS_BASE, itemJSON);
+    private String doDelete(String path) throws IOException {
 
-			// Check the response
-			assertEquals(Boolean.toString(true), response);
-		}
-	}
+        String result = null;
 
-	// //////////////////////////
-	// 3. DELETE
-	// //////////////////////////
+        // HTTP client
+        HttpClient httpclient = HttpClientBuilder.create().build();
+        HttpDelete httpDelete = new HttpDelete(path);
 
-	private String doDelete(String path) throws ClientProtocolException,
-			IOException {
+        // Execute the request
+        HttpResponse response = httpclient.execute(httpDelete);
 
-		String result = null;
+        try {
 
-		// HTTP client
-		HttpClient httpclient = HttpClientBuilder.create().build();
-		HttpDelete httpDelete = new HttpDelete(path);
+            // Read the content of the response
+            HttpEntity entity = response.getEntity();
+            InputStream contentResult = entity.getContent();
+            result = new String(ByteStreams.toByteArray(contentResult));
 
-		// Execute the request
-		HttpResponse response = httpclient.execute(httpDelete);
+            // Consume the content and close the stream
+            EntityUtils.consume(entity);
+            contentResult.close();
+        } finally {
+            httpDelete.releaseConnection();
+        }
 
-		try {
+        return result;
+    }
 
-			// Read the content of the response
-			HttpEntity entity = response.getEntity();
-			InputStream contentResult = entity.getContent();
-			result = new String(ByteStreams.toByteArray(contentResult));
+    @Test
+    @Ignore
+    public void testDeleteItemREST() throws IOException {
 
-			// Consume the content and close the stream
-			EntityUtils.consume(entity);
-			contentResult.close();
-		} finally {
-			httpDelete.releaseConnection();
-		}
+        // The items catalog
+        Map<Integer, Item> itemCatalog = DataSourcesBundle.getDefaultDataSource().getItems();
 
-		return result;
-	}
+        // Iterate over the items catalog
+        for (Item item : itemCatalog.values()) {
 
-	@Test
-	@Ignore
-	public void testDeleteItemREST() throws ClientProtocolException,
-			IOException {
+            // Execute delete request
+            String result = doDelete(ITEMS_BASE + "/" + item.getId());
 
-		// The items catalog
-		Map<Integer, Item> itemCatalog = new HashMap<Integer, Item>(
-				DataSourcesBundle.getDefaultDataSource().getItemsCatalog()
-						.getItems());
-
-		// Iterate over the items catalog
-		for (Item item : itemCatalog.values()) {
-
-			// Execute delete request
-			String result = doDelete(ITEMS_BASE + "/" + item.getId());
-
-			// Check response
-			assertEquals(result, Boolean.toString(true));
-		}
-
-		DataSourcesBundle.getDefaultDataSource().getItemsCatalog()
-				.setItems(itemCatalog);
-	}
+            // Check response
+            assertEquals(result, Boolean.toString(true));
+        }
+    }
 }

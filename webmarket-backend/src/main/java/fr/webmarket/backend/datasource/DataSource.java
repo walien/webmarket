@@ -1,30 +1,55 @@
 package fr.webmarket.backend.datasource;
 
-import java.util.Map;
-
-import fr.webmarket.backend.model.ItemsCatalog;
-import fr.webmarket.backend.model.TagsCatalog;
+import com.google.common.collect.ImmutableMap;
+import fr.webmarket.backend.model.Item;
+import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.User;
+
+import java.util.Map;
 
 public interface DataSource {
 
-	// ///////////////////////////
-	// ITEMS
-	// ///////////////////////////
+    String dumpData();
 
-	ItemsCatalog getItemsCatalog();
+    // ///////////////////////////
+    // ITEMS
+    // ///////////////////////////
 
-	// ///////////////////////////
-	// TAGS
-	// ///////////////////////////
+    ImmutableMap<Integer, Item> getItems();
 
-	TagsCatalog getTagsCatalog();
+    Item getItem(int id);
 
-	// ///////////////////////////
-	// USERS
-	// ///////////////////////////
+    boolean addItem(Item item);
 
-	Map<String, User> getUsers();
+    boolean removeItem(int id);
 
-	void addUser(User u);
+    boolean updateItem(int id, Item item);
+
+    // ///////////////////////////
+    // TAGS
+    // ///////////////////////////
+
+    ImmutableMap<Integer, ItemTag> getItemTags();
+
+    ItemTag getItemTag(int id);
+
+    boolean addItemTag(ItemTag tag);
+
+    boolean removeItemTag(int id);
+
+    boolean updateItemTag(int id, ItemTag tag);
+
+    // ///////////////////////////
+    // USERS
+    // ///////////////////////////
+
+    Map<String, User> getUsers();
+
+    User getUser(String username);
+
+    boolean addUser(User u);
+
+    boolean updateUser(String username, User user);
+
+    boolean removeUser(String username);
 }
