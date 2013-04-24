@@ -26,6 +26,10 @@ angular.module(webmarketUIModuleName, ['webmarket.resources'])
                 templateUrl: 'views/admin/login.html',
                 controller: 'LoginCtrl'
             })
+            .when('/logout', {
+                templateUrl: 'views/admin/logout.html',
+                controller: 'LogoutCtrl'
+            })
             .when('/items/:id/details', {
                 templateUrl: 'views/item/details.html',
                 controller: 'ItemDetailsCtrl'

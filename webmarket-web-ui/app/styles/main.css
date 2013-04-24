@@ -13,6 +13,13 @@
     padding-right: 20px;
 }
 
+#webmarket-auth-logo {
+    width: 30px;
+    cursor: pointer;
+    padding-right: 20px;
+    padding-top: 5px;
+}
+
 /* Item Searching */
 #filter-bar {
     background-color: #dceaf4;

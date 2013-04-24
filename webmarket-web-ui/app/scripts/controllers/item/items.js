@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module(webmarketUIModuleName)
-    .controller('ItemsCtrl', function ($scope, $location, Item) {
+    .controller('ItemsCtrl', function ($scope, $location, Item, Session) {
 
         /////////////////
         // SCOPE INIT

@@ -1,5 +1,5 @@
 ///////////////////////
-// ITEMS DATA SERVICE
+// DATA SERVICES
 ///////////////////////
 
 angular.module(webmarketResourcesModuleName).
@@ -9,7 +9,6 @@ angular.module(webmarketResourcesModuleName).
             logout: {method: 'POST', params: {action: 'logout'}, headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
         });
     });
-
 
 angular.module(webmarketResourcesModuleName).
     factory('Item', function ($resource) {
@@ -21,4 +20,39 @@ angular.module(webmarketResourcesModuleName).
 angular.module(webmarketResourcesModuleName).
     factory('User', function ($resource) {
         return $resource('/rest/users/:id', {id: '@id'});
+    });
+
+///////////////////////////////
+// CLIENT-SIDE SESSION SERVICE
+///////////////////////////////
+
+angular.module(webmarketResourcesModuleName)
+    .factory('Session', function () {
+
+        // Retrieve it from a cookie or store it
+        // (if it doesn't exist or has changed)
+        var _sessionID = null;
+        var _userName = null;
+
+        return {
+            getID: function () {
+                return _sessionID;
+            },
+            setID: function (id) {
+                _sessionID = id;
+            },
+            clear: function () {
+                _sessionID = null;
+                _userName = null;
+            },
+            isLogged: function () {
+                return _sessionID != null && _sessionID != '';
+            },
+            setUserName: function (name) {
+                _userName = name;
+            },
+            getUserName: function () {
+                return _userName;
+            }
+        }
     });

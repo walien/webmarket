@@ -1,15 +1,17 @@
 <!-- Navigation Bar (Left-Side) -->
 <div class="span2">
-    <ul id="webmarket-nav-list" class="nav nav-list">
+    <ul class="nav nav-list">
         <li class="nav-header">Global Navigation</li>
-        <li><a href="/">Home</a></li>
+        <li><a href="" ng-click="redirect('/')">Home</a></li>
 
         <li class="nav-header">Browse Items</li>
-        <li><a href="/#/items">Full List</a></li>
+        <li><a href="" ng-click="redirect('/items')">Full List</a></li>
+    </ul>
 
+    <ul ng-show="isLogged" class="nav nav-list" style="padding-top: 10px;">
         <li class="nav-header">Administer</li>
-        <li><a href="/">Global Configuration</a></li>
-        <li><a href="/#/admin/items">Manage Items</a></li>
-        <li><a href="/">Statistics</a></li>
+        <li><a href="" ng-click="redirect('/admin')">Global Configuration</a></li>
+        <li><a href="" ng-click="redirect('/admin/items')">Manage Items</a></li>
+        <li><a href="" ng-click="redirect('/admin/stats')">Statistics</a></li>
     </ul>
 </div>

@@ -29,6 +29,7 @@ public class AuthREST {
         if (u == null) {
             return authResult.setAuth(false);
         }
+        authResult.setUser(u);
 
         // Check the password (compare MD5)
         String md5Pwd = DigestUtils.computeMD5(pwd);
