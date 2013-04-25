@@ -149,17 +149,20 @@ public class MemoryDataSource implements DataSource {
     @Override
     public boolean addItem(Item item) {
         items.put(item.getId(), item);
+        LoggerBundle.getDefaultLogger().debug("The item {} was added to the data source.", item.toString());
         return true;
     }
 
     @Override
     public boolean removeItem(int id) {
+        LoggerBundle.getDefaultLogger().debug("Removing the item {} from the data source.", id);
         return items.remove(id) != null;
     }
 
     @Override
-    public boolean updateItem(int id, Item item) {
-        return items.put(id, item) != null;
+    public boolean updateItem(int id, Item newItem) {
+        LoggerBundle.getDefaultLogger().debug("Updating the item {} (new: {}).", id, newItem);
+        return items.put(id, newItem) != null;
     }
 
     @Override
@@ -175,17 +178,20 @@ public class MemoryDataSource implements DataSource {
     @Override
     public boolean addItemTag(ItemTag tag) {
         tags.put(tag.getId(), tag);
+        LoggerBundle.getDefaultLogger().debug("The tag {} was added to the data source.", tag);
         return true;
     }
 
     @Override
     public boolean removeItemTag(int id) {
+        LoggerBundle.getDefaultLogger().debug("Removing the tag {} from the data source.", id);
         return tags.remove(id) != null;
     }
 
     @Override
-    public boolean updateItemTag(int id, ItemTag tag) {
-        return tags.put(id, tag) != null;
+    public boolean updateItemTag(int id, ItemTag newTag) {
+        LoggerBundle.getDefaultLogger().debug("Updating the tag {} (new: {}).", id, newTag);
+        return tags.put(id, newTag) != null;
     }
 
     @Override
@@ -204,16 +210,19 @@ public class MemoryDataSource implements DataSource {
         u.setPwd(DigestUtils.computeMD5(u.getPwd()));
         // Persist the user
         users.put(u.getUsername(), u);
+        LoggerBundle.getDefaultLogger().debug("The user {} was added to the data source.", u);
         return true;
     }
 
     @Override
     public boolean updateUser(String username, User user) {
+        LoggerBundle.getDefaultLogger().debug("Updating the user {} (new: {}).", username, user);
         return users.put(user.getUsername(), user) != null;
     }
 
     @Override
     public boolean removeUser(String username) {
+        LoggerBundle.getDefaultLogger().debug("Removing the user {} from the data source.", username);
         return users.remove(username) != null;
     }
 

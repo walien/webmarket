@@ -2,6 +2,7 @@ package fr.webmarket.backend.rest;
 
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.Item;
+import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.rest.auth.AuthUtils;
 import fr.webmarket.backend.rest.auth.ClientSessionManager;
 
@@ -39,17 +40,19 @@ public class ItemsREST {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public boolean addItem(@HeaderParam("Session-ID") String sessionID,
-                           Item item) throws IOException {
+    public ResponseWrapper addItem(String sessionID,
+                                   Item item) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
-
         if (id == null
                 || !ClientSessionManager.getInstance().checkSession(id)) {
-            return false;
+            return new ResponseWrapper().setStatus(false);
         }
 
-        return DataSourcesBundle.getDefaultDataSource().addItem(item);
+        // Add the item
+        boolean result = DataSourcesBundle.getDefaultDataSource().addItem(item);
+
+        return new ResponseWrapper().setStatus(result);
     }
 
     // /////////////////////////////////////////////
@@ -58,17 +61,20 @@ public class ItemsREST {
 
     @DELETE
     @Path("{item-id}")
-    public boolean removeItem(@HeaderParam("Session-ID") String sessionID,
-                              @PathParam("item-id") int itemID) throws IOException {
+    public ResponseWrapper removeItem(String sessionID,
+                                      @PathParam("item-id") int itemID) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
-
         if (id == null
                 || !ClientSessionManager.getInstance().checkSession(id)) {
-            return false;
+            return new ResponseWrapper().setStatus(false);
         }
-        return DataSourcesBundle.getDefaultDataSource()
+
+        // Remove the item
+        boolean result = DataSourcesBundle.getDefaultDataSource()
                 .removeItem(itemID);
+
+        return new ResponseWrapper().setStatus(result);
     }
 
 }

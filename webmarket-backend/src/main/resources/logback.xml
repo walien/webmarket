@@ -9,7 +9,7 @@
     <logger name="org.eclipse.jetty.server.AbstractConnector" level="WARN" />
     <logger name="org.eclipse.jetty.server.handler.ContextHandler" level="WARN" />
 
-    <logger name="webmarket-backend" level="INFO" />
+    <logger name="webmarket-backend" level="DEBUG" />
 
     <root level="info">
         <appender-ref ref="STDOUT"/>

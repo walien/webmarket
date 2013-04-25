@@ -7,6 +7,7 @@ package fr.webmarket.backend.rest;
  */
 
 import fr.webmarket.backend.datasource.DataSourcesBundle;
+import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.User;
 
 import javax.ws.rs.*;
@@ -22,18 +23,19 @@ public class UsersREST {
     }
 
     @POST
-    public boolean addUser(User user) {
-        return DataSourcesBundle.getDefaultDataSource().addUser(user);
+    public ResponseWrapper addUser(User user) {
+        return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().addUser(user));
     }
 
     @PUT
-    public boolean updateUser(User user) {
-        return DataSourcesBundle.getDefaultDataSource().updateUser(user.getUsername(), user);
+    public ResponseWrapper updateUser(User user) {
+        return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().
+                updateUser(user.getUsername(), user));
     }
 
     @DELETE
-    public boolean deleteUser(String username) {
-        return DataSourcesBundle.getDefaultDataSource().removeUser(username);
+    public ResponseWrapper deleteUser(String username) {
+        return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().removeUser(username));
 
     }
 
