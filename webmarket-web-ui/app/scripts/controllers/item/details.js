@@ -19,12 +19,7 @@ angular.module(webmarketUIModuleName)
         // USER ACTIONS
         /////////////////
 
-        $scope.backToList = function () {
-            $location.path("/items");
-        }
-
         $scope.addToCart = function () {
 
-        }
-
+        };
     });

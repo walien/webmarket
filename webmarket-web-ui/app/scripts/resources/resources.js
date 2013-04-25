@@ -29,10 +29,10 @@ angular.module(webmarketResourcesModuleName).
 angular.module(webmarketResourcesModuleName)
     .factory('Session', function () {
 
-        // Retrieve it from a cookie or store it
-        // (if it doesn't exist or has changed)
-        var _sessionID = null;
-        var _userName = null;
+        // Retrieve the sessionID & the username
+        // from a HTML5 local storage
+        var _sessionID = localStorage.getItem('session.id');
+        var _user = JSON.parse(localStorage.getItem('current.user'));
 
         return {
             getID: function () {
@@ -40,19 +40,23 @@ angular.module(webmarketResourcesModuleName)
             },
             setID: function (id) {
                 _sessionID = id;
+                localStorage.setItem('session.id', _sessionID);
             },
             clear: function () {
                 _sessionID = null;
-                _userName = null;
+                _user = null;
+                localStorage.setItem('session.id', null);
+                localStorage.setItem('current.user', null);
             },
             isLogged: function () {
-                return _sessionID != null && _sessionID != '';
+                return _sessionID != "null" && _sessionID != null;
             },
-            setUserName: function (name) {
-                _userName = name;
+            setUser: function (user) {
+                _user = user;
+                localStorage.setItem('current.user', JSON.stringify(_user));
             },
-            getUserName: function () {
-                return _userName;
+            getUser: function () {
+                return _user;
             }
         }
     });

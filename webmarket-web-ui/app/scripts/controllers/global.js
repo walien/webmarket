@@ -9,25 +9,27 @@ angular.module(webmarketUIModuleName)
 
         $scope.currency = '€';
 
-        $scope.isLogged = false;
+        $scope.isLogged = Session.isLogged();
+
+        if(Session.getUser() != null){
+            $scope.username = Session.getUser().username;
+        }
 
         $scope.$on("login", function () {
             $scope.isLogged = true;
-            $scope.username = Session.getUserName();
-            $scope.$broadcast("login");
+            $scope.username = Session.getUser().username;
         });
 
         $scope.$on("logout", function () {
             $scope.isLogged = false;
-            $scope.$broadcast("logout");
         });
 
         $scope.auth = function () {
-            $location.search("goto", "/").path("/login");
+            $location.search("goto", $location.path()).path("/login");
         };
 
         $scope.logout = function () {
-            $location.search("goto", "/").path("/logout");
+            $location.search("goto", null).path("/logout");
         };
 
         $scope.redirect = function (path) {

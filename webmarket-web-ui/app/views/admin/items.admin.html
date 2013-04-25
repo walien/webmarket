@@ -10,6 +10,43 @@
         <!-- Main Container -->
         <div id="webmarket-content" class="span10">
 
+            <!-- Search bar -->
+            <form class="form-search" style="float:right; margin-bottom:10px;">
+                <label for="search">Search : </label>
+                <input id="search" type="text" class="input-medium search-query" ng-model="query">
+            </form>
+
+            <h3>Item's Management List</h3>
+
+            <div class="row-fluid">
+                <div id="items-list">
+                    <table class="table table-striped">
+                        <thead>
+                        <th># <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'id' ; reverse = !reverse"></i></a></th>
+                        <th>Name <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'name' ; reverse = !reverse"></i></a></th>
+                        <th>Brand <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'brand' ; reverse = !reverse"></i></a></th>
+                        <th>Tags</th>
+                        <th>Price <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'price' ; reverse = !reverse"></i></a></th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in items | orderBy:predicate:reverse | filter:query">
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.brand}}</td>
+                            <td><span ng-repeat="tag in item.tags"
+                                      style="margin-right:5px;" class='label label-success'>{{tag.name}}</span></td>
+                            <td>{{item.price}} {{currency}}</td>
+                            <td>
+                                <button class="btn btn-mini btn-info" ng-click="redirect('/items/' + item.id + '/details')"><i class="icon-white icon-eye-open"></i></button>
+                                <button class="btn btn-mini btn-warning"><i class="icon-white icon-edit"></i></button>
+                                <button class="btn btn-mini btn-danger" ng-click="removeItem($index, item)"><i class="icon-white icon-remove"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

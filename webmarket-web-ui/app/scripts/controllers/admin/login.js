@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module(webmarketUIModuleName)
-    .controller('LoginCtrl', function ($scope, $routeParams, $location, Auth, Session) {
+    .controller('LoginCtrl', function ($scope, $routeParams, $location, Auth, Session, Notification) {
+
+        $scope.username = "";
 
         // Do authentication
         $scope.doAuth = function () {
@@ -11,11 +13,16 @@ angular.module(webmarketUIModuleName)
                 pwd: $scope.pwd
             }), function () {
 
+                if (authResult.user == null || authResult.sessionID == null) {
+                    Notification.error("Error", "Error during authentication. Please retry !");
+                    return;
+                }
+
                 // Set the new session ID
                 Session.setID(authResult.sessionID);
 
                 // Set the logged username
-                Session.setUserName(authResult.user.username);
+                Session.setUser(authResult.user);
 
                 // Emit the auth event
                 $scope.$emit('login');
