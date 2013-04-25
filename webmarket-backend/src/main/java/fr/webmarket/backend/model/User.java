@@ -1,5 +1,8 @@
 package fr.webmarket.backend.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"pwd"})
 public class User {
 
 	private String username;

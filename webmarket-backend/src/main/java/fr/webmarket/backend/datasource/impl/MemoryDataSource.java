@@ -44,7 +44,7 @@ public class MemoryDataSource implements DataSource {
         String imagePath = "webmarket-backend/src/main/resources/default-image.png";
         String base64Image = null;
         try {
-            base64Image = MarshallingUtils.transformImageToBase64(imagePath);
+            base64Image = "data:image/png;base64," + MarshallingUtils.transformImageToBase64(imagePath);
         } catch (IOException e) {
             e.printStackTrace();
         }

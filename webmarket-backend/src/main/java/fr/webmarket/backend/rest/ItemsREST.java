@@ -40,7 +40,7 @@ public class ItemsREST {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public ResponseWrapper addItem(String sessionID,
+    public ResponseWrapper addItem(@QueryParam("sessionID") String sessionID,
                                    Item item) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
@@ -51,6 +51,24 @@ public class ItemsREST {
 
         // Add the item
         boolean result = DataSourcesBundle.getDefaultDataSource().addItem(item);
+
+        return new ResponseWrapper().setStatus(result);
+    }
+
+    @POST
+    @Path("{item-id}")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public ResponseWrapper updateItem(@QueryParam("sessionID") String sessionID,
+                                      @PathParam("item-id") int itemID, Item item) throws IOException {
+
+        UUID id = AuthUtils.parseSessionID(sessionID);
+        if (id == null
+                || !ClientSessionManager.getInstance().checkSession(id)) {
+            return new ResponseWrapper().setStatus(false);
+        }
+
+        // Add the item
+        boolean result = DataSourcesBundle.getDefaultDataSource().updateItem(itemID, item);
 
         return new ResponseWrapper().setStatus(result);
     }

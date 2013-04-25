@@ -7,7 +7,7 @@ package fr.webmarket.backend.model;
  */
 public class ResponseWrapper {
 
-    public boolean status;
+    private boolean status;
 
     public boolean getStatus() {
         return status;
