@@ -15,7 +15,7 @@
                 <button class="btn btn-small btn-info" ng-click="addToCart()"><i class="icon-white icon-plus-sign" style="margin-right:5px;"></i>Add To Cart</button>
             </div>
 
-            <img alt='300x200' style='width:100px; float:right;' ng-src='data:image/png;base64,{{item.base64Image}}'>
+            <img alt='300x200' style='width:100px; float:right;' ng-src='{{item.base64Image}}'>
             <h1>{{item.name}}</h1>
             <h3>{{item.brand}}</h3>
             <h4>Item#{{item.id}}</h4>

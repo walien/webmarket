@@ -23,7 +23,7 @@
                         <li ng-repeat="item in items | filter:query">
                             <div class="thumbnail">
 
-                                <img alt='300x200' style='width:100px; float:right;' ng-src='data:image/png;base64,{{item.base64Image}}'>
+                                <img alt='300x200' style='width:100px; float:right;' ng-src='{{item.base64Image}}'>
 
                                 <div class=' caption'>
                                     <a href='' ng-click="showItemDetails(item.id)">

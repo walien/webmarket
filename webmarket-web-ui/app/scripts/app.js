@@ -34,6 +34,10 @@ angular.module(webmarketUIModuleName, ['webmarket.resources'])
                 templateUrl: 'views/item/details.html',
                 controller: 'ItemDetailsCtrl'
             })
+            .when('/items/:id/edit', {
+                templateUrl: 'views/admin/item.edit.html',
+                controller: 'ItemEditorCtrl'
+            })
             .when('/items', {
                 templateUrl: 'views/item/items.html',
                 controller: 'ItemsCtrl'
