@@ -49,7 +49,7 @@ public class ClientSessionManager {
     }
 
     public boolean checkSession(UUID id) {
-        return sessions.values().contains(id);
+        return id != null && sessions.values().contains(id);
     }
 
     public UUID destroySession(User u) {
