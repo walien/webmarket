@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-'use strict';
-
-angular.module(webmarketUIModule)
-    .controller('LogoutCtrl', function ($scope, $timeout, Session) {
-
-        Session.logout($scope.username, function () {
-
-            // Set the new session ID
-            Session.clear();
-
-            // Logging
-            console.log("Session cleared...");
-
-            // Redirect to the main page
-            $timeout(function () {
-                $scope.redirect("/");
-            }, 1500);
-        });
-    });
+angular.module(webmarketUIModule).directive('file', function () {
+    return {
+        scope: {
+            file: '='
+        },
+        link: function (scope, element) {
+            element.bind('change', function (event) {
+                var files = event.target.files;
+                scope.file = files[0];
+                scope.$apply();
+            });
+        }
+    };
+});

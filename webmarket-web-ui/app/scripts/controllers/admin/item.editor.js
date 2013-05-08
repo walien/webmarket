@@ -24,13 +24,25 @@ angular.module(webmarketUIModule)
         /////////////////
 
         $scope.item = {};
+        $scope.current = {};
 
         //////////////////////////////
         // RETRIEVE ITEMS FROM SERVER
         //////////////////////////////
 
-        Item.get({id: $routeParams.id}, function (item) {
-            $scope.item = item;
+        // Check if the item id is provided, if its the case,
+        // it's an edition, otherwise it's a creation
+        if ($routeParams.id) {
+            Item.get({id: $routeParams.id}, function (item) {
+                $scope.item = item;
+            });
+        }
+
+        $scope.$watch("current.file", function (file) {
+            if (file == null) {
+                return;
+            }
+            $scope.computeImage(file);
         });
 
         /////////////////////
@@ -38,37 +50,34 @@ angular.module(webmarketUIModule)
         /////////////////////
 
         /**
-         * Manage file choosing
-         * @param evt
+         * Compute base64 format of the chosen image
+         * and associate it with the current item
+         * @param f
          */
-        $scope.chooseFile = function (evt) {
+        $scope.computeImage = function (f) {
 
-            var files = evt.target.files;
-            for (var i = 0, f; f = files[i]; i++) {
-
-                // Check the type of the selected file
-                if (!f.type.match('image.*')) {
-                    continue;
-                }
-
-                // Load the content of the image
-                var reader = new FileReader();
-
-                // Called when the data is loaded
-                reader.onload = function (e) {
-                    $scope.item.base64Image = e.target.result;
-                    $scope.$apply();
-                }
-                reader.readAsDataURL(f)
+            // Check the type of the selected file
+            if (!f.type.match('image.*')) {
+                return;
             }
-        }
 
-        document.getElementById('itemImage').addEventListener('change', $scope.chooseFile, false);
+            // Load the content of the image
+            var reader = new FileReader();
+
+            // Called when the data is loaded
+            reader.onload = function (e) {
+                $scope.item.base64Image = e.target.result;
+                $scope.$apply();
+            };
+            reader.readAsDataURL(f)
+        };
 
         /**
          * Save item changes
          */
         $scope.saveItem = function () {
+
+            // Make request to the server
             Item.save($scope.item, function (response) {
                 if (response.status) {
                     Notification.info("Success", "Item data were changed successfuly !");

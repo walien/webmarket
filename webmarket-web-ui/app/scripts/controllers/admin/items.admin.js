@@ -39,8 +39,15 @@ angular.module(webmarketUIModule)
         // USER ACTIONS
         /////////////////////
 
+        /**
+         * Remove an item
+         * @param index
+         * @param item
+         */
+
         $scope.removeItem = function (index, item) {
 
+            // Request to the server
             Item.remove(item, function (response) {
 
                 // Analyze the response
