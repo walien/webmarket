@@ -74,8 +74,9 @@ public class ItemsREST {
     @POST
     @Path("{item-id}")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public ResponseWrapper updateItem(@QueryParam("sessionID") String sessionID,
-                                      @PathParam("item-id") int itemID, Item item) throws IOException {
+    public ResponseWrapper updateItem(@PathParam("item-id") int itemID,
+                                      @QueryParam("sessionID") String sessionID,
+                                      Item item) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
         if (id == null
@@ -95,8 +96,8 @@ public class ItemsREST {
 
     @DELETE
     @Path("{item-id}")
-    public ResponseWrapper removeItem(String sessionID,
-                                      @PathParam("item-id") int itemID) throws IOException {
+    public ResponseWrapper removeItem(@PathParam("item-id") int itemID,
+                                      @QueryParam("sessionID") String sessionID) throws IOException {
 
         UUID id = AuthUtils.parseSessionID(sessionID);
         if (id == null

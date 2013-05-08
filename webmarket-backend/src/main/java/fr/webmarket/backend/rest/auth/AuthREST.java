@@ -17,13 +17,12 @@
 package fr.webmarket.backend.rest.auth;
 
 import fr.webmarket.backend.datasource.DataSourcesBundle;
+import fr.webmarket.backend.model.ResponseWrapper;
+import fr.webmarket.backend.model.Session;
 import fr.webmarket.backend.model.User;
 import fr.webmarket.backend.utils.DigestUtils;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.UUID;
 
@@ -33,50 +32,63 @@ public class AuthREST {
     @POST
     @Path("login")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public AuthResult login(@FormParam("username") String username,
-                            @FormParam("pwd") String pwd) {
+    public Session login(@FormParam("username") String username,
+                         @FormParam("pwd") String pwd) {
 
         // Auth result
-        AuthResult authResult = new AuthResult();
+        Session session = new Session();
 
         // Retrieve the user
         User u = DataSourcesBundle.getDefaultDataSource().getUsers()
                 .get(username);
         if (u == null) {
-            return authResult.setAuth(false);
+            return session;
         }
-        authResult.setUser(u);
+        session.setUser(u);
 
         // Check the password (compare MD5)
         String md5Pwd = DigestUtils.computeMD5(pwd);
         if (!u.getPwd().equals(md5Pwd)) {
-            return authResult.setAuth(false);
+            return session;
         }
 
         // Check if the session doesn't exists yet
         UUID sessionID = ClientSessionManager.getInstance().getSessionID(u);
         if (sessionID != null) {
-            return authResult.setAuth(true).setSessionID(sessionID.toString());
+            return session.setId(sessionID.toString());
         }
 
-        return authResult.setSessionID(ClientSessionManager.getInstance()
+        return session.setId(ClientSessionManager.getInstance()
                 .createSession(u).toString());
     }
 
     @POST
     @Path("logout")
-    public AuthResult logout(@FormParam("username") String username) {
+    public Session logout(@FormParam("username") String username) {
 
-        AuthResult authResult = new AuthResult();
-
+        Session session = new Session();
         User u = DataSourcesBundle.getDefaultDataSource().getUsers()
                 .get(username);
+
+        // If the user is not found : error
         if (u == null) {
-            return authResult.setAuth(false);
+            return session;
         }
 
+        // Destroy the session
         ClientSessionManager.getInstance().destroySession(u);
-        return authResult.setAuth(false);
 
+        return session;
     }
+
+    @GET
+    @Path("check")
+    public ResponseWrapper checkSession(@QueryParam("sessionID") String sessionID) {
+
+        boolean isValid = ClientSessionManager.getInstance().
+                checkSession(UUID.fromString(sessionID));
+
+        return new ResponseWrapper().setStatus(isValid);
+    }
+
 }
