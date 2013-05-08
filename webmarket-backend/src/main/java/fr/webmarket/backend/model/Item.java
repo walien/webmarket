@@ -32,7 +32,7 @@ public class Item {
     private String base64Image;
 
     public Item() {
-
+        this("", "", "", 0);
     }
 
     public Item(String name, String brand, String description, double price) {

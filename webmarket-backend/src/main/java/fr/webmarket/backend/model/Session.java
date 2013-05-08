@@ -27,6 +27,7 @@ public class Session {
     private String id;
 
     public Session() {
+        this(null, "");
     }
 
     public Session(User user, String sessionID) {
