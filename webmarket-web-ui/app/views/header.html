@@ -9,7 +9,7 @@
             <ul class="nav pull-right">
                 <li><img id="webmarket-cart-logo" src="../styles/images/cart-logo.png"/></li>
                 <li ng-switch="isLogged">
-                    <img ng-switch-when="false" id="webmarket-auth-logo" src="../styles/images/user-logo.png" ng-click="auth()"/>
+                    <img ng-switch-when="false" id="webmarket-auth-logo" src="../styles/images/user-logo.png" ng-click="login()"/>
                     <img ng-switch-when="true" id="webmarket-auth-logo" src="../styles/images/user-logo.png" ng-click="logout()"/>
                 </li>
                 <li ng-show="isLogged" style="color:red;">Logged as :

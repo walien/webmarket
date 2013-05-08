@@ -1,34 +1,41 @@
+/*
+ * Copyright 2013 - Elian ORIOU
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 'use strict';
 
-angular.module(webmarketUIModuleName)
-    .controller('LoginCtrl', function ($scope, $routeParams, $location, Auth, Session, Notification) {
+angular.module(webmarketUIModule)
+    .controller('LoginCtrl', function ($scope, $routeParams, $location, Session, Notification) {
 
         $scope.username = "";
 
         // Do authentication
         $scope.doAuth = function () {
 
-            var authResult = Auth.login($.param({
-                username: $scope.username,
-                pwd: $scope.pwd
-            }), function () {
+            Session.login($scope.username, $scope.pwd, function (session) {
 
-                if (authResult.user == null || authResult.sessionID == null) {
+                if (session.user == null || session.id == null) {
                     Notification.error("Error", "Error during authentication. Please retry !");
                     return;
                 }
 
                 // Set the new session ID
-                Session.setID(authResult.sessionID);
-
-                // Set the logged username
-                Session.setUser(authResult.user);
-
-                // Emit the auth event
-                $scope.$emit('login');
+                Session.setSession(session);
 
                 // Logging
-                console.log("The new session id : " + authResult.sessionID);
+                console.log("Received session : " + JSON.stringify(session));
 
                 // Redirect the client to the provided url
                 if (!$routeParams.goto) {
