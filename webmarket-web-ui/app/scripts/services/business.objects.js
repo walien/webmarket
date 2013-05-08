@@ -44,6 +44,12 @@ angular.module(webmarketServicesModule).
     });
 
 angular.module(webmarketServicesModule).
+    factory('Tag', function ($resource) {
+
+        return $resource('/rest/tags/:id', {id: '@id'});
+    });
+
+angular.module(webmarketServicesModule).
     factory('User', function ($resource) {
         return $resource('/rest/users/:id', {id: '@id'});
     });

@@ -1,5 +1,7 @@
 <h3>#{{item.id}} - {{item.brand}} {{item.name}}</h3>
 <form class="form-horizontal">
+
+    <!-- Global Data -->
     <fieldset>
         <legend>Global Data</legend>
         <div class="control-group">
@@ -21,6 +23,8 @@
             </div>
         </div>
     </fieldset>
+
+    <!-- Pricing -->
     <fieldset>
         <legend>Pricing</legend>
         <div class="control-group">
@@ -43,6 +47,19 @@
             <!--</div>-->
         <!--</div>-->
     </fieldset>
+
+    <!-- Tags -->
+    <fieldset>
+        <legend>Indexing</legend>
+        <input id="newTag" type="text" placeholder="New tag" type-ahead source="tags" on-select="addTag" />
+        <p style="margin-top:10px">
+            <span ng-repeat="tag in item.tags"
+                  style="margin-right:5px;" class='label label-success'>{{tag.name}}
+                <a href="" style="margin-left:3px;" ng-click="removeTag($index)"><i class="icon-remove-circle icon-white"></i></a></span>
+        </p>
+    </fieldset>
+
+    <!-- Image -->
     <fieldset>
         <legend>Image</legend>
         <div class="control-group">

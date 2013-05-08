@@ -28,3 +28,38 @@ angular.module(webmarketUIModule).directive('file', function () {
         }
     };
 });
+
+angular.module(webmarketUIModule).directive('typeAhead', function () {
+    return {
+        scope: {
+            source: '=',
+            onSelect: '='
+        },
+        link: function (scope, element) {
+            scope.$watch("source", function () {
+
+                var map = {};
+                var jqElt = angular.element(element);
+
+                jqElt.bind("focus", function () {
+                    jqElt.val("");
+                });
+
+                jqElt.typeahead({
+                    source: function (query, process) {
+                        var tagNames = [];
+                        $.each(scope.source, function (index, tag) {
+                            map[tag.name] = tag;
+                            tagNames.push(tag.name);
+                        });
+                        process(tagNames);
+                    },
+                    updater: function (item) {
+                        scope.onSelect(map[item]);
+                        return item;
+                    }
+                });
+            });
+        }
+    };
+});

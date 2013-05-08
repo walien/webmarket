@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('ItemEditorCtrl', function ($scope, $routeParams, $location, Item, Notification) {
+    .controller('ItemEditorCtrl', function ($scope, $routeParams, $timeout, Item, Tag, Notification) {
 
         /////////////////
         // SCOPE INIT
@@ -25,6 +25,7 @@ angular.module(webmarketUIModule)
 
         $scope.item = {};
         $scope.current = {};
+        $scope.tags = [];
 
         //////////////////////////////
         // RETRIEVE ITEMS FROM SERVER
@@ -38,11 +39,17 @@ angular.module(webmarketUIModule)
             });
         }
 
+        // Watch the selected file in order to computing it
         $scope.$watch("current.file", function (file) {
             if (file == null) {
                 return;
             }
             $scope.computeImage(file);
+        });
+
+        // Retrieve all available tags
+        Tag.query(function (tags) {
+            $scope.tags = tags;
         });
 
         /////////////////////
@@ -70,6 +77,24 @@ angular.module(webmarketUIModule)
                 $scope.$apply();
             };
             reader.readAsDataURL(f)
+        };
+
+
+        /**
+         * Add a tag to the item
+         * @param tag
+         */
+        $scope.addTag = function (tag) {
+            $scope.item.tags.push(tag);
+            $scope.$apply();
+        };
+
+        /**
+         * Remove a tag from the item
+         * @param index
+         */
+        $scope.removeTag = function (index) {
+            $scope.item.tags.splice(index, 1);
         };
 
         /**
