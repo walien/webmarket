@@ -16,15 +16,14 @@
 
 'use strict';
 
-angular.module(webmarketUIModule)
-    .controller('LogoutCtrl', function ($scope, $timeout, Session) {
+angular.module('webmarket.filters').constant('LocalDictionary', {
 
-        Session.logout($scope.username, function () {
+    ////////////////////
+    // GLOBAL CONSTANTS
+    ////////////////////
 
-            // Set the new session ID
-            Session.clear();
+    "app.name": "webmarket",
+    "app.version": "1.0"
 
-            // Logging
-            console.log("Session cleared...");
-        });
-    });
+
+});

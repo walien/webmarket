@@ -35,20 +35,28 @@
     <!-- Add your site or application content here -->
     <div ng-view ng-controller="GlobalCtrl"></div>
 
+    <!-- Libs -->
     <script src="components/jquery/jquery.min.js"></script>
     <script src="components/angular/angular.min.js"></script>
     <script src="components/angular-resource/angular-resource.min.js"></script>
     <script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
     <script src="components/pnotify/jquery.pnotify.min.js"></script>
 
-    <!-- build:js scripts/scripts.js -->
+    <!-- Modules declaration & configuration -->
     <script src="scripts/app.js"></script>
 
+    <!-- Model -->
     <script src="scripts/services/business.objects.js"></script>
     <script src="scripts/services/global.services.js"></script>
 
+    <!-- Directives -->
     <script src="scripts/directives/global.directives.js"></script>
 
+    <!-- i18n -->
+    <script src="scripts/i18n/constants_en.js"></script>
+    <script src="scripts/filters/i18n.filter.js"></script>
+
+    <!-- Controllers -->
     <script src="scripts/controllers/global.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/item/items.js"></script>
@@ -58,8 +66,6 @@
 
     <script src="scripts/controllers/admin/login.js"></script>
     <script src="scripts/controllers/admin/logout.js"></script>
-
-    <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

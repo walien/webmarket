@@ -1,5 +1,7 @@
 'use strict';
 var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
+var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+
 var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
@@ -45,30 +47,39 @@ module.exports = function (grunt) {
     },
     connect: {
       options: {
-        port: 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost'
+          port: 9000,
+          hostname: '0.0.0.0'
       },
-      livereload: {
-        options: {
-          middleware: function (connect) {
-            return [
-              lrSnippet,
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, yeomanConfig.app)
-            ];
+      proxies: [
+          {
+              context: '/rest',
+              host: 'localhost',
+              port: 8080,
+              https: false,
+              changeOrigin: true
           }
-        }
+      ],
+      livereload: {
+          options: {
+              middleware: function (connect) {
+                  return [
+                      proxySnippet, lrSnippet,
+                      mountFolder(connect, '.tmp'),
+                      mountFolder(connect, yeomanConfig.app)
+                  ];
+              }
+          }
       },
       test: {
-        options: {
-          middleware: function (connect) {
-            return [
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, 'test')
-            ];
+          options: {
+              middleware: function (connect) {
+                  return [
+                      proxySnippet,
+                      mountFolder(connect, '.tmp'),
+                      mountFolder(connect, 'test')
+                  ];
+              }
           }
-        }
       }
     },
     open: {
@@ -265,6 +276,7 @@ module.exports = function (grunt) {
     'clean:server',
     'coffee:dist',
     'compass:server',
+    'configureProxies',
     'livereload-start',
     'connect:livereload',
     'open',
@@ -275,6 +287,7 @@ module.exports = function (grunt) {
     'clean:server',
     'coffee',
     'compass',
+    'configureProxies',
     'connect:test',
     'karma'
   ]);

@@ -2,7 +2,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="brand">
-            <img id="webmarket-head-logo" src="../styles/images/webmarket-logo.png"/>WebMarket
+            <img id="webmarket-head-logo" src="../styles/images/webmarket-logo.png"/>{{'app.name' | i18n}}
         </div>
         <div class="nav-collapse collapse">
             <div id="auth-form"></div>
@@ -12,7 +12,7 @@
                     <img ng-switch-when="false" id="webmarket-auth-logo" src="../styles/images/user-logo.png" ng-click="login()"/>
                     <img ng-switch-when="true" id="webmarket-auth-logo" src="../styles/images/user-logo.png" ng-click="logout()"/>
                 </li>
-                <li ng-show="isLogged" style="color:red;">Logged as :
+                <li ng-show="isLogged" style="color:red;">{{'logged.as' | i18n}} :
                     {{username}}
                 </li>
             </ul>

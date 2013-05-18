@@ -27,12 +27,13 @@ angular.module('webmarket', ['webmarket.ui']);
 /////////////////
 var webmarketUIModule = 'webmarket.ui';
 var webmarketServicesModule = 'webmarket.services';
+var webmarketFiltersModule = 'webmarket.filters';
 
 /////////////////
 // MODULES
 /////////////////
 
-angular.module(webmarketUIModule, ['webmarket.services'])
+angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -73,3 +74,5 @@ angular.module(webmarketUIModule, ['webmarket.services'])
     });
 
 angular.module(webmarketServicesModule, ['ngResource']);
+
+angular.module(webmarketFiltersModule, []);

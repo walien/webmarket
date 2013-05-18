@@ -32,6 +32,7 @@ angular.module(webmarketUIModule)
                 $scope.username = Session.getUser().username;
             } else {
                 $scope.isLogged = false;
+                $scope.redirect("/");
             }
         });
 
