@@ -24,6 +24,7 @@ angular.module(webmarketUIModule)
         /////////////////
 
         $scope.item = {};
+        $scope.item.tags = [];
         $scope.current = {};
         $scope.tags = [];
 
