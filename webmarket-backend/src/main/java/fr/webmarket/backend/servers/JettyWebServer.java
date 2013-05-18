@@ -31,9 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * User: walien
- * Date: 10/04/13
- * Time: 21:26
+ * Remark : This class is largely inspired by a Jetty WebServer boostraping class which 
+ * is part of the restx library (http://restx.io).
  */
 
 public class JettyWebServer {
