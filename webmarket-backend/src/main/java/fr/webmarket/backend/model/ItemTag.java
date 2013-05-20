@@ -38,6 +38,7 @@ public class ItemTag {
         super();
         this.id = id;
         this.name = name;
+        this.parent = parent;
     }
 
     public int getId() {

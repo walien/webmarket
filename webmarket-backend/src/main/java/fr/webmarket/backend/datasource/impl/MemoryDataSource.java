@@ -91,7 +91,7 @@ public class MemoryDataSource implements DataSource {
         item1.getTags().add(laveVaisselle);
         item1.setBase64Image(base64Image);
 
-        Item item2 = new Item("Lave-Vaisselle", "Wirpool", description, 190);
+        Item item2 = new Item("Lave-Vaisselle", "Whirpool", description, 190);
         item2.getTags().add(electroMenager);
         item2.getTags().add(laveVaisselle);
         item2.setBase64Image(base64Image);
@@ -178,7 +178,20 @@ public class MemoryDataSource implements DataSource {
     @Override
     public boolean updateItem(int id, Item newItem) {
         LoggerBundle.getDefaultLogger().debug("Updating the item {} (new: {}).", id, newItem);
-        return items.put(id, newItem) != null;
+        Item item = items.get(id);
+        if (item == null) {
+            return false;
+        }
+        // Update tags with server-side references (keep the link between item and its
+        // associated tags)
+        for (ItemTag tag : newItem.getTags()) {
+            ItemTag srvTag = this.tags.get(tag.getId());
+            if (srvTag == null) {
+                continue;
+            }
+            item.getTags().add(srvTag);
+        }
+        return items.put(id, item) != null;
     }
 
     @Override
@@ -201,13 +214,28 @@ public class MemoryDataSource implements DataSource {
     @Override
     public boolean removeItemTag(int id) {
         LoggerBundle.getDefaultLogger().debug("Removing the tag {} from the data source.", id);
-        return tags.remove(id) != null;
+        ItemTag tag = tags.remove(id);
+        if (tag == null) {
+            return false;
+        }
+        // Remove the tag in very item referencing it
+        for (Item item : items.values()) {
+            item.getTags().remove(tag);
+        }
+        return true;
     }
 
     @Override
     public boolean updateItemTag(int id, ItemTag newTag) {
         LoggerBundle.getDefaultLogger().debug("Updating the tag {} (new: {}).", id, newTag);
-        return tags.put(id, newTag) != null;
+        // Full update on the object
+        ItemTag old = tags.get(id);
+        if (old == null) {
+            return false;
+        }
+        old.setName(newTag.getName());
+        old.setParent(newTag.getParent());
+        return true;
     }
 
     @Override

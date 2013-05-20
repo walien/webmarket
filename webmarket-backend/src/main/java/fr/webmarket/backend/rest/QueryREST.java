@@ -51,7 +51,6 @@ public class QueryREST {
 
     @GET
     @Path("/by-data/{search-strategy}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Item> queryItemsByData(
             @PathParam("search-strategy") String searchStrategy,
             @Context UriInfo uri) throws IOException {
@@ -92,7 +91,6 @@ public class QueryREST {
 
     @GET
     @Path("by-tags")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Item> queryItemsByTags(@Context UriInfo uri) throws IOException {
 
         // Get parameters

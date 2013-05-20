@@ -18,29 +18,73 @@ package fr.webmarket.backend.rest;
 
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.ItemTag;
+import fr.webmarket.backend.model.ResponseWrapper;
+import fr.webmarket.backend.rest.auth.AuthUtils;
+import fr.webmarket.backend.rest.auth.ClientSessionManager;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Path("/tags")
 public class TagsREST {
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<ItemTag> getAllTags() throws IOException {
         return new ArrayList<ItemTag>(DataSourcesBundle.getDefaultDataSource().getItemTags().values());
     }
 
     @GET
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public ItemTag getTag(@PathParam("id") int id) throws IOException {
         return DataSourcesBundle.getDefaultDataSource().getItemTag(id);
+    }
+
+    @POST
+    public ResponseWrapper addTag(@QueryParam("sessionID") String sessionID,
+                                  ItemTag tag) throws IOException {
+
+        UUID id = AuthUtils.parseSessionID(sessionID);
+        if (id == null
+                || !ClientSessionManager.getInstance().checkSession(id)) {
+            return new ResponseWrapper().setStatus(false);
+        }
+
+        return new ResponseWrapper().setStatus(DataSourcesBundle.
+                getDefaultDataSource().addItemTag(tag));
+    }
+
+    @POST
+    @Path("{id}")
+    public ResponseWrapper updateTag(@PathParam("id") int tagID,
+                                     @QueryParam("sessionID") String sessionID,
+                                     ItemTag tag) throws IOException {
+
+        UUID id = AuthUtils.parseSessionID(sessionID);
+        if (id == null
+                || !ClientSessionManager.getInstance().checkSession(id)) {
+            return new ResponseWrapper().setStatus(false);
+        }
+
+        return new ResponseWrapper().setStatus(DataSourcesBundle.
+                getDefaultDataSource().updateItemTag(tagID, tag));
+    }
+
+    @DELETE
+    @Path("{id}")
+    public ResponseWrapper removeItemTag(@PathParam("id") int tagID,
+                                         @QueryParam("sessionID") String sessionID) throws IOException {
+
+        UUID id = AuthUtils.parseSessionID(sessionID);
+        if (id == null
+                || !ClientSessionManager.getInstance().checkSession(id)) {
+            return new ResponseWrapper().setStatus(false);
+        }
+
+        return new ResponseWrapper().setStatus(DataSourcesBundle.
+                getDefaultDataSource().removeItemTag(tagID));
     }
 }

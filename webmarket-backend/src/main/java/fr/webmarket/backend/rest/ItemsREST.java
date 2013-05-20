@@ -47,7 +47,7 @@ public class ItemsREST {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Item getItem(@PathParam("item-id") int itemID) throws IOException {
         return DataSourcesBundle.getDefaultDataSource()
-                .getItems().get(itemID);
+                .getItem(itemID);
     }
 
     // ///////////////////////////////////////////
