@@ -16,8 +16,6 @@
 
 package fr.webmarket.backend.model;
 
-import fr.webmarket.backend.datasource.EntitySequences;
-
 public class ItemTag {
 
     private int id;
@@ -31,7 +29,7 @@ public class ItemTag {
     }
 
     public ItemTag(String name) {
-        this(EntitySequences.getNewTagId(), name, null);
+        this(-1, name, null);
     }
 
     public ItemTag(int id, String name, ItemTag parent) {

@@ -16,18 +16,22 @@
 
 package fr.webmarket.backend.datasource.impl;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fr.webmarket.backend.datasource.DataSource;
+import fr.webmarket.backend.datasource.EntitySequences;
 import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
+import fr.webmarket.backend.model.Order;
 import fr.webmarket.backend.model.User;
 import fr.webmarket.backend.utils.DigestUtils;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 public class MemoryDataSource implements DataSource {
@@ -36,11 +40,13 @@ public class MemoryDataSource implements DataSource {
     private final Map<String, User> users;
     private final Map<Integer, ItemTag> tags;
     private final Map<Integer, Item> items;
+    private final Map<Integer, Order> orders;
 
     private MemoryDataSource() {
         this.tags = Maps.newHashMap();
         this.items = Maps.newHashMap();
         this.users = Maps.newHashMap();
+        this.orders = Maps.newHashMap();
         initMockData();
     }
 
@@ -148,6 +154,10 @@ public class MemoryDataSource implements DataSource {
         addItem(item9);
         addItem(item10);
 
+        // 3. Mock Orders
+        Order order1 = new Order(new Date(), users.get(0), Collections.EMPTY_LIST);
+        addOrder(order1);
+
         // Print the content of the data store
         LoggerBundle.getDefaultLogger().info("Data store " + this.getClass().getSimpleName() + " : " + dumpData());
     }
@@ -164,6 +174,7 @@ public class MemoryDataSource implements DataSource {
 
     @Override
     public boolean addItem(Item item) {
+        item.setId(EntitySequences.getNewTagId());
         items.put(item.getId(), item);
         LoggerBundle.getDefaultLogger().debug("The item {} was added to the data source.", item.toString());
         return true;
@@ -206,6 +217,7 @@ public class MemoryDataSource implements DataSource {
 
     @Override
     public boolean addItemTag(ItemTag tag) {
+        tag.setId(EntitySequences.getNewTagId());
         tags.put(tag.getId(), tag);
         LoggerBundle.getDefaultLogger().debug("The tag {} was added to the data source.", tag);
         return true;
@@ -239,8 +251,8 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public Map<String, User> getUsers() {
-        return Collections.unmodifiableMap(this.users);
+    public ImmutableMap<String, User> getUsers() {
+        return ImmutableMap.<String, User>builder().putAll(this.users).build();
     }
 
     @Override
@@ -271,7 +283,43 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
+    public ImmutableMap<Integer, Order> getOrders() {
+        return ImmutableMap.<Integer, Order>builder().putAll(this.orders).build();
+    }
+
+    @Override
+    public Order getOrder(int id) {
+        return this.orders.get(id);
+    }
+
+    @Override
+    public boolean addOrder(Order order) {
+        order.setId(EntitySequences.getNewOrderId());
+        this.orders.put(order.getId(), order);
+        return true;
+    }
+
+    @Override
+    public boolean updateOrder(int id, Order order) {
+        return orders.put(id, order) != null;
+    }
+
+    @Override
+    public boolean removeOrder(int id) {
+        return orders.remove(id) != null;
+    }
+
+    @Override
     public String dumpData() {
-        return "\n* Users : " + users + "\n" + "* Items : " + items + "\n" + "* Tags : " + tags + "\n";
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n* Users : \n  - ");
+        builder.append(Joiner.on("\n  - ").join(users.values()));
+        builder.append("\n* Items : \n  - ");
+        builder.append(Joiner.on("\n  - ").join(items.values()));
+        builder.append("\n* Tags : \n  - ");
+        builder.append(Joiner.on("\n  - ").join(tags.values()));
+        builder.append("\n* Orders : \n  - ");
+        builder.append(Joiner.on("\n  - ").join(orders.values()));
+        return builder.toString();
     }
 }

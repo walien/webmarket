@@ -16,9 +16,11 @@
 
 package fr.webmarket.backend.datasource;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
+import fr.webmarket.backend.model.Order;
 import fr.webmarket.backend.model.User;
 
 import java.util.Map;
@@ -59,7 +61,7 @@ public interface DataSource {
     // USERS
     // ///////////////////////////
 
-    Map<String, User> getUsers();
+    ImmutableMap<String, User> getUsers();
 
     User getUser(String username);
 
@@ -68,4 +70,19 @@ public interface DataSource {
     boolean updateUser(String username, User user);
 
     boolean removeUser(String username);
+
+    // ///////////////////////////
+    // ORDERS
+    // ///////////////////////////
+
+    ImmutableMap<Integer, Order> getOrders();
+
+    Order getOrder(int id);
+
+    boolean addOrder(Order order);
+
+    boolean updateOrder(int id, Order order);
+
+    boolean removeOrder(int id);
+
 }

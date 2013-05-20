@@ -17,7 +17,6 @@
 package fr.webmarket.backend.model;
 
 import com.google.common.collect.Sets;
-import fr.webmarket.backend.datasource.EntitySequences;
 
 import java.util.Set;
 
@@ -36,7 +35,7 @@ public class Item {
     }
 
     public Item(String name, String brand, String description, double price) {
-        this(EntitySequences.getNewItemId(), name, brand, description, price);
+        this(-1, name, brand, description, price);
     }
 
     public Item(int id, String name, String brand, String description,
