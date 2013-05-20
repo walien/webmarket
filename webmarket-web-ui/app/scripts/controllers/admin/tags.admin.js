@@ -23,6 +23,7 @@ angular.module(webmarketUIModule)
         $scope.tags = Tag.query();
         $scope.selected = {};
         $scope.predicate = "id";
+        $scope.reverse = false;
 
         /**
          * Open tag editing modal

@@ -1,0 +1,40 @@
+<!-- Header -->
+<div ng-include src="'views/header.html'"></div>
+
+<!-- Content -->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <!-- Navigation Bar (Left-Side) -->
+        <div ng-include src="'views/navigation.html'"></div>
+
+        <!-- Main Container -->
+        <div id="webmarket-content" class="span10">
+
+            {{fromNow}}
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="line in cart.lines">
+                    <td>{{line.item.id}}</td>
+                    <td>{{line.item.name}}</td>
+                    <td>{{line.item.price}} {{'currency' | i18n}}</td>
+                    <td>{{line.quantity}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <b>Total : {{computeTotalAmount()}} {{'currency' | i18n}}</b>
+
+        </div>
+
+    </div>
+
+</div>

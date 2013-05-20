@@ -69,6 +69,43 @@ angular.module(webmarketServicesModule).
     });
 
 angular.module(webmarketServicesModule).
+    factory('Cart', function ($resource, Session) {
+
+        var Cart = $resource('/rest/orders/:id', {id: '@id', sessionID: '@sessionID'}, {
+            _query: {method: 'GET', isArray: true},
+            _order: {method: 'POST'}
+        });
+
+        // Init the cart
+        var _cart = {lines: [], user: Session.getUser(), date: new Date()};
+
+        return angular.extend(Cart, {
+            query: function (id, fct) {
+                return Cart._query({
+                    id: id,
+                    sessionID: Session.getID()
+                }, fct);
+            },
+            order: function (order, fct) {
+                return Cart._order({
+                    sessionID: Session.getID()
+                }, order, fct);
+            },
+            get: function () {
+                return _cart;
+            },
+            addItem: function (item, qty) {
+                console.log("Item " + JSON.stringify(item) + " (" + qty + ") ==> Cart");
+                _cart.lines.push({item: item, quantity: qty});
+            },
+            clear: function () {
+                console.log("Clearing the cart...");
+                _cart = {lines: [], user: Session.getUser(), date: new Date()};
+            }
+        });
+    });
+
+angular.module(webmarketServicesModule).
     factory('User', function ($resource) {
         return $resource('/rest/users/:id', {id: '@id'});
     });
