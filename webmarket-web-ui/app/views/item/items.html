@@ -20,7 +20,7 @@
             <div class="row-fluid">
                 <div id="items-list">
                     <ul class="thumbnails">
-                        <li ng-repeat="item in items | filter:query">
+                        <li ng-repeat="item in items | filter:query" style="width:98%">
                             <div class="thumbnail">
 
                                 <img alt='300x200' style='width:100px; float:right;' ng-src='{{item.base64Image}}'>
@@ -36,7 +36,7 @@
                                               style="margin-right:5px;" class='label label-success'>{{tag.name}}</span>
                                     </p>
                                     <p>
-                                        <span class='label label-info'>{{item.price}} {{currency}}</span>
+                                        <span class='label label-info'>{{item.price}} {{'currency' | i18n}}</span>
                                     </p>
                                 </div>
                             </div>

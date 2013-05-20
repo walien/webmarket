@@ -38,7 +38,7 @@
                             <td>{{item.brand}}</td>
                             <td><span ng-repeat="tag in item.tags"
                                       style="margin-right:5px;" class='label label-success'>{{tag.name}}</span></td>
-                            <td>{{item.price}} {{currency}}</td>
+                            <td>{{item.price}} {{'currency' | i18n}}</td>
                             <td>
                                 <button class="btn btn-mini btn-info" ng-click="redirect('/items/' + item.id + '/details')"><i class="icon-white icon-eye-open"></i></button>
                                 <button class="btn btn-mini btn-warning" ng-click="redirect('/items/' + item.id + '/edit')"><i class="icon-white icon-edit"></i></button>

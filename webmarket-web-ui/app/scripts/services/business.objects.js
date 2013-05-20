@@ -44,9 +44,28 @@ angular.module(webmarketServicesModule).
     });
 
 angular.module(webmarketServicesModule).
-    factory('Tag', function ($resource) {
+    factory('Tag', function ($resource, Session) {
 
-        return $resource('/rest/tags/:id', {id: '@id'});
+        var Tag = $resource('/rest/tags/:id', {id: '@id', sessionID: '@sessionID'}, {
+            getAll: {method: 'GET', isArray: true},
+            _save: {method: 'POST'},
+            _remove: {method: 'DELETE'}
+        });
+
+        return angular.extend(Tag, {
+            save: function (tag, fct) {
+                return Tag._save({
+                    id: tag.id,
+                    sessionID: Session.getID()
+                }, tag, fct);
+            },
+            remove: function (tag, fct) {
+                return Tag._remove({
+                    id: tag.id,
+                    sessionID: Session.getID()
+                }, fct);
+            }
+        });
     });
 
 angular.module(webmarketServicesModule).

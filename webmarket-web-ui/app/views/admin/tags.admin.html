@@ -1,0 +1,49 @@
+<!-- Header -->
+<div ng-include src="'views/header.html'"></div>
+
+<!-- Content -->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <!-- Navigation Bar (Left-Side) -->
+        <div ng-include src="'views/navigation.html'"></div>
+
+        <!-- Main Container -->
+        <div id="webmarket-content" class="span10">
+
+            <!-- Search bar -->
+            <form class="form-search" style="float:right; margin-bottom:10px;">
+                <label for="search">Search : </label>
+                <input id="search" type="text" class="input-medium search-query" ng-model="query">
+            </form>
+
+            <h3>Item referencing (tags) management</h3>
+
+            <button class="btn btn-small btn-success" ng-click="openTagEditorModal()"><i class="icon-plus icon-white"></i> Add Tag</button>
+
+            <div class="row-fluid">
+                <div id="items-list">
+                    <table class="table table-striped">
+                        <thead>
+                        <th># <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'id' ; reverse = !reverse"></i></a></th>
+                        <th>Name <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'name' ; reverse = !reverse"></i></a></th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tag in tags | orderBy:predicate:reverse | filter:query">
+                            <td>{{tag.id}}</td>
+                            <td>{{tag.name}}</td>
+                            <td>
+                                <button class="btn btn-mini btn-warning" ng-click="openTagEditorModal($index)"><i class="icon-white icon-edit"></i></button>
+                                <button class="btn btn-mini btn-danger" ng-click="removeTag($index)"><i class="icon-white icon-remove"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tagEditorModal" class="modal hide fade" ng-include src="'partials/tag.editor.tmpl.html'"></div>
+
+    </div>
+</div>

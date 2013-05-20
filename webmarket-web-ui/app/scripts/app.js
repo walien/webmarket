@@ -68,6 +68,10 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 templateUrl: 'views/admin/items.admin.html',
                 controller: 'ItemsAdminCtrl'
             })
+            .when('/admin/referencing', {
+                templateUrl: 'views/admin/tags.admin.html',
+                controller: 'ReferencingAdminCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });

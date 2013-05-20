@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('ItemsCtrl', function ($scope, $location, Item, Session) {
+    .controller('ItemsCtrl', function ($scope, $location, Item) {
 
         /////////////////
         // SCOPE INIT

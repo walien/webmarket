@@ -23,7 +23,6 @@ angular.module(webmarketUIModule)
         // PUSH GLOBAL VALUES
         /////////////////////////////
 
-        $scope.currency = '€';
         $scope.isLogged = false;
 
         $scope.$watch(Session.getSession, function (value) {
