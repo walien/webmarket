@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('GlobalCtrl', function ($scope, $location, Session) {
+    .controller('GlobalCtrl', function ($scope, $location, Session, Cart) {
 
         /////////////////////////////
         // PUSH GLOBAL VALUES
@@ -29,9 +29,11 @@ angular.module(webmarketUIModule)
             if (value != null) {
                 $scope.isLogged = true;
                 $scope.username = Session.getUser().username;
+                Cart.init();
             } else {
                 $scope.isLogged = false;
                 $scope.redirect("/");
+                Cart.clear();
             }
         });
 

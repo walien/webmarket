@@ -33,6 +33,14 @@ var webmarketFiltersModule = 'webmarket.filters';
 // MODULES
 /////////////////
 
+var checkRights = function (params, current) {
+    if (localStorage.getItem('session') == null
+        || localStorage.getItem('session') == 'null') {
+        return '/error';
+    }
+    return current;
+};
+
 angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
     .config(function ($routeProvider) {
         $routeProvider
@@ -54,11 +62,13 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
             })
             .when('/items/:id/edit', {
                 templateUrl: 'views/admin/item.edit.html',
-                controller: 'ItemEditorCtrl'
+                controller: 'ItemEditorCtrl',
+                redirectTo: checkRights
             })
             .when('/items/new', {
                 templateUrl: 'views/admin/item.edit.html',
-                controller: 'ItemEditorCtrl'
+                controller: 'ItemEditorCtrl',
+                redirectTo: checkRights
             })
             .when('/items', {
                 templateUrl: 'views/item/items.html',
@@ -66,15 +76,21 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
             })
             .when('/admin/items', {
                 templateUrl: 'views/admin/items.admin.html',
-                controller: 'ItemsAdminCtrl'
+                controller: 'ItemsAdminCtrl',
+                redirectTo: checkRights
             })
             .when('/admin/referencing', {
                 templateUrl: 'views/admin/tags.admin.html',
-                controller: 'ReferencingAdminCtrl'
+                controller: 'ReferencingAdminCtrl',
+                redirectTo: checkRights
             })
             .when('/cart/summary', {
                 templateUrl: 'views/cart/cart.summary.html',
-                controller: 'CartSummaryCtrl'
+                controller: 'CartSummaryCtrl',
+                redirectTo: checkRights
+            })
+            .when('/error', {
+                templateUrl: 'views/error.html'
             })
             .otherwise({
                 redirectTo: '/'

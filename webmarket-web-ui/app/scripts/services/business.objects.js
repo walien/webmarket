@@ -77,7 +77,12 @@ angular.module(webmarketServicesModule).
         });
 
         // Init the cart
-        var _cart = {lines: [], user: Session.getUser(), date: new Date()};
+        var _cart = localStorage.getItem('cart');
+        if (_cart != "" && _cart != "null" && _cart != null) {
+            _cart = JSON.parse(_cart);
+        } else {
+            Cart.init();
+        }
 
         return angular.extend(Cart, {
             query: function (id, fct) {
@@ -86,21 +91,55 @@ angular.module(webmarketServicesModule).
                     sessionID: Session.getID()
                 }, fct);
             },
-            order: function (order, fct) {
+            order: function (fct) {
                 return Cart._order({
                     sessionID: Session.getID()
-                }, order, fct);
+                }, _cart, fct);
             },
             get: function () {
                 return _cart;
             },
-            addItem: function (item, qty) {
-                console.log("Item " + JSON.stringify(item) + " (" + qty + ") ==> Cart");
-                _cart.lines.push({item: item, quantity: qty});
+            save: function () {
+                localStorage.setItem('cart', JSON.stringify(_cart));
+            },
+            contains: function (item) {
+                var _line = null;
+                $.each(_cart.lines, function (index, line) {
+                    if (line.item.id == item.id) {
+                        _line = line;
+                        return false;
+                    }
+                });
+                return _line;
+            },
+            addItem: function (item) {
+                var orderLine = this.contains(item);
+                if (orderLine != null) {
+                    orderLine.quantity++;
+                } else {
+                    _cart.lines.push({item: item, quantity: 1});
+                }
+                this.save();
+            },
+            removeItem: function (item) {
+                var orderLine = this.contains(item);
+                if (orderLine == null) {
+                    return;
+                }
+                if (orderLine.quantity > 1) {
+                    orderLine.quantity--;
+                } else {
+                    _cart.lines.splice(_cart.lines.indexOf(orderLine), 1);
+                }
+                this.save();
+            },
+            init: function () {
+                _cart = {lines: [], user: Session.getUser(), date: new Date()};
+                this.save();
             },
             clear: function () {
-                console.log("Clearing the cart...");
-                _cart = {lines: [], user: Session.getUser(), date: new Date()};
+                _cart = {lines: [], user: null, date: new Date()};
+                this.save();
             }
         });
     });

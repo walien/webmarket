@@ -36,6 +36,6 @@ angular.module(webmarketUIModule)
         /////////////////
 
         $scope.addToCart = function () {
-            Cart.addItem($scope.item, 1);
+            Cart.addItem($scope.item);
         };
     });

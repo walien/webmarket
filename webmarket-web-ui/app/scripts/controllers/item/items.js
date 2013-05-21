@@ -44,5 +44,5 @@ angular.module(webmarketUIModule)
 
         $scope.showItemDetails = function (id) {
             $location.path("/items/" + id + "/details");
-        }
+        };
     });

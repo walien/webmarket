@@ -10,7 +10,7 @@
         <!-- Main Container -->
         <div id="webmarket-content" class="span10">
 
-            {{fromNow}} - {{cart.user.username}}
+            <b>{{fromNow()}}</b> - {{cart.user.firstName}} {{cart.user.lastName}} ({{cart.user.email}})
 
             <table class="table">
                 <thead>
@@ -19,20 +19,27 @@
                     <th>Item</th>
                     <th>Price</th>
                     <th>Quantity</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="line in cart.lines">
                     <td>{{line.item.id}}</td>
-                    <td>{{line.item.name}}</td>
+                    <td><a href="" ng-click="showItemDetails(line.item.id)">{{line.item.name}}</a></td>
                     <td>{{line.item.price}} {{'currency' | i18n}}</td>
                     <td>{{line.quantity}}</td>
+                    <td>
+                        <button class="btn btn-mini btn-danger" ng-click="removeItem(line.item)"><i
+                                class="icon-white icon-trash"></i></button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
 
-            <b>Total : {{computeTotalAmount()}} {{'currency' | i18n}}</b>
-
+            <b style="color:red">Total : {{computeTotalAmount()}} {{'currency' | i18n}}</b>
+            </br>
+            <button class="btn btn-success" ng-click="order()" style="margin-top:10px"><i
+                    class="icon-white icon-ok"></i> Order</button>
         </div>
 
     </div>

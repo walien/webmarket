@@ -17,10 +17,13 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('CartSummaryCtrl', function ($scope, $location, Cart) {
+    .controller('CartSummaryCtrl', function ($scope, $location, Cart, Notification) {
 
         $scope.cart = Cart.get();
-        $scope.fromNow = moment($scope.date).calendar();
+
+        $scope.fromNow = function () {
+            return moment($scope.cart.date).calendar();
+        };
 
         $scope.computeTotalAmount = function () {
             var amount = 0;
@@ -30,5 +33,18 @@ angular.module(webmarketUIModule)
             return amount;
         };
 
+        $scope.showItemDetails = function (id) {
+            $location.path("/items/" + id + "/details");
+        };
+
+        $scope.removeItem = function (item) {
+            Cart.removeItem(item);
+        };
+
+        $scope.order = function () {
+            Cart.order(function () {
+                Notification.success("Success", "Ordering : done !");
+            });
+        };
     });
 
