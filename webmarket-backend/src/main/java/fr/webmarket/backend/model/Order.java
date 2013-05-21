@@ -29,6 +29,10 @@ public class Order {
 
     private List<OrderLine> lines;
 
+    public Order() {
+
+    }
+
     public Order(Date date, User user, List<OrderLine> lines) {
         this.id = -1;
         this.date = date;

@@ -296,16 +296,19 @@ public class MemoryDataSource implements DataSource {
     public boolean addOrder(Order order) {
         order.setId(EntitySequences.getNewOrderId());
         this.orders.put(order.getId(), order);
+        LoggerBundle.getDefaultLogger().debug("The order {} was added to the datasource.", order);
         return true;
     }
 
     @Override
     public boolean updateOrder(int id, Order order) {
+        LoggerBundle.getDefaultLogger().debug("Updating the order {} (new: {}).", id, order);
         return orders.put(id, order) != null;
     }
 
     @Override
     public boolean removeOrder(int id) {
+        LoggerBundle.getDefaultLogger().debug("Removing the order {} from the data source.", id);
         return orders.remove(id) != null;
     }
 

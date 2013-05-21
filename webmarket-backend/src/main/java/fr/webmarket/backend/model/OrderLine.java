@@ -22,6 +22,10 @@ public class OrderLine {
 
     private int quantity;
 
+    public OrderLine() {
+
+    }
+
     public OrderLine(Item item, int quantity) {
         this.item = item;
         this.quantity = quantity;
