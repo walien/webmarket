@@ -166,7 +166,8 @@ angular.module(webmarketServicesModule).
     factory('User', function ($resource, Session) {
 
         // REST Backend methods
-        var User = $resource('/rest/users/:id', {id: '@id', sessionID: '@sessionID'}, {
+        var User = $resource('/rest/users/:username', {username: '@username', sessionID: '@sessionID'}, {
+            _get: {method: 'GET'},
             _query: {method: 'GET', isArray: true},
             _save: {method: 'POST'},
             _remove: {method: 'DELETE'}
@@ -174,24 +175,26 @@ angular.module(webmarketServicesModule).
 
         // Business methods
         return angular.extend(User, {
-            query: function (id, fct) {
-                if (!id) {
-                    id = '';
-                }
-                return User._query({
-                    id: id,
+            get: function (username, fct) {
+                return User._get({
+                    username: username,
                     sessionID: Session.getID()
                 }, fct);
             },
-            save: function (user, fct) {
+            query: function (fct) {
+                return User._query({
+                    sessionID: Session.getID()
+                }, fct);
+            },
+            save: function (username, user, fct) {
                 return User._save({
-                    id: user.username,
+                    username: username,
                     sessionID: Session.getID()
                 }, user, fct);
             },
             remove: function (user, fct) {
                 return User._remove({
-                    id: user.username,
+                    username: user.username,
                     sessionID: Session.getID()
                 }, fct);
             }

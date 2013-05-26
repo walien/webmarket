@@ -22,7 +22,7 @@ import com.google.common.collect.Maps;
 import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.datasource.EntitySequenceProvider;
 import fr.webmarket.backend.log.LoggerBundle;
-import fr.webmarket.backend.marshalling.MarshallingUtils;
+import fr.webmarket.backend.utils.MarshallingUtils;
 import fr.webmarket.backend.model.*;
 import fr.webmarket.backend.utils.DigestUtils;
 
@@ -266,6 +266,23 @@ public class MemoryDataSource implements DataSource {
     @Override
     public boolean updateUser(String username, User user) {
         LoggerBundle.getDefaultLogger().debug("Updating the user {} (new: {}).", username, user);
+
+        User dsUser = users.get(username);
+        if (dsUser == null) {
+            return false;
+        }
+
+        // Unchanged pwd
+        if (user.getPwd().equals("") || user.getPwd() == null) {
+            user.setPwd(dsUser.getPwd());
+        } else if (dsUser.getPwd().equals(DigestUtils.computeMD5(user.getPwd()))) {
+            user.setPwd(dsUser.getPwd());
+        }
+        // Changed pwd
+        else {
+            user.setPwd(DigestUtils.computeMD5(user.getPwd()));
+        }
+
         return users.put(user.getUsername(), user) != null;
     }
 

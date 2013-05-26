@@ -18,7 +18,7 @@ package fr.webmarket.backend.test.datasource;
 
 import fr.webmarket.backend.datasource.EntitySequenceProvider;
 import fr.webmarket.backend.datasource.impl.MemoryEntitySequenceProvider;
-import fr.webmarket.backend.marshalling.MarshallingUtils;
+import fr.webmarket.backend.utils.MarshallingUtils;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 import org.junit.Before;

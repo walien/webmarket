@@ -97,6 +97,16 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 controller: 'UsersAdminCtrl',
                 redirectTo: checkAdminRights
             })
+            .when('/users/:username/edit', {
+                templateUrl: 'views/admin/user.edit.html',
+                controller: 'UserEditorCtrl',
+                redirectTo: checkAdminRights
+            })
+            .when('/users/new', {
+                templateUrl: 'views/admin/user.edit.html',
+                controller: 'UserEditorCtrl',
+                redirectTo: checkAdminRights
+            })
             .when('/admin/referencing', {
                 templateUrl: 'views/admin/tags.admin.html',
                 controller: 'ReferencingAdminCtrl',

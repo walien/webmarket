@@ -1,0 +1,65 @@
+<!--
+  ~ Copyright 2013 - Elian ORIOU
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<h3>User Editor - {{user.username}}</h3>
+
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="userName">Username </label>
+
+        <div class="controls">
+            <input ng-disabled="isEditor" id="userName" type="text" placeholder="Username" ng-model="user.username"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="pwd">New password </label>
+
+        <div class="controls">
+            <input id="pwd" type="password" placeholder="New Password" ng-model="user.pwd"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="firstName">First Name </label>
+
+        <div class="controls">
+            <input id="firstName" type="text" placeholder="First name" ng-model="user.firstName"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="lastName">Last Name </label>
+
+        <div class="controls">
+            <input id="lastName" type="text" placeholder="Last name" ng-model="user.lastName"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="email">Email </label>
+
+        <div class="controls">
+            <input id="email" type="text" placeholder="Email" ng-model="user.email"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="role">Role </label>
+
+        <div class="controls">
+            <select id="role" ng-model="user.role">
+                <option value="ADMIN">Administrator</option>
+                <option value="CUSTOMER">Customer</option>
+            </select>
+        </div>
+    </div>
+</form>

@@ -49,6 +49,19 @@ public class UsersREST {
         return new ArrayList<User>(DataSourcesBundle.getDefaultDataSource().getUsers().values());
     }
 
+    @GET
+    @Path("{username}")
+    public User getUser(@QueryParam("sessionID") String sessionID,
+                        @PathParam("username") String username) {
+
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
+            return null;
+        }
+
+        return DataSourcesBundle.getDefaultDataSource().getUser(username);
+    }
+
     @POST
     public ResponseWrapper addUser(@QueryParam("sessionID") String sessionID,
                                    User user) {
@@ -60,14 +73,22 @@ public class UsersREST {
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().addUser(user));
     }
 
-    @PUT
+    @POST
     @Path("{username}")
     public ResponseWrapper updateUser(@QueryParam("sessionID") String sessionID,
                                       @PathParam("username") String username,
                                       User user) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
-                UserRole.ADMIN)) {
+        UUID id = AuthUtils.parseSessionID(sessionID);
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(id, UserRole.ADMIN)) {
+            return new ResponseWrapper().setStatus(false);
+        }
+        // Check if the given user is not the currently logged in user
+        User loggedUser = ClientSessionManager.getInstance().getUserFromSession(id);
+        User potentiallyRemovedUser = DataSourcesBundle.getDefaultDataSource().getUser(username);
+        if (loggedUser.equals(potentiallyRemovedUser)) {
+            LoggerBundle.getDefaultLogger().warn("The given user is the currently logged in user ! " +
+                    "Update aborted...");
             return new ResponseWrapper().setStatus(false);
         }
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().
