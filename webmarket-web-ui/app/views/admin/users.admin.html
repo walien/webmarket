@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright 2013 - Elian ORIOU
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!-- Header -->
+<div ng-include src="'views/header.html'"></div>
+
+<!-- Content -->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <!-- Navigation Bar (Left-Side) -->
+        <div ng-include src="'views/navigation.html'"></div>
+
+        <!-- Main Container -->
+        <div id="webmarket-content" class="span10">
+
+            <!-- Search bar -->
+            <form class="form-search" style="float:right; margin-bottom:10px;">
+                <label for="search">Search : </label>
+                <input id="search" type="text" class="input-medium search-query" ng-model="query">
+            </form>
+
+            <h3>Users Management</h3>
+
+            <button class="btn btn-small btn-success" ng-click="redirect('/users/new')"><i class="icon-plus icon-white"></i> Add User</button>
+
+            <div class="row-fluid">
+                <div id="items-list">
+                    <table class="table table-striped">
+                        <thead>
+                        <th>Username <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'username' ; reverse = !reverse"></i></a></th>
+                        <th>First Name <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'firstName' ; reverse = !reverse"></i></a></th>
+                        <th>Last Name <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'lastName' ; reverse = !reverse"></i></a></th>
+                        <th>Email<a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'email' ; reverse = !reverse"></i></a></th>
+                        <th>Role <a href=""><i ng-class="{true: 'icon-arrow-down', false:'icon-arrow-up'}[reverse]" ng-click="predicate = 'role' ; reverse = !reverse"></i></a></th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="user in users | orderBy:predicate:reverse | filter:query">
+                            <td>{{user.username}}</td>
+                            <td>{{user.firstName}}</td>
+                            <td>{{user.lastName}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.role}}</td>
+                            <td>
+                                <button class="btn btn-mini btn-warning" ng-click="redirect('/users/' + user.username + '/edit')"><i class="icon-white icon-edit"></i></button>
+                                <button class="btn btn-mini btn-danger" ng-click="removeUser($index)"><i class="icon-white icon-remove"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

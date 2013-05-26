@@ -37,12 +37,13 @@ angular.module('webmarket.filters').constant('LocalDictionary', {
     'full.list': 'Full list',
     'administer': 'Administer',
     'global.configuration': 'Global configuration',
-    'manage.items': 'Manage items',
+    'manage.items': 'Items',
+    'manage.users': 'Users',
+    'manage.referencing': 'Item Referencing',
     'statistics': 'Statistics',
     'now.disconnected': "You're now disconnected !",
     'plz.sign.in': 'Please sign in !',
     'sign.in': 'Sign in',
-    'referencing': 'Referencing',
     'orders': 'Orders'
 
 });

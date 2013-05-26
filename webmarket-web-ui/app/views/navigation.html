@@ -11,9 +11,9 @@
     <ul ng-show="isLogged && role == 'ADMIN'" class="nav nav-list" style="padding-top: 10px;">
         <li class="nav-header">{{'administer' | i18n}}</li>
         <li><a href="" ng-click="redirect('/admin')">{{'global.configuration' | i18n}}</a></li>
+        <li><a href="" ng-click="redirect('/admin/users')">{{'manage.users' | i18n}}</a></li>
         <li><a href="" ng-click="redirect('/admin/items')">{{'manage.items' | i18n}}</a></li>
-        <li><a href="" ng-click="redirect('/admin/referencing')">{{'referencing' | i18n}}</a></li>
+        <li><a href="" ng-click="redirect('/admin/referencing')">{{'manage.referencing' | i18n}}</a></li>
         <li><a href="" ng-click="redirect('/admin/orders')">{{'orders' | i18n}}</a></li>
-        <li><a href="" ng-click="redirect('/admin/stats')">{{'statistics' | i18n}}</a></li>
     </ul>
 </div>

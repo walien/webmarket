@@ -92,6 +92,11 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 controller: 'ItemsAdminCtrl',
                 redirectTo: checkAdminRights
             })
+            .when('/admin/users', {
+                templateUrl: 'views/admin/users.admin.html',
+                controller: 'UsersAdminCtrl',
+                redirectTo: checkAdminRights
+            })
             .when('/admin/referencing', {
                 templateUrl: 'views/admin/tags.admin.html',
                 controller: 'ReferencingAdminCtrl',

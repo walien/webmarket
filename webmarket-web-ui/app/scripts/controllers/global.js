@@ -34,6 +34,8 @@ angular.module(webmarketUIModule)
                 Cart.init(session.user);
             } else {
                 $scope.isLogged = false;
+                $scope.username = null;
+                $scope.role = null;
                 $scope.redirect("/");
                 Cart.clear();
             }

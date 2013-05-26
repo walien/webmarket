@@ -87,6 +87,9 @@ angular.module(webmarketServicesModule).
         // Business methods
         Cart = angular.extend(Cart, {
             query: function (id, fct) {
+                if (!id) {
+                    id = '';
+                }
                 return Cart._query({
                     id: id,
                     sessionID: Session.getID()
@@ -160,6 +163,37 @@ angular.module(webmarketServicesModule).
     });
 
 angular.module(webmarketServicesModule).
-    factory('User', function ($resource) {
-        return $resource('/rest/users/:id', {id: '@id'});
+    factory('User', function ($resource, Session) {
+
+        // REST Backend methods
+        var User = $resource('/rest/users/:id', {id: '@id', sessionID: '@sessionID'}, {
+            _query: {method: 'GET', isArray: true},
+            _save: {method: 'POST'},
+            _remove: {method: 'DELETE'}
+        });
+
+        // Business methods
+        return angular.extend(User, {
+            query: function (id, fct) {
+                if (!id) {
+                    id = '';
+                }
+                return User._query({
+                    id: id,
+                    sessionID: Session.getID()
+                }, fct);
+            },
+            save: function (user, fct) {
+                return User._save({
+                    id: user.username,
+                    sessionID: Session.getID()
+                }, user, fct);
+            },
+            remove: function (user, fct) {
+                return User._remove({
+                    id: user.username,
+                    sessionID: Session.getID()
+                }, fct);
+            }
+        });
     });
