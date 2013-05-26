@@ -17,11 +17,16 @@
 package fr.webmarket.backend.datasource;
 
 import fr.webmarket.backend.datasource.impl.MemoryDataSource;
+import fr.webmarket.backend.datasource.impl.MemoryEntitySequenceProvider;
 
 public class DataSourcesBundle {
 
-	public static DataSource getDefaultDataSource() {
-		return MemoryDataSource.getInstance();
-	}
+    private static DataSource DEFAULT_DATA_SOURCE;
 
+    public static DataSource getDefaultDataSource() {
+        if (DEFAULT_DATA_SOURCE == null) {
+            DEFAULT_DATA_SOURCE = new MemoryDataSource(new MemoryEntitySequenceProvider());
+        }
+        return DEFAULT_DATA_SOURCE;
+    }
 }

@@ -20,7 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fr.webmarket.backend.datasource.DataSource;
-import fr.webmarket.backend.datasource.EntitySequences;
+import fr.webmarket.backend.datasource.EntitySequenceProvider;
 import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
 import fr.webmarket.backend.model.*;
@@ -31,25 +31,19 @@ import java.util.*;
 
 public class MemoryDataSource implements DataSource {
 
-    private static MemoryDataSource INSTANCE;
     private final Map<String, User> users;
     private final Map<Integer, ItemTag> tags;
     private final Map<Integer, Item> items;
     private final Map<Integer, Order> orders;
+    private final EntitySequenceProvider sequences;
 
-    private MemoryDataSource() {
+    public MemoryDataSource(EntitySequenceProvider sequenceProvider) {
         this.tags = Maps.newHashMap();
         this.items = Maps.newHashMap();
         this.users = Maps.newHashMap();
         this.orders = Maps.newHashMap();
+        this.sequences = sequenceProvider;
         initMockData();
-    }
-
-    public static DataSource getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MemoryDataSource();
-        }
-        return INSTANCE;
     }
 
     private void initMockData() {
@@ -170,7 +164,7 @@ public class MemoryDataSource implements DataSource {
 
     @Override
     public boolean addItem(Item item) {
-        item.setId(EntitySequences.getNewTagId());
+        item.setId(sequences.getNewTagId());
         items.put(item.getId(), item);
         LoggerBundle.getDefaultLogger().debug("The item {} was added to the data source.", item.toString());
         return true;
@@ -216,7 +210,7 @@ public class MemoryDataSource implements DataSource {
 
     @Override
     public boolean addItemTag(ItemTag tag) {
-        tag.setId(EntitySequences.getNewTagId());
+        tag.setId(sequences.getNewTagId());
         tags.put(tag.getId(), tag);
         LoggerBundle.getDefaultLogger().debug("The tag {} was added to the data source.", tag);
         return true;
@@ -293,7 +287,7 @@ public class MemoryDataSource implements DataSource {
 
     @Override
     public boolean addOrder(Order order) {
-        order.setId(EntitySequences.getNewOrderId());
+        order.setId(sequences.getNewOrderId());
         this.orders.put(order.getId(), order);
         LoggerBundle.getDefaultLogger().debug("The order {} was added to the datasource.", order);
         return true;

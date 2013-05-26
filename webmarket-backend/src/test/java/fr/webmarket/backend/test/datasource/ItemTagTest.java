@@ -16,17 +16,17 @@
 
 package fr.webmarket.backend.test.datasource;
 
-import static org.junit.Assert.*;
-
+import fr.webmarket.backend.datasource.impl.MemoryEntitySequenceProvider;
+import fr.webmarket.backend.model.ItemTag;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.webmarket.backend.datasource.EntitySequences;
-import fr.webmarket.backend.model.ItemTag;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ItemTagTest {
 
-	private static final int ITEM_TAG_ID = EntitySequences.getNewTagId();
+	private static final int ITEM_TAG_ID = new MemoryEntitySequenceProvider().getNewTagId();
 	private static final String ITEM_TAG_NAME = "Electroménager";
 	private static final String ITEM_TAG_STRING_FORM = "ItemTag [name=Electroménager]";
 
@@ -49,7 +49,7 @@ public class ItemTagTest {
 
 	@Test
 	public void testSetId() {
-		int newId = EntitySequences.getNewTagId();
+		int newId = new MemoryEntitySequenceProvider().getNewTagId();
 		tag.setId(newId);
 		assertEquals(newId, tag.getId());
 	}

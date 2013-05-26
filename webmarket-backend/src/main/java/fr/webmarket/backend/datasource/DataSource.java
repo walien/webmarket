@@ -16,14 +16,11 @@
 
 package fr.webmarket.backend.datasource;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.Order;
 import fr.webmarket.backend.model.User;
-
-import java.util.Map;
 
 public interface DataSource {
 
