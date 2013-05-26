@@ -26,7 +26,7 @@ angular.module(webmarketUIModule)
         $scope.isLogged = false;
         $scope.role = null;
 
-        $scope.$watch(Session.getSession, function (session) {
+        $scope.$watch(Session.get, function (session) {
             if (session != null) {
                 $scope.isLogged = true;
                 $scope.username = Session.getUser().username;

@@ -31,9 +31,7 @@ angular.module(webmarketUIModule)
         // RETRIEVE ITEMS FROM SERVER
         //////////////////////////////
 
-        Item.getAll(function (items) {
-            $scope.items = items;
-        });
+        $scope.items = Item.query();
 
         /////////////////////
         // USER ACTIONS
@@ -54,9 +52,7 @@ angular.module(webmarketUIModule)
                 if (response.status == true) {
 
                     // Refresh the list
-                    var items = Item.getAll(function () {
-                        $scope.items = items;
-                    });
+                    $scope.items = Item.query();
 
                     // Notification
                     Notification.success('Item removed', "The item was removed successfully");

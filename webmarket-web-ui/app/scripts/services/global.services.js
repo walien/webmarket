@@ -50,7 +50,7 @@ angular.module(webmarketServicesModule)
                 }), fct);
             },
             // Session management
-            getSession: function () {
+            get: function () {
                 return _session;
             },
             getID: function () {

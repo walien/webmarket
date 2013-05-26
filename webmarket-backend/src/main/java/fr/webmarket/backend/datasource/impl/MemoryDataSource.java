@@ -145,7 +145,7 @@ public class MemoryDataSource implements DataSource {
         addItem(item10);
 
         // 3. Mock Orders
-        Order order1 = new Order(new Date(), users.get(0), Collections.EMPTY_LIST);
+        Order order1 = new Order(new Date(), users.get("eoriou"), Collections.EMPTY_LIST);
         addOrder(order1);
 
         // Print the content of the data store

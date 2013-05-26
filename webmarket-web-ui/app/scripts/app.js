@@ -87,16 +87,6 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 templateUrl: 'views/item/items.html',
                 controller: 'ItemsCtrl'
             })
-            .when('/admin/items', {
-                templateUrl: 'views/admin/items.admin.html',
-                controller: 'ItemsAdminCtrl',
-                redirectTo: checkAdminRights
-            })
-            .when('/admin/users', {
-                templateUrl: 'views/admin/users.admin.html',
-                controller: 'UsersAdminCtrl',
-                redirectTo: checkAdminRights
-            })
             .when('/users/:username/edit', {
                 templateUrl: 'views/admin/user.edit.html',
                 controller: 'UserEditorCtrl',
@@ -107,9 +97,29 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 controller: 'UserEditorCtrl',
                 redirectTo: checkAdminRights
             })
+            .when('/orders/:orderID/details', {
+                templateUrl: 'views/admin/order.details.html',
+                controller: 'OrderDetailsCtrl',
+                redirectTo: checkAdminRights
+            })
+            .when('/admin/items', {
+                templateUrl: 'views/admin/items.admin.html',
+                controller: 'ItemsAdminCtrl',
+                redirectTo: checkAdminRights
+            })
+            .when('/admin/users', {
+                templateUrl: 'views/admin/users.admin.html',
+                controller: 'UsersAdminCtrl',
+                redirectTo: checkAdminRights
+            })
             .when('/admin/referencing', {
                 templateUrl: 'views/admin/tags.admin.html',
                 controller: 'ReferencingAdminCtrl',
+                redirectTo: checkAdminRights
+            })
+            .when('/admin/orders', {
+                templateUrl: 'views/admin/orders.admin.html',
+                controller: 'OrdersAdminCtrl',
                 redirectTo: checkAdminRights
             })
             .when('/cart/summary', {

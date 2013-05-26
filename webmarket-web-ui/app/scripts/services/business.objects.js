@@ -23,7 +23,6 @@ angular.module(webmarketServicesModule).
 
         // REST Backend methods
         var Item = $resource('/rest/items/:id', {id: '@id', sessionID: '@sessionID'}, {
-            getAll: {method: 'GET', isArray: true},
             _save: {method: 'POST'},
             _remove: {method: 'DELETE'}
         });
@@ -50,7 +49,6 @@ angular.module(webmarketServicesModule).
 
         // REST Backend methods
         var Tag = $resource('/rest/tags/:id', {id: '@id', sessionID: '@sessionID'}, {
-            getAll: {method: 'GET', isArray: true},
             _save: {method: 'POST'},
             _remove: {method: 'DELETE'}
         });
@@ -75,31 +73,11 @@ angular.module(webmarketServicesModule).
 angular.module(webmarketServicesModule).
     factory('Cart', function ($resource, Session) {
 
-        // REST Backend methods
-        var Cart = $resource('/rest/orders/:id', {id: '@id', sessionID: '@sessionID'}, {
-            _query: {method: 'GET', isArray: true},
-            _order: {method: 'POST'}
-        });
-
         // Load the cart
         var _cart = localStorage.getItem('cart');
 
         // Business methods
-        Cart = angular.extend(Cart, {
-            query: function (id, fct) {
-                if (!id) {
-                    id = '';
-                }
-                return Cart._query({
-                    id: id,
-                    sessionID: Session.getID()
-                }, fct);
-            },
-            order: function (fct) {
-                return Cart._order({
-                    sessionID: Session.getID()
-                }, _cart, fct);
-            },
+        var Cart = {
             get: function () {
                 return _cart;
             },
@@ -149,8 +127,18 @@ angular.module(webmarketServicesModule).
             clear: function () {
                 Cart.init();
                 this.save();
+            },
+            computeTotalAmount: function (cart) {
+                if (!cart || !cart.lines) {
+                    return 0;
+                }
+                var amount = 0;
+                $.each(cart.lines, function (index, line) {
+                    amount += line.item.price * line.quantity;
+                });
+                return amount;
             }
-        });
+        };
 
         // Init the cart
         if (_cart != "" && _cart != "null" && _cart != null) {
@@ -160,6 +148,46 @@ angular.module(webmarketServicesModule).
         }
 
         return Cart;
+    });
+
+angular.module(webmarketServicesModule).
+    factory('Order', function ($resource, Session) {
+
+        // REST Backend methods
+        var Order = $resource('/rest/orders/:id', {id: '@id', sessionID: '@sessionID'}, {
+            _get: {method: 'GET'},
+            _query: {method: 'GET', isArray: true},
+            _do: {method: 'POST'}
+        });
+
+        return angular.extend(Order, {
+            get: function (id, fct) {
+                return Order._get({
+                    id: id,
+                    sessionID: Session.getID()
+                }, fct);
+            },
+            query: function (fct) {
+                return Order._query({
+                    sessionID: Session.getID()
+                }, fct);
+            },
+            do: function (cart, fct) {
+                return Order._do({
+                    sessionID: Session.getID()
+                }, cart, fct);
+            },
+            computeTotalAmount: function (order) {
+                if (!order || !order.lines) {
+                    return 0;
+                }
+                var amount = 0;
+                $.each(order.lines, function (index, line) {
+                    amount += line.item.price * line.quantity;
+                });
+                return amount;
+            }
+        });
     });
 
 angular.module(webmarketServicesModule).

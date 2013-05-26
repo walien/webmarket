@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('CartSummaryCtrl', function ($scope, $location, Cart, Notification) {
+    .controller('CartSummaryCtrl', function ($scope, $location, Cart, Order, Notification) {
 
         $scope.cart = Cart.get();
 
@@ -26,11 +26,7 @@ angular.module(webmarketUIModule)
         };
 
         $scope.computeTotalAmount = function () {
-            var amount = 0;
-            $.each($scope.cart.lines, function (index, line) {
-                amount += line.item.price * line.quantity;
-            });
-            return amount;
+            return Cart.computeTotalAmount($scope.cart);
         };
 
         $scope.showItemDetails = function (id) {
@@ -42,7 +38,7 @@ angular.module(webmarketUIModule)
         };
 
         $scope.order = function () {
-            Cart.order(function () {
+            Order.do(Cart.get(), function () {
                 Notification.success("Success", "Ordering : done !");
             });
         };

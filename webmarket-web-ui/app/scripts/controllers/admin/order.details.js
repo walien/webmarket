@@ -17,30 +17,15 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('ItemsCtrl', function ($scope, $location, Item) {
+    .controller('OrderDetailsCtrl', function ($scope, $routeParams, $location, Order) {
 
-        /////////////////
-        // SCOPE INIT
-        /////////////////
+        $scope.order = Order.get($routeParams.orderID);
 
-        $scope.items = [];
+        $scope.prettyDate = function (date) {
+            return moment(date).calendar();
+        };
 
-        //////////////////////////////
-        // RETRIEVE ITEMS FROM SERVER
-        //////////////////////////////
-
-        $scope.items = Item.query();
-
-        //////////////////////////////
-        // SCOPE METHODS
-        //////////////////////////////
-
-        /**
-         * Display details about a selected item
-         * @param id
-         */
-
-        $scope.showItemDetails = function (id) {
-            $location.path("/items/" + id + "/details");
+        $scope.computeTotalAmount = function (order) {
+            return Order.computeTotalAmount(order);
         };
     });

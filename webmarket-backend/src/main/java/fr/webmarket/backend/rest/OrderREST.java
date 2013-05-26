@@ -41,13 +41,25 @@ public class OrderREST {
         return DataSourcesBundle.getDefaultDataSource().getOrders().values().asList();
     }
 
+    @GET
+    @Path("{order-id}")
+    public Order getOrder(@QueryParam("sessionID") String sessionID,
+                          @PathParam("order-id") int orderID) {
+
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
+            return null;
+        }
+        return DataSourcesBundle.getDefaultDataSource().getOrder(orderID);
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public ResponseWrapper doOrder(@QueryParam("sessionID") String sessionID,
                                    Order order) {
 
         if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
-                UserRole.ADMIN)) {
+                UserRole.CUSTOMER)) {
             return new ResponseWrapper().setStatus(false);
         }
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource()

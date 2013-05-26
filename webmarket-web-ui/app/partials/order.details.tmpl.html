@@ -1,0 +1,71 @@
+<!--
+  ~ Copyright 2013 - Elian ORIOU
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<h3>Order Details - {{order.id}}</h3>
+
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="user">User </label>
+
+        <div class="controls">
+            <label class="control-label" id="user"><b>{{order.user.username}} ({{order.user.firstName}}
+                {{order.user.lastName}})</b></label>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="date">Date </label>
+
+        <div class="controls">
+            <label class="control-label" id="date"><b>{{prettyDate(order.date)}}</b></label>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="date">Articles </label>
+
+        <div class="controls">
+            <br/>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Qty</th>
+                    <th>Unit price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="line in order.lines">
+                    <td>{{line.item.id}}</td>
+                    <td><a href="" ng-click="redirect('/items/' + line.item.id + '/details')">{{line.item.brand}}
+                        -{{line.item.name}}</a></td>
+                    <td>{{line.quantity}}</td>
+                    <td>{{line.item.price}} {{'currency' | i18n}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="amount">Amount </label>
+
+        <div class="controls">
+            <label class="control-label" id="amount" style="color:red"><b>{{computeTotalAmount(order)}} {{'currency' |
+                i18n}}</b></label>
+        </div>
+    </div>
+</form>
