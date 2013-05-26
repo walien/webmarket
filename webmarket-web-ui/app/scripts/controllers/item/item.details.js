@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('ItemDetailsCtrl', function ($scope, $routeParams, $location, Item, Cart) {
+    .controller('ItemDetailsCtrl', function ($scope, $routeParams, $location, Item, Cart, Notification) {
 
         /////////////////
         // SCOPE INIT
@@ -37,5 +37,6 @@ angular.module(webmarketUIModule)
 
         $scope.addToCart = function () {
             Cart.addItem($scope.item);
+            Notification.success("Item added !", "The item was succesfuly added to the cart");
         };
     });

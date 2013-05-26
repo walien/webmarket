@@ -21,12 +21,14 @@
 angular.module(webmarketServicesModule).
     factory('Item', function ($resource, Session) {
 
+        // REST Backend methods
         var Item = $resource('/rest/items/:id', {id: '@id', sessionID: '@sessionID'}, {
             getAll: {method: 'GET', isArray: true},
             _save: {method: 'POST'},
             _remove: {method: 'DELETE'}
         });
 
+        // Business methods
         return angular.extend(Item, {
             save: function (item, fct) {
                 return Item._save({
@@ -46,12 +48,14 @@ angular.module(webmarketServicesModule).
 angular.module(webmarketServicesModule).
     factory('Tag', function ($resource, Session) {
 
+        // REST Backend methods
         var Tag = $resource('/rest/tags/:id', {id: '@id', sessionID: '@sessionID'}, {
             getAll: {method: 'GET', isArray: true},
             _save: {method: 'POST'},
             _remove: {method: 'DELETE'}
         });
 
+        // Business methods
         return angular.extend(Tag, {
             save: function (tag, fct) {
                 return Tag._save({
@@ -71,20 +75,17 @@ angular.module(webmarketServicesModule).
 angular.module(webmarketServicesModule).
     factory('Cart', function ($resource, Session) {
 
+        // REST Backend methods
         var Cart = $resource('/rest/orders/:id', {id: '@id', sessionID: '@sessionID'}, {
             _query: {method: 'GET', isArray: true},
             _order: {method: 'POST'}
         });
 
-        // Init the cart
+        // Load the cart
         var _cart = localStorage.getItem('cart');
-        if (_cart != "" && _cart != "null" && _cart != null) {
-            _cart = JSON.parse(_cart);
-        } else {
-            Cart.init();
-        }
 
-        return angular.extend(Cart, {
+        // Business methods
+        Cart = angular.extend(Cart, {
             query: function (id, fct) {
                 return Cart._query({
                     id: id,
@@ -133,15 +134,29 @@ angular.module(webmarketServicesModule).
                 }
                 this.save();
             },
-            init: function () {
-                _cart = {lines: [], user: Session.getUser(), date: new Date()};
+            init: function (user) {
+                if (user) {
+                    _cart.user = user;
+                }
+                else {
+                    _cart = {lines: [], user: null, date: new Date()};
+                }
                 this.save();
             },
             clear: function () {
-                _cart = {lines: [], user: null, date: new Date()};
+                Cart.init();
                 this.save();
             }
         });
+
+        // Init the cart
+        if (_cart != "" && _cart != "null" && _cart != null) {
+            _cart = JSON.parse(_cart);
+        } else {
+            Cart.init();
+        }
+
+        return Cart;
     });
 
 angular.module(webmarketServicesModule).

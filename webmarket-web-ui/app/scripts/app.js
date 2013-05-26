@@ -33,12 +33,25 @@ var webmarketFiltersModule = 'webmarket.filters';
 // MODULES
 /////////////////
 
-var checkRights = function (params, current) {
-    if (localStorage.getItem('session') == null
-        || localStorage.getItem('session') == 'null') {
+function checkRights(role, current) {
+    var session = localStorage.getItem('session');
+    if (session == null || session == 'null') {
         return '/error';
     }
-    return current;
+    session = JSON.parse(session);
+    if (session.user && session.user.role == role) {
+        return current;
+    } else {
+        return '/error';
+    }
+}
+
+var checkAdminRights = function (params, current) {
+    return checkRights('ADMIN', current);
+};
+
+var checkCustomerRights = function (params, current) {
+    return checkRights('CUSTOMER', current);
 };
 
 angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
@@ -63,12 +76,12 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
             .when('/items/:id/edit', {
                 templateUrl: 'views/admin/item.edit.html',
                 controller: 'ItemEditorCtrl',
-                redirectTo: checkRights
+                redirectTo: checkAdminRights
             })
             .when('/items/new', {
                 templateUrl: 'views/admin/item.edit.html',
                 controller: 'ItemEditorCtrl',
-                redirectTo: checkRights
+                redirectTo: checkAdminRights
             })
             .when('/items', {
                 templateUrl: 'views/item/items.html',
@@ -77,17 +90,17 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
             .when('/admin/items', {
                 templateUrl: 'views/admin/items.admin.html',
                 controller: 'ItemsAdminCtrl',
-                redirectTo: checkRights
+                redirectTo: checkAdminRights
             })
             .when('/admin/referencing', {
                 templateUrl: 'views/admin/tags.admin.html',
                 controller: 'ReferencingAdminCtrl',
-                redirectTo: checkRights
+                redirectTo: checkAdminRights
             })
             .when('/cart/summary', {
                 templateUrl: 'views/cart/cart.summary.html',
                 controller: 'CartSummaryCtrl',
-                redirectTo: checkRights
+                redirectTo: checkCustomerRights
             })
             .when('/error', {
                 templateUrl: 'views/error.html'
