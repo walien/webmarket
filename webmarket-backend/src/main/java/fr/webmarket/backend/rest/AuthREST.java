@@ -47,14 +47,14 @@ public class AuthREST {
             LoggerBundle.getDefaultLogger().warn("Unrecognized user : '{}' !", username);
             return session;
         }
-        session.setUser(u);
 
         // Check the password (compare MD5)
         String md5Pwd = DigestUtils.computeMD5(pwd);
         if (!u.getPwd().equals(md5Pwd)) {
-            LoggerBundle.getDefaultLogger().warn("Wrong auth with for user : '{}' & pwd : '{}' !", username, pwd);
+            LoggerBundle.getDefaultLogger().warn("Wrong auth for user : '{}' & pwd : '{}' !", username, pwd);
             return session;
         }
+        session.setUser(u);
 
         LoggerBundle.getDefaultLogger().info("User '{}' successfuly logged in !", username);
 

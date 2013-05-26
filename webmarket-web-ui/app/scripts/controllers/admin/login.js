@@ -34,8 +34,9 @@ angular.module(webmarketUIModule)
                 // Set the new session ID
                 Session.setSession(session);
 
-                // Logging
+                // Logging & notify
                 console.log("Received session : " + JSON.stringify(session));
+                Notification.success("Login", "Login was a success.");
 
                 // Redirect the client to the provided url
                 if (!$routeParams.goto) {

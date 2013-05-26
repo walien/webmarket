@@ -24,11 +24,13 @@ angular.module(webmarketUIModule)
         /////////////////////////////
 
         $scope.isLogged = false;
+        $scope.role = null;
 
         $scope.$watch(Session.getSession, function (session) {
             if (session != null) {
                 $scope.isLogged = true;
                 $scope.username = Session.getUser().username;
+                $scope.role = Session.getUser().role;
                 Cart.init(session.user);
             } else {
                 $scope.isLogged = false;

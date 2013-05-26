@@ -17,14 +17,15 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('LogoutCtrl', function ($scope, $timeout, Session) {
+    .controller('LogoutCtrl', function ($scope, $timeout, Session, Notification) {
 
         Session.logout($scope.username, function () {
 
             // Set the new session ID
             Session.clear();
 
-            // Logging
+            // Logging & notify
             console.log("Session cleared...");
+            Notification.success("Logout", "Logout was a success.");
         });
     });
