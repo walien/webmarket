@@ -19,8 +19,8 @@ package fr.webmarket.backend.filters;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
 import fr.webmarket.backend.log.LoggerBundle;
-import fr.webmarket.backend.rest.auth.AuthUtils;
-import fr.webmarket.backend.rest.auth.ClientSessionManager;
+import fr.webmarket.backend.auth.AuthUtils;
+import fr.webmarket.backend.auth.ClientSessionManager;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

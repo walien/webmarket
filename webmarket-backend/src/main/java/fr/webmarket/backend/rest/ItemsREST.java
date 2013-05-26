@@ -16,18 +16,18 @@
 
 package fr.webmarket.backend.rest;
 
+import fr.webmarket.backend.auth.AuthUtils;
+import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ResponseWrapper;
-import fr.webmarket.backend.rest.auth.AuthUtils;
-import fr.webmarket.backend.rest.auth.ClientSessionManager;
+import fr.webmarket.backend.model.UserRole;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Path("/items")
 public class ItemsREST {
@@ -59,13 +59,10 @@ public class ItemsREST {
     public ResponseWrapper addItem(@QueryParam("sessionID") String sessionID,
                                    Item item) throws IOException {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-
-        // Add the item
         boolean result = DataSourcesBundle.getDefaultDataSource().addItem(item);
 
         return new ResponseWrapper().setStatus(result);
@@ -78,13 +75,10 @@ public class ItemsREST {
                                       @QueryParam("sessionID") String sessionID,
                                       Item item) throws IOException {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-
-        // Add the item
         boolean result = DataSourcesBundle.getDefaultDataSource().updateItem(itemID, item);
 
         return new ResponseWrapper().setStatus(result);
@@ -99,13 +93,10 @@ public class ItemsREST {
     public ResponseWrapper removeItem(@PathParam("item-id") int itemID,
                                       @QueryParam("sessionID") String sessionID) throws IOException {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-
-        // Remove the item
         boolean result = DataSourcesBundle.getDefaultDataSource()
                 .removeItem(itemID);
 

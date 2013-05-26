@@ -23,16 +23,11 @@ import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.datasource.EntitySequences;
 import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.marshalling.MarshallingUtils;
-import fr.webmarket.backend.model.Item;
-import fr.webmarket.backend.model.ItemTag;
-import fr.webmarket.backend.model.Order;
-import fr.webmarket.backend.model.User;
+import fr.webmarket.backend.model.*;
 import fr.webmarket.backend.utils.DigestUtils;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 public class MemoryDataSource implements DataSource {
 
@@ -60,7 +55,8 @@ public class MemoryDataSource implements DataSource {
     private void initMockData() {
 
         // Initialize users
-        addUser(new User("eoriou", "pass", "Elian", "ORIOU", "eoriou@gmail.com"));
+        addUser(new User("eoriou", "pass", "Elian", "ORIOU", "eoriou@gmail.com", UserRole.ADMIN));
+        addUser(new User("jdoe", "pass", "John", "DOE", "jdoe@jdoe.com", UserRole.CUSTOMER));
 
         // Initialize default image
         String imagePath = "webmarket-backend/src/main/resources/default-image.png";
@@ -190,19 +186,22 @@ public class MemoryDataSource implements DataSource {
     public boolean updateItem(int id, Item newItem) {
         LoggerBundle.getDefaultLogger().debug("Updating the item {} (new: {}).", id, newItem);
         Item item = items.get(id);
-        if (item == null) {
+        if (item == null || newItem.getId() != id) {
             return false;
         }
         // Update tags with server-side references (keep the link between item and its
         // associated tags)
+        Set<ItemTag> tags = new HashSet<ItemTag>();
         for (ItemTag tag : newItem.getTags()) {
             ItemTag srvTag = this.tags.get(tag.getId());
             if (srvTag == null) {
                 continue;
             }
-            item.getTags().add(srvTag);
+            tags.add(srvTag);
         }
-        return items.put(id, item) != null;
+        newItem.getTags().clear();
+        newItem.getTags().addAll(tags);
+        return items.put(id, newItem) != null;
     }
 
     @Override
@@ -242,7 +241,7 @@ public class MemoryDataSource implements DataSource {
         LoggerBundle.getDefaultLogger().debug("Updating the tag {} (new: {}).", id, newTag);
         // Full update on the object
         ItemTag old = tags.get(id);
-        if (old == null) {
+        if (old == null || newTag.getId() == id) {
             return false;
         }
         old.setName(newTag.getName());

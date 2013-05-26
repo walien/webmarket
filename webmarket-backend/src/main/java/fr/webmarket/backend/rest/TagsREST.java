@@ -16,18 +16,17 @@
 
 package fr.webmarket.backend.rest;
 
+import fr.webmarket.backend.auth.AuthUtils;
+import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.ResponseWrapper;
-import fr.webmarket.backend.rest.auth.AuthUtils;
-import fr.webmarket.backend.rest.auth.ClientSessionManager;
+import fr.webmarket.backend.model.UserRole;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Path("/tags")
 public class TagsREST {
@@ -47,12 +46,10 @@ public class TagsREST {
     public ResponseWrapper addTag(@QueryParam("sessionID") String sessionID,
                                   ItemTag tag) throws IOException {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-
         return new ResponseWrapper().setStatus(DataSourcesBundle.
                 getDefaultDataSource().addItemTag(tag));
     }
@@ -63,12 +60,10 @@ public class TagsREST {
                                      @QueryParam("sessionID") String sessionID,
                                      ItemTag tag) throws IOException {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-
         return new ResponseWrapper().setStatus(DataSourcesBundle.
                 getDefaultDataSource().updateItemTag(tagID, tag));
     }
@@ -78,12 +73,10 @@ public class TagsREST {
     public ResponseWrapper removeItemTag(@PathParam("id") int tagID,
                                          @QueryParam("sessionID") String sessionID) throws IOException {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-
         return new ResponseWrapper().setStatus(DataSourcesBundle.
                 getDefaultDataSource().removeItemTag(tagID));
     }

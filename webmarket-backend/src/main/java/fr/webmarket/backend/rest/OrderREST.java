@@ -16,17 +16,17 @@
 
 package fr.webmarket.backend.rest;
 
+import fr.webmarket.backend.auth.AuthUtils;
+import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.Order;
 import fr.webmarket.backend.model.ResponseWrapper;
-import fr.webmarket.backend.rest.auth.AuthUtils;
-import fr.webmarket.backend.rest.auth.ClientSessionManager;
+import fr.webmarket.backend.model.UserRole;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Path("/orders")
 public class OrderREST {
@@ -34,12 +34,10 @@ public class OrderREST {
     @GET
     public List<Order> getAllOrders(@QueryParam("sessionID") String sessionID) {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return Collections.EMPTY_LIST;
         }
-
         return DataSourcesBundle.getDefaultDataSource().getOrders().values().asList();
     }
 
@@ -48,12 +46,10 @@ public class OrderREST {
     public ResponseWrapper doOrder(@QueryParam("sessionID") String sessionID,
                                    Order order) {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
-        if (id == null
-                || !ClientSessionManager.getInstance().checkSession(id)) {
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource()
                 .addOrder(order));
     }

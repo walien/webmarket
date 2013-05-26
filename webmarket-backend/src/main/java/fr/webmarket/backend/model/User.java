@@ -31,18 +31,21 @@ public class User {
 
     private String email;
 
+    private UserRole role;
+
     public User() {
-        this("", "", "", "", "");
+        this("", "", "", "", "", UserRole.CUSTOMER);
     }
 
     public User(String login, String pwd, String firstName, String lastName,
-                String email) {
+                String email, UserRole role) {
         super();
         this.username = login;
         this.pwd = pwd;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -85,11 +88,24 @@ public class User {
         this.email = email;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "User [username=" + username + ", pwd=" + pwd + ", firstName="
-                + firstName + ", lastName=" + lastName + ", email=" + email
-                + "]";
+        return "User{" +
+                "username='" + username + '\'' +
+                ", pwd='" + pwd + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                '}';
     }
 
     @Override
