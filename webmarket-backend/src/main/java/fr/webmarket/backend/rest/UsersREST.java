@@ -25,6 +25,7 @@ package fr.webmarket.backend.rest;
 import fr.webmarket.backend.auth.AuthUtils;
 import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
+import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.User;
 import fr.webmarket.backend.model.UserRole;
@@ -32,12 +33,19 @@ import fr.webmarket.backend.model.UserRole;
 import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Path("/users")
 public class UsersREST {
 
     @GET
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(@QueryParam("sessionID") String sessionID) {
+
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
+            return new ArrayList<User>();
+        }
+
         return new ArrayList<User>(DataSourcesBundle.getDefaultDataSource().getUsers().values());
     }
 
@@ -53,7 +61,9 @@ public class UsersREST {
     }
 
     @PUT
+    @Path("{username}")
     public ResponseWrapper updateUser(@QueryParam("sessionID") String sessionID,
+                                      @PathParam("username") String username,
                                       User user) {
 
         if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
@@ -61,17 +71,27 @@ public class UsersREST {
             return new ResponseWrapper().setStatus(false);
         }
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().
-                updateUser(user.getUsername(), user));
+                updateUser(username, user));
     }
 
     @DELETE
+    @Path("{username}")
     public ResponseWrapper deleteUser(@QueryParam("sessionID") String sessionID,
-                                      String username) {
+                                      @PathParam("username") String username) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
-                UserRole.ADMIN)) {
+        UUID id = AuthUtils.parseSessionID(sessionID);
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(id, UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
+        // Check if the given user is not the currently logged in user
+        User loggedUser = ClientSessionManager.getInstance().getUserFromSession(id);
+        User potentiallyRemovedUser = DataSourcesBundle.getDefaultDataSource().getUser(username);
+        if (loggedUser.equals(potentiallyRemovedUser)) {
+            LoggerBundle.getDefaultLogger().warn("The given user is the currently logged in user ! " +
+                    "Removing aborted...");
+            return new ResponseWrapper().setStatus(false);
+        }
+
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().removeUser(username));
 
     }
