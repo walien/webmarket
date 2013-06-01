@@ -22,13 +22,13 @@ package fr.webmarket.backend.rest;
  * Time: 00:55
  */
 
-import fr.webmarket.backend.auth.AuthUtils;
 import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.User;
 import fr.webmarket.backend.model.UserRole;
+import fr.webmarket.backend.utils.DigestUtils;
 
 import javax.ws.rs.*;
 import java.util.ArrayList;
@@ -41,12 +41,12 @@ public class UsersREST {
     @GET
     public List<User> getAllUsers(@QueryParam("sessionID") String sessionID) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ArrayList<User>();
         }
 
-        return new ArrayList<User>(DataSourcesBundle.getDefaultDataSource().getUsers().values());
+        return new ArrayList<User>(DataSourcesBundle.getDataSource().getUsers().values());
     }
 
     @GET
@@ -54,23 +54,23 @@ public class UsersREST {
     public User getUser(@QueryParam("sessionID") String sessionID,
                         @PathParam("username") String username) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return null;
         }
 
-        return DataSourcesBundle.getDefaultDataSource().getUser(username);
+        return DataSourcesBundle.getDataSource().getUser(username);
     }
 
     @POST
     public ResponseWrapper addUser(@QueryParam("sessionID") String sessionID,
                                    User user) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-        return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().addUser(user));
+        return new ResponseWrapper().setStatus(DataSourcesBundle.getDataSource().addUser(user));
     }
 
     @POST
@@ -79,19 +79,19 @@ public class UsersREST {
                                       @PathParam("username") String username,
                                       User user) {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
+        UUID id = DigestUtils.parseSessionID(sessionID);
         if (!ClientSessionManager.getInstance().checkSessionAndRights(id, UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
         // Check if the given user is not the currently logged in user
         User loggedUser = ClientSessionManager.getInstance().getUserFromSession(id);
-        User potentiallyRemovedUser = DataSourcesBundle.getDefaultDataSource().getUser(username);
+        User potentiallyRemovedUser = DataSourcesBundle.getDataSource().getUser(username);
         if (loggedUser.equals(potentiallyRemovedUser)) {
             LoggerBundle.getDefaultLogger().warn("The given user is the currently logged in user ! " +
                     "Update aborted...");
             return new ResponseWrapper().setStatus(false);
         }
-        return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().
+        return new ResponseWrapper().setStatus(DataSourcesBundle.getDataSource().
                 updateUser(username, user));
     }
 
@@ -100,20 +100,20 @@ public class UsersREST {
     public ResponseWrapper deleteUser(@QueryParam("sessionID") String sessionID,
                                       @PathParam("username") String username) {
 
-        UUID id = AuthUtils.parseSessionID(sessionID);
+        UUID id = DigestUtils.parseSessionID(sessionID);
         if (!ClientSessionManager.getInstance().checkSessionAndRights(id, UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
         // Check if the given user is not the currently logged in user
         User loggedUser = ClientSessionManager.getInstance().getUserFromSession(id);
-        User potentiallyRemovedUser = DataSourcesBundle.getDefaultDataSource().getUser(username);
+        User potentiallyRemovedUser = DataSourcesBundle.getDataSource().getUser(username);
         if (loggedUser.equals(potentiallyRemovedUser)) {
             LoggerBundle.getDefaultLogger().warn("The given user is the currently logged in user ! " +
                     "Removing aborted...");
             return new ResponseWrapper().setStatus(false);
         }
 
-        return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource().removeUser(username));
+        return new ResponseWrapper().setStatus(DataSourcesBundle.getDataSource().removeUser(username));
 
     }
 

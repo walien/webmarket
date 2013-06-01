@@ -16,12 +16,12 @@
 
 package fr.webmarket.backend.rest;
 
-import fr.webmarket.backend.auth.AuthUtils;
 import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.UserRole;
+import fr.webmarket.backend.utils.DigestUtils;
 
 import javax.ws.rs.*;
 import java.io.IOException;
@@ -33,51 +33,51 @@ public class TagsREST {
 
     @GET
     public List<ItemTag> getAllTags() throws IOException {
-        return new ArrayList<ItemTag>(DataSourcesBundle.getDefaultDataSource().getItemTags().values());
+        return new ArrayList<ItemTag>(DataSourcesBundle.getDataSource().getItemTags().values());
     }
 
     @GET
     @Path("{id}")
-    public ItemTag getTag(@PathParam("id") int id) throws IOException {
-        return DataSourcesBundle.getDefaultDataSource().getItemTag(id);
+    public ItemTag getTag(@PathParam("id") String id) throws IOException {
+        return DataSourcesBundle.getDataSource().getItemTag(id);
     }
 
     @POST
     public ResponseWrapper addTag(@QueryParam("sessionID") String sessionID,
                                   ItemTag tag) throws IOException {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
         return new ResponseWrapper().setStatus(DataSourcesBundle.
-                getDefaultDataSource().addItemTag(tag));
+                getDataSource().addItemTag(tag));
     }
 
     @POST
     @Path("{id}")
-    public ResponseWrapper updateTag(@PathParam("id") int tagID,
+    public ResponseWrapper updateTag(@PathParam("id") String tagID,
                                      @QueryParam("sessionID") String sessionID,
                                      ItemTag tag) throws IOException {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
         return new ResponseWrapper().setStatus(DataSourcesBundle.
-                getDefaultDataSource().updateItemTag(tagID, tag));
+                getDataSource().updateItemTag(tagID, tag));
     }
 
     @DELETE
     @Path("{id}")
-    public ResponseWrapper removeItemTag(@PathParam("id") int tagID,
+    public ResponseWrapper removeItemTag(@PathParam("id") String tagID,
                                          @QueryParam("sessionID") String sessionID) throws IOException {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
         return new ResponseWrapper().setStatus(DataSourcesBundle.
-                getDefaultDataSource().removeItemTag(tagID));
+                getDataSource().removeItemTag(tagID));
     }
 }

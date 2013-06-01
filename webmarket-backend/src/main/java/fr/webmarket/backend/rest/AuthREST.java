@@ -41,8 +41,7 @@ public class AuthREST {
         Session session = new Session();
 
         // Retrieve the user
-        User u = DataSourcesBundle.getDefaultDataSource().getUsers()
-                .get(username);
+        User u = DataSourcesBundle.getDataSource().getUser(username);
         if (u == null) {
             LoggerBundle.getDefaultLogger().warn("Unrecognized user : '{}' !", username);
             return session;
@@ -73,8 +72,7 @@ public class AuthREST {
     public Session logout(@FormParam("username") String username) {
 
         Session session = new Session();
-        User u = DataSourcesBundle.getDefaultDataSource().getUsers()
-                .get(username);
+        User u = DataSourcesBundle.getDataSource().getUser(username);
 
         // If the user is not found : error
         if (u == null) {

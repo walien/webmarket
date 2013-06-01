@@ -17,16 +17,32 @@
 package fr.webmarket.backend.datasource;
 
 import fr.webmarket.backend.datasource.impl.MemoryDataSource;
-import fr.webmarket.backend.datasource.impl.MemoryEntitySequenceProvider;
+import fr.webmarket.backend.datasource.impl.MongoDataSource;
+import fr.webmarket.backend.datasource.providers.MemoryEntitySequenceProvider;
+import fr.webmarket.backend.log.LoggerBundle;
 
 public class DataSourcesBundle {
 
-    private static DataSource DEFAULT_DATA_SOURCE;
+    private static DataSource dataSource;
 
-    public static DataSource getDefaultDataSource() {
-        if (DEFAULT_DATA_SOURCE == null) {
-            DEFAULT_DATA_SOURCE = new MemoryDataSource(new MemoryEntitySequenceProvider());
+    public static void initDataSource(String name) {
+        if ("mongo".equalsIgnoreCase(name)) {
+            dataSource = new MongoDataSource();
+            LoggerBundle.getDefaultLogger().info("MongoDB will be used as datasource during this session.");
+        } else if ("memory".equalsIgnoreCase(name)) {
+            dataSource = new MemoryDataSource(new MemoryEntitySequenceProvider());
+            LoggerBundle.getDefaultLogger().info("In-Memory DB will be used as datasource during this session.");
+        } else {
+            dataSource = new MemoryDataSource(new MemoryEntitySequenceProvider());
+            LoggerBundle.getDefaultLogger().warn("No specific datasource provided : the in-memory data source " +
+                    "will be used during this session !");
         }
-        return DEFAULT_DATA_SOURCE;
+    }
+
+    public static DataSource getDataSource() {
+        if (dataSource == null) {
+            initDataSource(null);
+        }
+        return dataSource;
     }
 }

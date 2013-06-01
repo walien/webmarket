@@ -31,9 +31,7 @@ import fr.webmarket.backend.model.ItemTag;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
@@ -86,7 +84,7 @@ public class QueryREST {
         }
 
         return engine.searchFor(DataSourcesBundle
-                .getDefaultDataSource().getItems(), criteria, strategy);
+                .getDataSource().getItems(), criteria, strategy);
     }
 
     @GET
@@ -102,11 +100,11 @@ public class QueryREST {
         }
 
         // The item tag catalog
-        Map<Integer, ItemTag> tags = DataSourcesBundle.getDefaultDataSource()
+        Map<String, ItemTag> tags = DataSourcesBundle.getDataSource()
                 .getItemTags();
 
         // The item list
-        Collection<Item> items = DataSourcesBundle.getDefaultDataSource()
+        Collection<Item> items = DataSourcesBundle.getDataSource()
                 .getItems().values();
 
         // The result list

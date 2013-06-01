@@ -16,12 +16,12 @@
 
 package fr.webmarket.backend.rest;
 
-import fr.webmarket.backend.auth.AuthUtils;
 import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.UserRole;
+import fr.webmarket.backend.utils.DigestUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,14 +39,14 @@ public class ItemsREST {
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Item> getAllItems() throws IOException {
-        return new ArrayList<Item>(DataSourcesBundle.getDefaultDataSource().getItems().values());
+        return new ArrayList<Item>(DataSourcesBundle.getDataSource().getItems().values());
     }
 
     @GET
     @Path("{item-id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Item getItem(@PathParam("item-id") int itemID) throws IOException {
-        return DataSourcesBundle.getDefaultDataSource()
+    public Item getItem(@PathParam("item-id") String itemID) throws IOException {
+        return DataSourcesBundle.getDataSource()
                 .getItem(itemID);
     }
 
@@ -59,11 +59,11 @@ public class ItemsREST {
     public ResponseWrapper addItem(@QueryParam("sessionID") String sessionID,
                                    Item item) throws IOException {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-        boolean result = DataSourcesBundle.getDefaultDataSource().addItem(item);
+        boolean result = DataSourcesBundle.getDataSource().addItem(item);
 
         return new ResponseWrapper().setStatus(result);
     }
@@ -71,15 +71,15 @@ public class ItemsREST {
     @POST
     @Path("{item-id}")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public ResponseWrapper updateItem(@PathParam("item-id") int itemID,
+    public ResponseWrapper updateItem(@PathParam("item-id") String itemID,
                                       @QueryParam("sessionID") String sessionID,
                                       Item item) throws IOException {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-        boolean result = DataSourcesBundle.getDefaultDataSource().updateItem(itemID, item);
+        boolean result = DataSourcesBundle.getDataSource().updateItem(itemID, item);
 
         return new ResponseWrapper().setStatus(result);
     }
@@ -90,14 +90,14 @@ public class ItemsREST {
 
     @DELETE
     @Path("{item-id}")
-    public ResponseWrapper removeItem(@PathParam("item-id") int itemID,
+    public ResponseWrapper removeItem(@PathParam("item-id") String itemID,
                                       @QueryParam("sessionID") String sessionID) throws IOException {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return new ResponseWrapper().setStatus(false);
         }
-        boolean result = DataSourcesBundle.getDefaultDataSource()
+        boolean result = DataSourcesBundle.getDataSource()
                 .removeItem(itemID);
 
         return new ResponseWrapper().setStatus(result);

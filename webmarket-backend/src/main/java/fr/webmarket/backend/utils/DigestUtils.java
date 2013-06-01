@@ -20,6 +20,7 @@ import fr.webmarket.backend.log.LoggerBundle;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 /**
  * User: walien
@@ -33,6 +34,21 @@ public class DigestUtils {
             return new String(MessageDigest.getInstance("MD5").digest(pwd.getBytes()));
         } catch (NoSuchAlgorithmException e) {
             LoggerBundle.getDefaultLogger().error(e.getMessage());
+        }
+        return null;
+    }
+
+    public static UUID parseSessionID(String sessionID) {
+
+        if (sessionID == null) {
+            return null;
+        }
+
+        try {
+            return UUID.fromString(sessionID);
+        } catch (Exception e) {
+            LoggerBundle.getDefaultLogger().info(
+                    "Wrong uuid from REST request : " + sessionID);
         }
         return null;
     }

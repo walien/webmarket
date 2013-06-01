@@ -18,9 +18,9 @@ package fr.webmarket.backend.filters;
 
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
-import fr.webmarket.backend.log.LoggerBundle;
-import fr.webmarket.backend.auth.AuthUtils;
 import fr.webmarket.backend.auth.ClientSessionManager;
+import fr.webmarket.backend.log.LoggerBundle;
+import fr.webmarket.backend.utils.DigestUtils;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -42,13 +42,13 @@ public class AuthRequestFilter implements ContainerRequestFilter {
         if ("POST".equals(containerRequest.getMethod())) {
             // Add item ==> POST /items
             if ("items".equals(containerRequest.getPath())
-                    && !ClientSessionManager.getInstance().checkSession(AuthUtils.parseSessionID(sessionID))) {
+                    && !ClientSessionManager.getInstance().checkSession(DigestUtils.parseSessionID(sessionID))) {
                 LoggerBundle.getDefaultLogger().info("A request with path '{}' was refused. Bad sessionID.", containerRequest.getPath());
                 rejectRequest();
             }
             // Update item ==> POST /items/:id
             if (containerRequest.getPath().matches("items/\\d+")
-                    && !ClientSessionManager.getInstance().checkSession(AuthUtils.parseSessionID(sessionID))) {
+                    && !ClientSessionManager.getInstance().checkSession(DigestUtils.parseSessionID(sessionID))) {
                 LoggerBundle.getDefaultLogger().info("A request with path '{}' was refused. Bad sessionID.", containerRequest.getPath());
                 rejectRequest();
             }
@@ -58,7 +58,7 @@ public class AuthRequestFilter implements ContainerRequestFilter {
         if ("DELETE".equals(containerRequest.getMethod())) {
             // Delete item ==> DELETE /items/:id
             if (containerRequest.getPath().matches("items/\\d+")
-                    && !ClientSessionManager.getInstance().checkSession(AuthUtils.parseSessionID(sessionID))) {
+                    && !ClientSessionManager.getInstance().checkSession(DigestUtils.parseSessionID(sessionID))) {
                 LoggerBundle.getDefaultLogger().info("A request with path '{}' was refused. Bad sessionID.", containerRequest.getPath());
                 rejectRequest();
             }

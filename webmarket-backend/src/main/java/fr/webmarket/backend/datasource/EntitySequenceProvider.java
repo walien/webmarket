@@ -18,9 +18,9 @@ package fr.webmarket.backend.datasource;
 
 public interface EntitySequenceProvider {
 
-    int getNewItemId();
+    String getNewItemId();
 
-    int getNewTagId();
+    String getNewTagId();
 
-    int getNewOrderId();
+    String getNewOrderId();
 }

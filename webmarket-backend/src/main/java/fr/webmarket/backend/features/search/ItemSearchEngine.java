@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class ItemSearchEngine {
 
-    public List<Item> searchFor(Map<Integer, Item> catalog,
+    public List<Item> searchFor(Map<String, Item> catalog,
                                 List<ISearchCriterion> criteria, SearchStrategy globalStrategy) {
 
         List<Item> result = Lists.newArrayList();

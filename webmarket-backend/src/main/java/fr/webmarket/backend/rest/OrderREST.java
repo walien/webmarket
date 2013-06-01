@@ -16,12 +16,12 @@
 
 package fr.webmarket.backend.rest;
 
-import fr.webmarket.backend.auth.AuthUtils;
 import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.Order;
 import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.UserRole;
+import fr.webmarket.backend.utils.DigestUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -34,23 +34,23 @@ public class OrderREST {
     @GET
     public List<Order> getAllOrders(@QueryParam("sessionID") String sessionID) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return Collections.EMPTY_LIST;
         }
-        return DataSourcesBundle.getDefaultDataSource().getOrders().values().asList();
+        return DataSourcesBundle.getDataSource().getOrders().values().asList();
     }
 
     @GET
     @Path("{order-id}")
     public Order getOrder(@QueryParam("sessionID") String sessionID,
-                          @PathParam("order-id") int orderID) {
+                          @PathParam("order-id") String orderID) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.ADMIN)) {
             return null;
         }
-        return DataSourcesBundle.getDefaultDataSource().getOrder(orderID);
+        return DataSourcesBundle.getDataSource().getOrder(orderID);
     }
 
     @POST
@@ -58,11 +58,11 @@ public class OrderREST {
     public ResponseWrapper doOrder(@QueryParam("sessionID") String sessionID,
                                    Order order) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(AuthUtils.parseSessionID(sessionID),
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
                 UserRole.CUSTOMER)) {
             return new ResponseWrapper().setStatus(false);
         }
-        return new ResponseWrapper().setStatus(DataSourcesBundle.getDefaultDataSource()
+        return new ResponseWrapper().setStatus(DataSourcesBundle.getDataSource()
                 .addOrder(order));
     }
 

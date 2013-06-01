@@ -17,12 +17,16 @@
 package fr.webmarket.backend.model;
 
 import com.google.common.collect.Sets;
+import org.jongo.marshall.jackson.oid.Id;
+import org.jongo.marshall.jackson.oid.ObjectId;
 
 import java.util.Set;
 
 public class Item {
 
-    private int id;
+    @Id
+    @ObjectId
+    private String id;
     private String name;
     private String brand;
     private String description;
@@ -34,14 +38,9 @@ public class Item {
         this("", "", "", 0);
     }
 
-    public Item(String name, String brand, String description, double price) {
-        this(-1, name, brand, description, price);
-    }
-
-    public Item(int id, String name, String brand, String description,
+    public Item(String name, String brand, String description,
                 double price) {
         super();
-        this.id = id;
         this.name = name;
         this.brand = brand;
         this.description = description;
@@ -49,11 +48,11 @@ public class Item {
         this.tags = Sets.newHashSet();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -113,25 +112,19 @@ public class Item {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
-    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Item other = (Item) obj;
-        if (id != other.id)
-            return false;
+        Item item = (Item) o;
+
+        if (!id.equals(item.id)) return false;
+
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

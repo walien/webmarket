@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.webmarket.backend.datasource.impl;
+package fr.webmarket.backend.datasource.providers;
 
 import fr.webmarket.backend.datasource.EntitySequenceProvider;
 
@@ -26,15 +26,15 @@ public class MemoryEntitySequenceProvider implements EntitySequenceProvider {
 
     private static int ORDER_ENTITY_SEQUENCE = 1000;
 
-    public int getNewItemId() {
-        return ++ITEM_ENTITY_SEQUENCE;
+    public String getNewItemId() {
+        return Integer.toString(++ITEM_ENTITY_SEQUENCE);
     }
 
-    public int getNewTagId() {
-        return ++TAG_ENTITY_SEQUENCE;
+    public String getNewTagId() {
+        return Integer.toString(++TAG_ENTITY_SEQUENCE);
     }
 
-    public int getNewOrderId() {
-        return ++ORDER_ENTITY_SEQUENCE;
+    public String getNewOrderId() {
+        return Integer.toString(++ORDER_ENTITY_SEQUENCE);
     }
 }

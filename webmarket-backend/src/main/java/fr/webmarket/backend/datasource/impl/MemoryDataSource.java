@@ -32,9 +32,9 @@ import java.util.*;
 public class MemoryDataSource implements DataSource {
 
     private final Map<String, User> users;
-    private final Map<Integer, ItemTag> tags;
-    private final Map<Integer, Item> items;
-    private final Map<Integer, Order> orders;
+    private final Map<String, ItemTag> tags;
+    private final Map<String, Item> items;
+    private final Map<String, Order> orders;
     private final EntitySequenceProvider sequences;
 
     public MemoryDataSource(EntitySequenceProvider sequenceProvider) {
@@ -44,6 +44,11 @@ public class MemoryDataSource implements DataSource {
         this.orders = Maps.newHashMap();
         this.sequences = sequenceProvider;
         initMockData();
+    }
+
+    @Override
+    public EntitySequenceProvider getEntitySequenceProvider() {
+        return this.sequences;
     }
 
     private void initMockData() {
@@ -153,12 +158,12 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public ImmutableMap<Integer, Item> getItems() {
-        return ImmutableMap.<Integer, Item>builder().putAll(this.items).build();
+    public ImmutableMap<String, Item> getItems() {
+        return ImmutableMap.<String, Item>builder().putAll(this.items).build();
     }
 
     @Override
-    public Item getItem(int id) {
+    public Item getItem(String id) {
         return items.get(id);
     }
 
@@ -171,13 +176,13 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public boolean removeItem(int id) {
+    public boolean removeItem(String id) {
         LoggerBundle.getDefaultLogger().debug("Removing the item {} from the data source.", id);
         return items.remove(id) != null;
     }
 
     @Override
-    public boolean updateItem(int id, Item newItem) {
+    public boolean updateItem(String id, Item newItem) {
         LoggerBundle.getDefaultLogger().debug("Updating the item {} (new: {}).", id, newItem);
         Item item = items.get(id);
         if (item == null || newItem.getId() != id) {
@@ -199,12 +204,12 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public ImmutableMap<Integer, ItemTag> getItemTags() {
-        return ImmutableMap.<Integer, ItemTag>builder().putAll(this.tags).build();
+    public ImmutableMap<String, ItemTag> getItemTags() {
+        return ImmutableMap.<String, ItemTag>builder().putAll(this.tags).build();
     }
 
     @Override
-    public ItemTag getItemTag(int id) {
+    public ItemTag getItemTag(String id) {
         return tags.get(id);
     }
 
@@ -217,7 +222,7 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public boolean removeItemTag(int id) {
+    public boolean removeItemTag(String id) {
         LoggerBundle.getDefaultLogger().debug("Removing the tag {} from the data source.", id);
         ItemTag tag = tags.remove(id);
         if (tag == null) {
@@ -231,7 +236,7 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public boolean updateItemTag(int id, ItemTag newTag) {
+    public boolean updateItemTag(String id, ItemTag newTag) {
         LoggerBundle.getDefaultLogger().debug("Updating the tag {} (new: {}).", id, newTag);
         // Full update on the object
         ItemTag old = tags.get(id);
@@ -293,12 +298,12 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public ImmutableMap<Integer, Order> getOrders() {
-        return ImmutableMap.<Integer, Order>builder().putAll(this.orders).build();
+    public ImmutableMap<String, Order> getOrders() {
+        return ImmutableMap.<String, Order>builder().putAll(this.orders).build();
     }
 
     @Override
-    public Order getOrder(int id) {
+    public Order getOrder(String id) {
         return this.orders.get(id);
     }
 
@@ -311,13 +316,13 @@ public class MemoryDataSource implements DataSource {
     }
 
     @Override
-    public boolean updateOrder(int id, Order order) {
+    public boolean updateOrder(String id, Order order) {
         LoggerBundle.getDefaultLogger().debug("Updating the order {} (new: {}).", id, order);
         return orders.put(id, order) != null;
     }
 
     @Override
-    public boolean removeOrder(int id) {
+    public boolean removeOrder(String id) {
         LoggerBundle.getDefaultLogger().debug("Removing the order {} from the data source.", id);
         return orders.remove(id) != null;
     }

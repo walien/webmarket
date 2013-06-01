@@ -16,12 +16,17 @@
 
 package fr.webmarket.backend.model;
 
+import org.jongo.marshall.jackson.oid.Id;
+import org.jongo.marshall.jackson.oid.ObjectId;
+
 import java.util.Date;
 import java.util.List;
 
 public class Order {
 
-    private int id;
+    @Id
+    @ObjectId
+    private String id;
 
     private Date date;
 
@@ -34,17 +39,16 @@ public class Order {
     }
 
     public Order(Date date, User user, List<OrderLine> lines) {
-        this.id = -1;
         this.date = date;
         this.user = user;
         this.lines = lines;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -70,6 +74,23 @@ public class Order {
 
     public void setLines(List<OrderLine> lines) {
         this.lines = lines;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        if (!id.equals(order.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
     @Override

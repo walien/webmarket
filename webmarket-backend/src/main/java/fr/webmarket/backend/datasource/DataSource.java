@@ -26,33 +26,35 @@ public interface DataSource {
 
     String dumpData();
 
+    EntitySequenceProvider getEntitySequenceProvider();
+
     // ///////////////////////////
     // ITEMS
     // ///////////////////////////
 
-    ImmutableMap<Integer, Item> getItems();
+    ImmutableMap<String, Item> getItems();
 
-    Item getItem(int id);
+    Item getItem(String id);
 
     boolean addItem(Item item);
 
-    boolean removeItem(int id);
+    boolean removeItem(String id);
 
-    boolean updateItem(int id, Item item);
+    boolean updateItem(String id, Item item);
 
     // ///////////////////////////
     // TAGS
     // ///////////////////////////
 
-    ImmutableMap<Integer, ItemTag> getItemTags();
+    ImmutableMap<String, ItemTag> getItemTags();
 
-    ItemTag getItemTag(int id);
+    ItemTag getItemTag(String id);
 
     boolean addItemTag(ItemTag tag);
 
-    boolean removeItemTag(int id);
+    boolean removeItemTag(String id);
 
-    boolean updateItemTag(int id, ItemTag tag);
+    boolean updateItemTag(String id, ItemTag tag);
 
     // ///////////////////////////
     // USERS
@@ -72,14 +74,14 @@ public interface DataSource {
     // ORDERS
     // ///////////////////////////
 
-    ImmutableMap<Integer, Order> getOrders();
+    ImmutableMap<String, Order> getOrders();
 
-    Order getOrder(int id);
+    Order getOrder(String id);
 
     boolean addOrder(Order order);
 
-    boolean updateOrder(int id, Order order);
+    boolean updateOrder(String id, Order order);
 
-    boolean removeOrder(int id);
+    boolean removeOrder(String id);
 
 }
