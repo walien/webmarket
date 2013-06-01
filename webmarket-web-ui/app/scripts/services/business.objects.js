@@ -71,7 +71,7 @@ angular.module(webmarketServicesModule).
     });
 
 angular.module(webmarketServicesModule).
-    factory('Cart', function ($resource, Session) {
+    factory('Cart', function () {
 
         // Load the cart
         var _cart = localStorage.getItem('cart');

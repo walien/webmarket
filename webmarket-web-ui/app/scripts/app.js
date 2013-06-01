@@ -69,6 +69,10 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 templateUrl: 'views/admin/logout.html',
                 controller: 'LogoutCtrl'
             })
+            .when('/items', {
+                templateUrl: 'views/item/items.html',
+                controller: 'ItemsCtrl'
+            })
             .when('/items/:id/details', {
                 templateUrl: 'views/item/details.html',
                 controller: 'ItemDetailsCtrl'
@@ -82,10 +86,6 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 templateUrl: 'views/admin/item.edit.html',
                 controller: 'ItemEditorCtrl',
                 redirectTo: checkAdminRights
-            })
-            .when('/items', {
-                templateUrl: 'views/item/items.html',
-                controller: 'ItemsCtrl'
             })
             .when('/users/:username/edit', {
                 templateUrl: 'views/admin/user.edit.html',

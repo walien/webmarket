@@ -1,47 +1,33 @@
-<!-- Header -->
-<div ng-include src="'views/header.html'"></div>
+<div id="webmarket-content">
 
-<!-- Content -->
-<div class="container-fluid">
-    <div class="row-fluid">
-        <!-- Navigation Bar (Left-Side) -->
-        <div ng-include src="'views/navigation.html'"></div>
+    <b>{{fromNow()}}</b> - {{cart.user.firstName}} {{cart.user.lastName}} ({{cart.user.email}})
 
-        <!-- Main Container -->
-        <div id="webmarket-content" class="span10">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="line in cart.lines">
+            <td>{{line.item.id}}</td>
+            <td><a href="" ng-click="showItemDetails(line.item.id)">{{line.item.name}}</a></td>
+            <td>{{line.item.price}} {{'currency' | i18n}}</td>
+            <td>{{line.quantity}}</td>
+            <td>
+                <button class="btn btn-mini btn-danger" ng-click="removeItem(line.item)"><i
+                        class="icon-white icon-trash"></i></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-            <b>{{fromNow()}}</b> - {{cart.user.firstName}} {{cart.user.lastName}} ({{cart.user.email}})
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="line in cart.lines">
-                    <td>{{line.item.id}}</td>
-                    <td><a href="" ng-click="showItemDetails(line.item.id)">{{line.item.name}}</a></td>
-                    <td>{{line.item.price}} {{'currency' | i18n}}</td>
-                    <td>{{line.quantity}}</td>
-                    <td>
-                        <button class="btn btn-mini btn-danger" ng-click="removeItem(line.item)"><i
-                                class="icon-white icon-trash"></i></button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <b style="color:red">Total : {{computeTotalAmount()}} {{'currency' | i18n}}</b>
-            </br>
-            <button class="btn btn-success" ng-click="order()" style="margin-top:10px"><i
-                    class="icon-white icon-ok"></i> Order</button>
-        </div>
-
-    </div>
-
+    <b style="color:red">Total : {{computeTotalAmount()}} {{'currency' | i18n}}</b>
+    <br/>
+    <button class="btn btn-success" ng-click="order()" style="margin-top:10px"><i
+            class="icon-white icon-ok"></i> Order</button>
 </div>

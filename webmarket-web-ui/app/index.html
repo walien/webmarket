@@ -33,7 +33,19 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ng-view ng-controller="GlobalCtrl"></div>
+    <div ng-controller="GlobalCtrl">
+        <!-- Header -->
+        <div ng-include src="'views/header.html'"></div>
+        <!-- Page container -->
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <!-- Navigation Bar (Left-Side) -->
+                <div ng-include src="'views/navigation.html'"></div>
+                <!-- Page main content -->
+                <div ng-view class="span10"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Libs -->
     <script src="components/jquery/jquery.min.js"></script>

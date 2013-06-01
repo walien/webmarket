@@ -1,19 +1,7 @@
-<!-- Header -->
-<div ng-include src="'views/header.html'"></div>
+<div id="webmarket-content">
 
-<!-- Content -->
-<div class="container-fluid">
-    <div class="row-fluid">
-        <!-- Navigation Bar (Left-Side) -->
-        <div ng-include src="'views/navigation.html'"></div>
+    <div ng-include src="'partials/item.editor.tmpl.html'"></div>
 
-        <!-- Main Container -->
-        <div id="webmarket-content" class="span10">
-
-            <div ng-include src="'partials/item.editor.tmpl.html'"></div>
-
-            <button class="btn btn-danger" ng-click="redirect('/admin/items')"><i class="icon-white icon-remove"></i> Cancel</button>
-            <button class="btn btn-success" ng-click="saveItem()"><i class="icon-white icon-check"></i> Save</button>
-        </div>
-    </div>
+    <button class="btn btn-danger" ng-click="redirect('/admin/items')"><i class="icon-white icon-remove"></i> Cancel</button>
+    <button class="btn btn-success" ng-click="saveItem()"><i class="icon-white icon-check"></i> Save</button>
 </div>

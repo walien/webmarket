@@ -1,33 +1,21 @@
-<!-- Header -->
-<div ng-include src="'views/header.html'"></div>
+<div id="webmarket-content">
 
-<!-- Content -->
-<div class="container-fluid">
-    <div class="row-fluid">
-        <!-- Navigation Bar (Left-Side) -->
-        <div ng-include src="'views/navigation.html'"></div>
-
-        <!-- Main Container -->
-        <div id="webmarket-content" class="span10">
-
-            <div style="padding-bottom: 20px;">
-                <button class="btn btn-small btn-info" ng-click="redirect('/items')"><i class="icon-arrow-left icon-white"></i></button>
-                <button class="btn btn-small btn-info" ng-click="addToCart()"><i class="icon-white icon-plus-sign" style="margin-right:5px;"></i>Add To Cart</button>
-            </div>
-
-            <img alt='300x200' style='width:100px; float:right;' ng-src='{{item.base64Image}}'>
-            <h1>{{item.name}}</h1>
-            <h3>{{item.brand}}</h3>
-            <h4>Item#{{item.id}}</h4>
-            <p class="hero-unit">
-                {{item.description}}
-            <p>
-                <span ng-repeat="tag in item.tags"
-                      style="margin-right:5px;" class='label label-success'>{{tag.name}}</span>
-            </p>
-            <p>
-                <span class='label label-info' style="font-size: 20px; padding:5px">{{item.price}} {{'currency' | i18n}}</span>
-            </p>
-        </div>
+    <div style="padding-bottom: 20px;">
+        <button class="btn btn-small btn-info" ng-click="redirect('/items')"><i class="icon-arrow-left icon-white"></i></button>
+        <button class="btn btn-small btn-info" ng-click="addToCart()"><i class="icon-white icon-plus-sign" style="margin-right:5px;"></i>Add To Cart</button>
     </div>
+
+    <img alt='300x200' style='width:100px; float:right;' ng-src='{{item.base64Image}}'>
+    <h1>{{item.name}}</h1>
+    <h3>{{item.brand}}</h3>
+    <h4>Item#{{item.id}}</h4>
+    <p class="hero-unit">
+        {{item.description}}
+    <p>
+        <span ng-repeat="tag in item.tags"
+              style="margin-right:5px;" class='label label-success'>{{tag.name}}</span>
+    </p>
+    <p>
+        <span class='label label-info' style="font-size: 20px; padding:5px">{{item.price}} {{'currency' | i18n}}</span>
+    </p>
 </div>

@@ -1,49 +1,39 @@
-<!-- Header -->
-<div ng-include src="'views/header.html'"></div>
+<div id="webmarket-content">
 
-<!-- Content -->
-<div class="container-fluid">
+    <!-- Search bar -->
+    <form class="form-search" style="float:right; margin-bottom:10px;">
+        <label for="search">Search : </label>
+        <input id="search" type="text" class="input-medium search-query" ng-model="query">
+    </form>
+
+    <!-- Items displayed as thumbnail -->
     <div class="row-fluid">
-        <!-- Navigation Bar (Left-Side) -->
-        <div ng-include src="'views/navigation.html'"></div>
+        <div id="items-list">
+            <ul class="thumbnails">
+                <li ng-repeat="item in items | filter:query" style="width:98%">
+                    <div class="thumbnail">
 
-        <!-- Main Container -->
-        <div id="webmarket-content" class="span10">
+                        <img alt='300x200' style='width:100px; float:right;' ng-src='{{item.base64Image}}'>
 
-            <!-- Search bar -->
-            <form class="form-search" style="float:right; margin-bottom:10px;">
-                <label for="search">Search : </label>
-                <input id="search" type="text" class="input-medium search-query" ng-model="query">
-            </form>
+                        <div class=' caption'>
+                            <a href='' ng-click="showItemDetails(item.id)">
+                                <h3>{{item.brand}} - {{item.name}}</h3>
+                            </a>
 
-            <!-- Items displayed as thumbnail -->
-            <div class="row-fluid">
-                <div id="items-list">
-                    <ul class="thumbnails">
-                        <li ng-repeat="item in items | filter:query" style="width:98%">
-                            <div class="thumbnail">
+                            <p>{{item.description}}</p>
 
-                                <img alt='300x200' style='width:100px; float:right;' ng-src='{{item.base64Image}}'>
-
-                                <div class=' caption'>
-                                    <a href='' ng-click="showItemDetails(item.id)">
-                                        <h3>{{item.brand}} - {{item.name}}</h3>
-                                    </a>
-                                    <p>{{item.description}}</p>
-
-                                    <p>
+                            <p>
                                         <span ng-repeat="tag in item.tags"
                                               style="margin-right:5px;" class='label label-success'>{{tag.name}}</span>
-                                    </p>
-                                    <p>
-                                        <span class='label label-info'>{{item.price}} {{'currency' | i18n}}</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                            </p>
+
+                            <p>
+                                <span class='label label-info'>{{item.price}} {{'currency' | i18n}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
