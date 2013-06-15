@@ -4,7 +4,7 @@ Webmarket
 A lightweight e-market solution.
 The server side is a Jersey-based REST services set (business logic) & the client side is built on Twitter Bootstrap (for UI components) & AngularJS (for UI logic).
 
-A little preview of an app screen :
+A little preview of app screens :
 
 * Full list of available items : 
 ![ScreenShot](https://raw.github.com/walien/webmarket/master/screenshots/screenshot_full_items_list.png "Desktop Preview")
