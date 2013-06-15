@@ -35,7 +35,7 @@ public class Item {
     private String base64Image;
 
     public Item() {
-        this("", "", "", 0);
+
     }
 
     public Item(String name, String brand, String description,
@@ -106,9 +106,15 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item [id=" + id + ", name=" + name + ", brand=" + brand
-                + ", description=" + description + ", price=" + price
-                + ", tags=" + tags + "]";
+        return "Item{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", brand='" + brand + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", tags=" + tags +
+                ", base64Image='" + base64Image + '\'' +
+                '}';
     }
 
     @Override

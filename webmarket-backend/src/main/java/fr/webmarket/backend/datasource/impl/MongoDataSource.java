@@ -16,6 +16,7 @@
 
 package fr.webmarket.backend.datasource.impl;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -179,11 +180,16 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public String dumpData() {
-        return null;
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n* Users : \n\t - ").append(Joiner.on("\n\t - ").join(this.users.find().as(User.class)));
+        builder.append("\n* Tags : \n\t - ").append(Joiner.on("\n\t - ").join(this.tags.find().as(ItemTag.class)));
+        builder.append("\n* Items : \n\t - ").append(Joiner.on("\n\t - ").join(this.items.find().as(Item.class)));
+        return builder.toString();
     }
 
     @Override
     public EntitySequenceProvider getEntitySequenceProvider() {
+        // Ids are managed by Mongo DB itself
         return null;
     }
 
@@ -209,22 +215,27 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public boolean removeItem(String id) {
-        return false;
+        return items.remove(new ObjectId(id)) != null;
     }
 
     @Override
     public boolean updateItem(String id, Item item) {
-        return false;
+        return items.update(new ObjectId(id)).merge(item) != null;
     }
 
     @Override
     public ImmutableMap<String, ItemTag> getItemTags() {
-        return null;
+        Iterable<ItemTag> mongoTags = tags.find().as(ItemTag.class);
+        Map<String, ItemTag> tagsMap = new HashMap<String, ItemTag>();
+        for (ItemTag tag : mongoTags) {
+            tagsMap.put(tag.getId(), tag);
+        }
+        return ImmutableMap.<String, ItemTag>builder().putAll(tagsMap).build();
     }
 
     @Override
     public ItemTag getItemTag(String id) {
-        return null;
+        return tags.findOne(new ObjectId(id)).as(ItemTag.class);
     }
 
     @Override
@@ -234,17 +245,22 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public boolean removeItemTag(String id) {
-        return false;
+        return tags.remove(new ObjectId(id)) != null;
     }
 
     @Override
     public boolean updateItemTag(String id, ItemTag tag) {
-        return false;
+        return tags.update(new ObjectId(id)).merge(tag) != null;
     }
 
     @Override
     public ImmutableMap<String, User> getUsers() {
-        return null;
+        Iterable<User> mongoUsers = users.find().as(User.class);
+        Map<String, User> usersMap = new HashMap<String, User>();
+        for (User user : mongoUsers) {
+            usersMap.put(user.getUsername(), user);
+        }
+        return ImmutableMap.<String, User>builder().putAll(usersMap).build();
     }
 
     @Override
@@ -261,22 +277,27 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public boolean updateUser(String username, User user) {
-        return false;
+        return users.update("{username: #}", username).merge(user) != null;
     }
 
     @Override
     public boolean removeUser(String username) {
-        return false;
+        return users.remove("{username: #}", username) != null;
     }
 
     @Override
     public ImmutableMap<String, Order> getOrders() {
-        return null;
+        Iterable<Order> mongoOrders = orders.find().as(Order.class);
+        Map<String, Order> ordersMap = new HashMap<String, Order>();
+        for (Order order : mongoOrders) {
+            ordersMap.put(order.getId(), order);
+        }
+        return ImmutableMap.<String, Order>builder().putAll(ordersMap).build();
     }
 
     @Override
     public Order getOrder(String id) {
-        return null;
+        return orders.findOne(new ObjectId(id)).as(Order.class);
     }
 
     @Override
@@ -286,13 +307,11 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public boolean updateOrder(String id, Order order) {
-        return false;
+        return orders.update(new ObjectId(id)).merge(order) != null;
     }
 
     @Override
     public boolean removeOrder(String id) {
-        return false;
+        return orders.remove(new ObjectId(id)) != null;
     }
-
-
 }

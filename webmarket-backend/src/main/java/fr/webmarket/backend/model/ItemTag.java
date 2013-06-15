@@ -86,7 +86,10 @@ public class ItemTag {
 
     @Override
     public String toString() {
-        return "ItemTag [name=" + name + "]";
+        return "ItemTag{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", parent=" + parent +
+                '}';
     }
-
 }
