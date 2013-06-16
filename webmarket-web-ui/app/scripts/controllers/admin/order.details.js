@@ -24,8 +24,4 @@ angular.module(webmarketUIModule)
         $scope.prettyDate = function (date) {
             return moment(date).calendar();
         };
-
-        $scope.computeTotalAmount = function (order) {
-            return Order.computeTotalAmount(order);
-        };
     });

@@ -25,10 +25,6 @@ angular.module(webmarketUIModule)
             return moment($scope.cart.date).calendar();
         };
 
-        $scope.computeTotalAmount = function () {
-            return Cart.computeTotalAmount($scope.cart);
-        };
-
         $scope.showItemDetails = function (id) {
             $location.path("/items/" + id + "/details");
         };

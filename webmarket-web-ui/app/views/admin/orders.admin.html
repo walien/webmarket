@@ -27,7 +27,7 @@
                     <td>{{order.id}}</td>
                     <td>{{prettyDate(order.date)}}</td>
                     <td>{{order.user.username}} ({{order.user.firstName}} {{order.user.lastName}})</td>
-                    <td>{{computeTotalAmount(order)}} {{'currency' | i18n}}</td>
+                    <td>{{order.amount}} {{'currency' | i18n}}</td>
                     <td>
                         <button class="btn btn-mini btn-info" ng-click="redirect('/orders/' + order.id + '/details')"><i class="icon-white icon-eye-open"></i></button>
                     </td>

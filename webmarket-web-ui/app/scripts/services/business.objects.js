@@ -71,18 +71,29 @@ angular.module(webmarketServicesModule).
     });
 
 angular.module(webmarketServicesModule).
-    factory('Cart', function () {
+    factory('Cart', function ($resource) {
+
+        // REST Backend methods
+        var Cart = $resource('/rest/cart/:action', {action: '@action'}, {
+            _computeTotalAmount: {method: 'POST', params: {action: 'computeAmount'}}
+        });
 
         // Load the cart
         var _cart = localStorage.getItem('cart');
 
         // Business methods
-        var Cart = {
+        Cart = angular.extend(Cart, {
             get: function () {
                 return _cart;
             },
+            computeTotalAmount: function (fct) {
+                return Cart._computeTotalAmount({}, {lines: _cart.lines, coupons: _cart.coupons}, fct);
+            },
             save: function () {
-                localStorage.setItem('cart', JSON.stringify(_cart));
+                this.computeTotalAmount(function (response) {
+                    _cart.amount = response.value;
+                    localStorage.setItem('cart', JSON.stringify(_cart));
+                });
             },
             contains: function (item) {
                 var _line = null;
@@ -120,25 +131,15 @@ angular.module(webmarketServicesModule).
                     _cart.user = user;
                 }
                 else {
-                    _cart = {lines: [], user: null, date: new Date()};
+                    _cart = {lines: [], coupons: [], user: null, date: new Date(), amount: 0};
                 }
                 this.save();
             },
             clear: function () {
                 Cart.init();
                 this.save();
-            },
-            computeTotalAmount: function (cart) {
-                if (!cart || !cart.lines) {
-                    return 0;
-                }
-                var amount = 0;
-                $.each(cart.lines, function (index, line) {
-                    amount += line.item.price * line.quantity;
-                });
-                return amount;
             }
-        };
+        });
 
         // Init the cart
         if (_cart != "" && _cart != "null" && _cart != null) {
@@ -176,16 +177,6 @@ angular.module(webmarketServicesModule).
                 return Order._do({
                     sessionID: Session.getID()
                 }, cart, fct);
-            },
-            computeTotalAmount: function (order) {
-                if (!order || !order.lines) {
-                    return 0;
-                }
-                var amount = 0;
-                $.each(order.lines, function (index, line) {
-                    amount += line.item.price * line.quantity;
-                });
-                return amount;
             }
         });
     });
