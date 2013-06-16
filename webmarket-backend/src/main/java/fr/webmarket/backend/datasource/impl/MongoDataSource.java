@@ -20,6 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.mongodb.WriteResult;
 import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.datasource.EntitySequenceProvider;
 import fr.webmarket.backend.log.LoggerBundle;
@@ -38,8 +39,11 @@ import java.util.Map;
 public class MongoDataSource implements DataSource {
 
     public static final String DBNAME = "webmarket";
+    public static final String USERS_COLLECTION_NAME = "users";
+    public static final String ITEMS_COLLECTION_NAME = "items";
+    public static final String TAGS_COLLECTION_NAME = "tags";
+    public static final String ORDERS_COLLECTION_NAME = "orders";
 
-    private MongoClient mongo;
     private DB db;
     private Jongo jongo;
 
@@ -56,18 +60,17 @@ public class MongoDataSource implements DataSource {
 
         // Init connection
         try {
-            this.mongo = new MongoClient();
-            this.db = mongo.getDB(DBNAME);
+            this.db = new MongoClient().getDB(DBNAME);
             this.jongo = new Jongo(db);
         } catch (UnknownHostException e) {
             LoggerBundle.getDefaultLogger().error("Unable to connect the mongo database : {}", e.getMessage());
         }
 
         // Retrieve all collections
-        this.users = jongo.getCollection("users");
-        this.items = jongo.getCollection("items");
-        this.tags = jongo.getCollection("tags");
-        this.orders = jongo.getCollection("orders");
+        this.users = jongo.getCollection(USERS_COLLECTION_NAME);
+        this.items = jongo.getCollection(ITEMS_COLLECTION_NAME);
+        this.tags = jongo.getCollection(TAGS_COLLECTION_NAME);
+        this.orders = jongo.getCollection(ORDERS_COLLECTION_NAME);
 
         // Init mock data
         initMockData();
@@ -189,7 +192,7 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public EntitySequenceProvider getEntitySequenceProvider() {
-        // Ids are managed by Mongo DB itself
+        // Id's are managed by MongoDB itself
         return null;
     }
 
@@ -210,17 +213,38 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public boolean addItem(Item item) {
-        return items.save(item) != null;
+        WriteResult result = items.save(item);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Item '{}' registered !", item.getId());
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while registering the item '{}' !", item.getId());
+            return false;
+        }
     }
 
     @Override
     public boolean removeItem(String id) {
-        return items.remove(new ObjectId(id)) != null;
+        WriteResult result = items.remove(new ObjectId(id));
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Item '{}' removed !", id);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while removing the item '{}' !", id);
+            return false;
+        }
     }
 
     @Override
     public boolean updateItem(String id, Item item) {
-        return items.update(new ObjectId(id)).merge(item) != null;
+        WriteResult result = items.update(new ObjectId(id)).merge(item);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Item '{}' updated !", id);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while updating the item '{}' !", id);
+            return false;
+        }
     }
 
     @Override
@@ -240,17 +264,38 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public boolean addItemTag(ItemTag tag) {
-        return tags.save(tag) != null;
+        WriteResult result = tags.save(tag);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Tag '{}' registered !", tag.getId());
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while registering the tag '{}' !", tag.getId());
+            return false;
+        }
     }
 
     @Override
     public boolean removeItemTag(String id) {
-        return tags.remove(new ObjectId(id)) != null;
+        WriteResult result = tags.remove(new ObjectId(id));
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Tag '{}' removed !", id);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while removing the tag '{}' !", id);
+            return false;
+        }
     }
 
     @Override
     public boolean updateItemTag(String id, ItemTag tag) {
-        return tags.update(new ObjectId(id)).merge(tag) != null;
+        WriteResult result = tags.update(new ObjectId(id)).merge(tag);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Tag '{}' updated !", id);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while updating the tag '{}' !", id);
+            return false;
+        }
     }
 
     @Override
@@ -272,17 +317,38 @@ public class MongoDataSource implements DataSource {
     public boolean addUser(User u) {
         // Hash the pwd before adding it into the datastore
         u.setPwd(DigestUtils.computeMD5(u.getPwd()));
-        return users.save(u) != null;
+        WriteResult result = users.save(u);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("User '{}' registered !", u.getUsername());
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while registering the user '{}' !", u.getUsername());
+            return false;
+        }
     }
 
     @Override
     public boolean updateUser(String username, User user) {
-        return users.update("{username: #}", username).merge(user) != null;
+        WriteResult result = users.update("{username: #}", username).merge(user);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("User '{}' updated !", username);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while updating the user '{}' !", username);
+            return false;
+        }
     }
 
     @Override
     public boolean removeUser(String username) {
-        return users.remove("{username: #}", username) != null;
+        WriteResult result = users.remove("{username: #}", username);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("User '{}' removed !", username);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while removing the user '{}' !", username);
+            return false;
+        }
     }
 
     @Override
@@ -302,16 +368,37 @@ public class MongoDataSource implements DataSource {
 
     @Override
     public boolean addOrder(Order order) {
-        return orders.save(order) != null;
+        WriteResult result = orders.save(order);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Order '{}' registered !", order.getId());
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while registering the order '{}' !", order.getId());
+            return false;
+        }
     }
 
     @Override
     public boolean updateOrder(String id, Order order) {
-        return orders.update(new ObjectId(id)).merge(order) != null;
+        WriteResult result = orders.update(new ObjectId(id)).merge(order);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Order '{}' updated !", id);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while updating the order '{}' !", id);
+            return false;
+        }
     }
 
     @Override
     public boolean removeOrder(String id) {
-        return orders.remove(new ObjectId(id)) != null;
+        WriteResult result = orders.remove(new ObjectId(id));
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Order '{}' removed !", id);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while removing the order '{}' !", id);
+            return false;
+        }
     }
 }
