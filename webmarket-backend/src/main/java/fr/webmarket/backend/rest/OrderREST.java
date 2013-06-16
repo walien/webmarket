@@ -18,6 +18,7 @@ package fr.webmarket.backend.rest;
 
 import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
+import fr.webmarket.backend.features.commercial.OrderingBusinessUnit;
 import fr.webmarket.backend.model.Order;
 import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.UserRole;
@@ -62,6 +63,10 @@ public class OrderREST {
                 UserRole.CUSTOMER)) {
             return new ResponseWrapper().setStatus(false);
         }
+
+        // Compute total amount
+        order.setAmount(OrderingBusinessUnit.computeTotalAmount(order));
+
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDataSource()
                 .addOrder(order));
     }

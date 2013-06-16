@@ -14,29 +14,10 @@
  * limitations under the License.
  */
 
-package fr.webmarket.backend.model;
+package fr.webmarket.backend.features.commercial;
 
-public class ResponseWrapper {
+public enum CouponType {
 
-    private boolean status;
+    PERCENTAGE, AMOUNT
 
-    private double value;
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public ResponseWrapper setStatus(boolean status) {
-        this.status = status;
-        return this;
-    }
-
-    public double getValue(){
-        return this.value;
-    }
-
-    public ResponseWrapper setValue(double value){
-        this.value = value;
-        return this;
-    }
 }

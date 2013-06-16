@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package fr.webmarket.backend.model;
+package fr.webmarket.backend.rest;
 
-public class ResponseWrapper {
+import fr.webmarket.backend.features.commercial.OrderingBusinessUnit;
+import fr.webmarket.backend.model.Order;
+import fr.webmarket.backend.model.ResponseWrapper;
 
-    private boolean status;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
-    private double value;
+@Path("/cart")
+public class CartREST {
 
-    public boolean getStatus() {
-        return status;
-    }
-
-    public ResponseWrapper setStatus(boolean status) {
-        this.status = status;
-        return this;
-    }
-
-    public double getValue(){
-        return this.value;
-    }
-
-    public ResponseWrapper setValue(double value){
-        this.value = value;
-        return this;
+    @POST
+    @Path("computeAmount")
+    @Consumes("application/json")
+    public ResponseWrapper getCartAmount(Order order) {
+        double amount = OrderingBusinessUnit.computeTotalAmount(order);
+        return new ResponseWrapper().setValue(amount);
     }
 }

@@ -16,6 +16,7 @@
 
 package fr.webmarket.backend.model;
 
+import fr.webmarket.backend.features.commercial.Coupon;
 import org.jongo.marshall.jackson.oid.Id;
 import org.jongo.marshall.jackson.oid.ObjectId;
 
@@ -33,6 +34,10 @@ public class Order {
     private User user;
 
     private List<OrderLine> lines;
+
+    private List<Coupon> coupons;
+
+    private double amount;
 
     public Order() {
 
@@ -74,6 +79,22 @@ public class Order {
 
     public void setLines(List<OrderLine> lines) {
         this.lines = lines;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public List<Coupon> getCoupons() {
+        return this.coupons;
+    }
+
+    public void setCoupons(List<Coupon> coupons) {
+        this.coupons = coupons;
     }
 
     @Override
