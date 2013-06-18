@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.datasource.EntitySequenceProvider;
+import fr.webmarket.backend.features.commercial.Coupon;
 import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.utils.MarshallingUtils;
 import fr.webmarket.backend.model.*;
@@ -325,6 +326,36 @@ public class MemoryDataSource implements DataSource {
     public boolean removeOrder(String id) {
         LoggerBundle.getDefaultLogger().debug("Removing the order {} from the data source.", id);
         return orders.remove(id) != null;
+    }
+
+    @Override
+    public ImmutableMap<String, Coupon> getCoupons() {
+        return null;
+    }
+
+    @Override
+    public Coupon getCouponByKey(String key) {
+        return null;
+    }
+
+    @Override
+    public Coupon getCouponById(String id) {
+        return null;
+    }
+
+    @Override
+    public boolean addCoupon(Coupon coupon) {
+        return false;
+    }
+
+    @Override
+    public boolean updateCoupon(String id, Coupon coupon) {
+        return false;
+    }
+
+    @Override
+    public boolean removeCoupon(String id) {
+        return false;
     }
 
     @Override

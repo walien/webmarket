@@ -22,6 +22,7 @@ import org.jongo.marshall.jackson.oid.ObjectId;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class Order {
 
@@ -35,7 +36,7 @@ public class Order {
 
     private List<OrderLine> lines;
 
-    private List<Coupon> coupons;
+    private Set<Coupon> coupons;
 
     private double amount;
 
@@ -89,11 +90,11 @@ public class Order {
         this.amount = amount;
     }
 
-    public List<Coupon> getCoupons() {
+    public Set<Coupon> getCoupons() {
         return this.coupons;
     }
 
-    public void setCoupons(List<Coupon> coupons) {
+    public void setCoupons(Set<Coupon> coupons) {
         this.coupons = coupons;
     }
 

@@ -23,6 +23,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.WriteResult;
 import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.datasource.EntitySequenceProvider;
+import fr.webmarket.backend.features.commercial.Coupon;
+import fr.webmarket.backend.features.commercial.CouponType;
 import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.model.*;
 import fr.webmarket.backend.utils.DigestUtils;
@@ -33,6 +35,7 @@ import org.jongo.MongoCollection;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +46,7 @@ public class MongoDataSource implements DataSource {
     public static final String ITEMS_COLLECTION_NAME = "items";
     public static final String TAGS_COLLECTION_NAME = "tags";
     public static final String ORDERS_COLLECTION_NAME = "orders";
+    public static final String COUPONS_COLLECTION_NAME = "coupons";
 
     private DB db;
     private Jongo jongo;
@@ -51,6 +55,7 @@ public class MongoDataSource implements DataSource {
     private MongoCollection items;
     private MongoCollection tags;
     private MongoCollection orders;
+    private MongoCollection coupons;
 
     public MongoDataSource() {
         init();
@@ -71,6 +76,7 @@ public class MongoDataSource implements DataSource {
         this.items = jongo.getCollection(ITEMS_COLLECTION_NAME);
         this.tags = jongo.getCollection(TAGS_COLLECTION_NAME);
         this.orders = jongo.getCollection(ORDERS_COLLECTION_NAME);
+        this.coupons = jongo.getCollection(COUPONS_COLLECTION_NAME);
 
         // Init mock data
         initMockData();
@@ -176,6 +182,10 @@ public class MongoDataSource implements DataSource {
         addItem(item8);
         addItem(item9);
         addItem(item10);
+
+        // 3. Coupons
+        addCoupon(new Coupon("VAISSELLE", CouponType.AMOUNT, 20, Collections.EMPTY_LIST));
+        addCoupon(new Coupon("HIFI", CouponType.PERCENTAGE, 25, Collections.EMPTY_LIST));
 
         // Print the content of the data store
         LoggerBundle.getDefaultLogger().info("Data store " + this.getClass().getSimpleName() + " : " + dumpData());
@@ -398,6 +408,62 @@ public class MongoDataSource implements DataSource {
             return true;
         } else {
             LoggerBundle.getDefaultLogger().debug("Error while removing the order '{}' !", id);
+            return false;
+        }
+    }
+
+    @Override
+    public ImmutableMap<String, Coupon> getCoupons() {
+        Iterable<Coupon> mongoCoupons = coupons.find().as(Coupon.class);
+        Map<String, Coupon> couponsMap = new HashMap<String, Coupon>();
+        for (Coupon coupon : mongoCoupons) {
+            couponsMap.put(coupon.getId(), coupon);
+        }
+        return ImmutableMap.<String, Coupon>builder().putAll(couponsMap).build();
+    }
+
+    @Override
+    public Coupon getCouponByKey(String key) {
+        return coupons.findOne("{key: #}", key).as(Coupon.class);
+    }
+
+    @Override
+    public Coupon getCouponById(String id) {
+        return coupons.findOne(new ObjectId(id)).as(Coupon.class);
+    }
+
+    @Override
+    public boolean addCoupon(Coupon coupon) {
+        WriteResult result = coupons.save(coupon);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Coupon '{}' registered!", coupon.getId());
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while registering the coupon '{}' !", coupon.getId());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateCoupon(String id, Coupon coupon) {
+        WriteResult result = coupons.update(new ObjectId(id)).merge(coupon);
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Coupon '{}' updated!", coupon.getId());
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while updating the coupon '{}' !", coupon.getId());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean removeCoupon(String id) {
+        WriteResult result = coupons.remove(new ObjectId(id));
+        if (result.getError() == null) {
+            LoggerBundle.getDefaultLogger().debug("Coupon '{}' updated!", id);
+            return true;
+        } else {
+            LoggerBundle.getDefaultLogger().debug("Error while removing the coupon '{}' !", id);
             return false;
         }
     }

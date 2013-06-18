@@ -17,21 +17,50 @@
 package fr.webmarket.backend.features.commercial;
 
 import fr.webmarket.backend.model.Item;
+import org.jongo.marshall.jackson.oid.Id;
+import org.jongo.marshall.jackson.oid.ObjectId;
 
 import java.util.List;
 
 public class Coupon {
 
+    @Id
+    @ObjectId
+    private String id;
+
+    private String key;
+
     private CouponType type;
 
     private double amount;
 
-    private List<Item> concernedItem;
+    private List<Item> concernedItems;
 
-    public Coupon(CouponType type, double amount, List<Item> concernedItem) {
+    public Coupon() {
+
+    }
+
+    public Coupon(String key, CouponType type, double amount, List<Item> concernedItems) {
+        this.key = key;
         this.type = type;
         this.amount = amount;
-        this.concernedItem = concernedItem;
+        this.concernedItems = concernedItems;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public CouponType getType() {
@@ -50,20 +79,39 @@ public class Coupon {
         this.amount = amount;
     }
 
-    public List<Item> getConcernedItem() {
-        return concernedItem;
+    public List<Item> getConcernedItems() {
+        return concernedItems;
     }
 
-    public void setConcernedItem(List<Item> concernedItem) {
-        this.concernedItem = concernedItem;
+    public void setConcernedItems(List<Item> concernedItems) {
+        this.concernedItems = concernedItems;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coupon coupon = (Coupon) o;
+
+        if (!id.equals(coupon.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
     @Override
     public String toString() {
         return "Coupon{" +
-                "type=" + type +
+                "id='" + id + '\'' +
+                ", key='" + key + '\'' +
+                ", type=" + type +
                 ", amount=" + amount +
-                ", concernedItem=" + concernedItem +
+                ", concernedItems=" + concernedItems +
                 '}';
     }
 }

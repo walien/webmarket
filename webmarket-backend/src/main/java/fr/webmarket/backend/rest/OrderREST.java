@@ -19,6 +19,7 @@ package fr.webmarket.backend.rest;
 import fr.webmarket.backend.auth.ClientSessionManager;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.features.commercial.OrderingBusinessUnit;
+import fr.webmarket.backend.model.Cart;
 import fr.webmarket.backend.model.Order;
 import fr.webmarket.backend.model.ResponseWrapper;
 import fr.webmarket.backend.model.UserRole;
@@ -27,7 +28,9 @@ import fr.webmarket.backend.utils.DigestUtils;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Path("/orders")
 public class OrderREST {
@@ -57,15 +60,21 @@ public class OrderREST {
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public ResponseWrapper doOrder(@QueryParam("sessionID") String sessionID,
-                                   Order order) {
+                                   Cart cart) {
 
-        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
+        UUID sessID = DigestUtils.parseSessionID(sessionID);
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(sessID,
                 UserRole.CUSTOMER)) {
             return new ResponseWrapper().setStatus(false);
         }
 
-        // Compute total amount
-        order.setAmount(OrderingBusinessUnit.computeTotalAmount(order));
+        // Build order from cart
+        Order order = new Order();
+        order.setDate(new Date());
+        order.setUser(ClientSessionManager.getInstance().getUserFromSession(sessID));
+        order.setLines(cart.getLines());
+        order.setCoupons(OrderingBusinessUnit.resolveCartCoupons(cart));
+        order.setAmount(OrderingBusinessUnit.computeTotalAmount(order.getLines(), order.getCoupons()));
 
         return new ResponseWrapper().setStatus(DataSourcesBundle.getDataSource()
                 .addOrder(order));

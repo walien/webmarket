@@ -17,6 +17,7 @@
 package fr.webmarket.backend.datasource;
 
 import com.google.common.collect.ImmutableMap;
+import fr.webmarket.backend.features.commercial.Coupon;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.Order;
@@ -83,5 +84,21 @@ public interface DataSource {
     boolean updateOrder(String id, Order order);
 
     boolean removeOrder(String id);
+
+    // ///////////////////////////
+    // COUPONS
+    // ///////////////////////////
+
+    ImmutableMap<String, Coupon> getCoupons();
+
+    Coupon getCouponByKey(String key);
+
+    Coupon getCouponById(String id);
+
+    boolean addCoupon(Coupon coupon);
+
+    boolean updateCoupon(String id, Coupon coupon);
+
+    boolean removeCoupon(String id);
 
 }

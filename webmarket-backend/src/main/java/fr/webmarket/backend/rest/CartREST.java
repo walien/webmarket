@@ -16,22 +16,31 @@
 
 package fr.webmarket.backend.rest;
 
+import fr.webmarket.backend.features.commercial.Coupon;
 import fr.webmarket.backend.features.commercial.OrderingBusinessUnit;
-import fr.webmarket.backend.model.Order;
-import fr.webmarket.backend.model.ResponseWrapper;
+import fr.webmarket.backend.model.Cart;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import java.util.Set;
 
 @Path("/cart")
 public class CartREST {
 
     @POST
-    @Path("computeAmount")
+    @Path("compute")
     @Consumes("application/json")
-    public ResponseWrapper getCartAmount(Order order) {
-        double amount = OrderingBusinessUnit.computeTotalAmount(order);
-        return new ResponseWrapper().setValue(amount);
+    public Cart computeCart(Cart cart) {
+
+        // Compute
+        Set<Coupon> coupons = OrderingBusinessUnit.resolveCartCoupons(cart);
+        double amount = OrderingBusinessUnit.computeTotalAmount(cart.getLines(), coupons);
+
+        // Enrich cart data
+        cart.setAmount(amount);
+        cart.setCoupons(coupons);
+
+        return cart;
     }
 }
