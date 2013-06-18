@@ -43,7 +43,16 @@ angular.module(webmarketUIModule)
         };
 
         $scope.applyCoupon = function () {
-            $scope.cart.couponsKeys.push($scope.newCoupon);
+            if ($scope.cart.couponsKeys.indexOf($scope.newCoupon) != -1) {
+                return;
+            }
+            $scope.cart.couponsKeys.push(angular.copy($scope.newCoupon));
+            $scope.newCoupon = null;
+            $scope.compute();
+        };
+
+        $scope.removeCoupon = function (index) {
+            $scope.cart.couponsKeys.splice(index, 1);
             $scope.compute();
         };
 

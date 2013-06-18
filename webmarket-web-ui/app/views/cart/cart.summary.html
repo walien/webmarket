@@ -44,11 +44,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="coupon in cart.coupons" ng-switch="coupon.type">
+        <tr ng-repeat="coupon in cart.coupons">
             <td>{{coupon.key}}</td>
             <td>{{coupon.type}}</td>
-            <td ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</td>
-            <td ng-switch-when="AMOUNT">-{{coupon.amount}} {{'currency' | i18n}}</td>
+            <td ng-switch="coupon.type">
+                <span ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</span>
+                <span ng-switch-when="AMOUNT">-{{coupon.amount}} {{'currency' | i18n}}</span>
+            </td>
+            <td>
+                <button class="btn btn-danger btn-mini" ng-click="removeCoupon($index)"><i class="icon-white icon-trash"></i></button>
+            </td>
         </tr>
         </tbody>
     </table>
