@@ -75,7 +75,7 @@ angular.module(webmarketServicesModule).
 
         // REST Backend methods
         var Cart = $resource('/rest/cart/:action', {action: '@action'}, {
-            _computeTotalAmount: {method: 'POST', params: {action: 'computeAmount'}}
+            _compute: {method: 'POST', params: {action: 'compute'}}
         });
 
         // Load the cart
@@ -86,14 +86,11 @@ angular.module(webmarketServicesModule).
             get: function () {
                 return _cart;
             },
-            computeTotalAmount: function (fct) {
-                return Cart._computeTotalAmount({}, {lines: _cart.lines, coupons: _cart.coupons}, fct);
+            compute: function (fct) {
+                return Cart._compute({}, _cart, fct);
             },
             save: function () {
-                this.computeTotalAmount(function (response) {
-                    _cart.amount = response.value;
-                    localStorage.setItem('cart', JSON.stringify(_cart));
-                });
+                localStorage.setItem('cart', JSON.stringify(_cart));
             },
             contains: function (item) {
                 var _line = null;
@@ -128,11 +125,9 @@ angular.module(webmarketServicesModule).
             },
             init: function (user) {
                 if (user) {
-                    _cart.user = user;
+                    return;
                 }
-                else {
-                    _cart = {lines: [], coupons: [], user: null, date: new Date(), amount: 0};
-                }
+                _cart = {lines: [], couponsKeys: [], coupons: [], amount: 0};
                 this.save();
             },
             clear: function () {

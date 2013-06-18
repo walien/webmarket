@@ -19,10 +19,12 @@
 angular.module(webmarketUIModule)
     .controller('CartSummaryCtrl', function ($scope, $location, Cart, Order, Notification) {
 
-        $scope.cart = Cart.get();
-
-        $scope.fromNow = function () {
-            return moment($scope.cart.date).calendar();
+        $scope.compute = function () {
+            Cart.compute(function (cart) {
+                $scope.cart.amount = cart.amount;
+                $scope.cart.coupons = cart.coupons;
+                Cart.save();
+            });
         };
 
         $scope.showItemDetails = function (id) {
@@ -31,6 +33,7 @@ angular.module(webmarketUIModule)
 
         $scope.removeItem = function (item) {
             Cart.removeItem(item);
+            $scope.compute();
         };
 
         $scope.order = function () {
@@ -38,5 +41,13 @@ angular.module(webmarketUIModule)
                 Notification.success("Success", "Ordering : done !");
             });
         };
+
+        $scope.applyCoupon = function () {
+            $scope.cart.couponsKeys.push($scope.newCoupon);
+            $scope.compute();
+        };
+
+        $scope.cart = Cart.get();
+        $scope.compute();
     });
 

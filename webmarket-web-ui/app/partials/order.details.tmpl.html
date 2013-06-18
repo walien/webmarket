@@ -61,6 +61,32 @@
     </div>
 
     <div class="control-group">
+        <label class="control-label" for="date">Coupons </label>
+
+        <div class="controls">
+            <br/>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="coupon in order.coupons" ng-switch="coupon.type">
+                    <td>{{coupon.key}}</td>
+                    <td>{{coupon.type}}</td>
+                    <td ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</td>
+                    <td ng-switch-when="AMOUNT">-{{coupon.amount}} {{'currency' | i18n}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="control-group">
         <label class="control-label" for="amount">Amount </label>
 
         <div class="controls">
