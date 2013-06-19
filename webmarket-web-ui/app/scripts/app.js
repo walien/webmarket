@@ -122,6 +122,11 @@ angular.module(webmarketUIModule, ['webmarket.services', 'webmarket.filters'])
                 controller: 'OrdersAdminCtrl',
                 redirectTo: checkAdminRights
             })
+            .when('/admin/coupons', {
+                templateUrl: 'views/admin/coupons.admin.html',
+                controller: 'CouponsAdminCtrl',
+                redirectTo: checkAdminRights
+            })
             .when('/cart/summary', {
                 templateUrl: 'views/cart/cart.summary.html',
                 controller: 'CartSummaryCtrl',

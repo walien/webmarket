@@ -70,15 +70,21 @@
                 <tr>
                     <th>Key</th>
                     <th>Type</th>
-                    <th>Amount</th>
+                    <th>Concerned items</th>
+                    <th>Discount</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="coupon in order.coupons" ng-switch="coupon.type">
+                <tr ng-repeat="coupon in order.coupons">
                     <td>{{coupon.key}}</td>
                     <td>{{coupon.type}}</td>
-                    <td ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</td>
-                    <td ng-switch-when="AMOUNT">-{{coupon.amount}} {{'currency' | i18n}}</td>
+                    <td>
+                        <a href="" ng-repeat="item in coupon.concernedItems" ng-click="showItemDetails(item.id)">{{item.id}} | </a>
+                    </td>
+                    <td ng-switch="coupon.type">
+                        <span ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</span>
+                        <span ng-switch-when="AMOUNT">-{{coupon.amount}} {{'currency' | i18n}}</span>
+                    </td>
                 </tr>
                 </tbody>
             </table>

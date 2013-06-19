@@ -1,6 +1,6 @@
 <div id="webmarket-content">
 
-    <b>{{username}}'s Cart</b>
+    <h3>{{username}}'s Cart</h3>
 
     <p><b style="text-decoration: underline">Items</b></p>
 
@@ -40,13 +40,18 @@
         <tr>
             <th>Key</th>
             <th>Type</th>
-            <th>Amount</th>
+            <th>Item(s) concerned</th>
+            <th>Discount</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="coupon in cart.coupons">
             <td>{{coupon.key}}</td>
             <td>{{coupon.type}}</td>
+            <td>
+                <a href="" ng-repeat="item in coupon.concernedItems" ng-click="showItemDetails(item.id)">{{item.id}} | </a>
+            </td>
             <td ng-switch="coupon.type">
                 <span ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</span>
                 <span ng-switch-when="AMOUNT">-{{coupon.amount}} {{'currency' | i18n}}</span>
