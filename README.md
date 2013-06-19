@@ -12,10 +12,10 @@ Functionnaly, webmarket provides features such as :
 
 From a technical point of view, webmarket is divided into 2 modules : 
 
-1. Server side : Designed in Java and based on JERSEY (JAX-RS) for the the REST services layer. It provides some persistence support like in-memory or MongoDB 
+1. Server side : Designed in Java and based on JERSEY (JAX-RS) for the the REST services layer. It provides some persistence supports like "In-Memory" or "MongoDB". 
 2. Client side : Built on AngularJS for UI logic & on Twitter Bootstrap for UI components.
 
-The choice of this above technical stack was clearly motivated by my desire to exploit AngularJS in complete application framework. 
+The choice of this above technical stack was clearly motivated by my desire to exploit AngularJS in complete application framework.
 
 Some screens & associated stories :
 
