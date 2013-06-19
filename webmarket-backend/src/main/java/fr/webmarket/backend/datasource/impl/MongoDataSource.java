@@ -35,6 +35,7 @@ import org.jongo.MongoCollection;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -186,6 +187,7 @@ public class MongoDataSource implements DataSource {
         // 3. Coupons
         addCoupon(new Coupon("VAISSELLE", CouponType.AMOUNT, 20, Collections.EMPTY_LIST));
         addCoupon(new Coupon("HIFI", CouponType.PERCENTAGE, 25, Collections.EMPTY_LIST));
+        addCoupon(new Coupon("IPOD", CouponType.PERCENTAGE, 10, Arrays.asList(item3, item9)));
 
         // Print the content of the data store
         LoggerBundle.getDefaultLogger().info("Data store " + this.getClass().getSimpleName() + " : " + dumpData());
@@ -197,6 +199,8 @@ public class MongoDataSource implements DataSource {
         builder.append("\n* Users : \n\t - ").append(Joiner.on("\n\t - ").join(this.users.find().as(User.class)));
         builder.append("\n* Tags : \n\t - ").append(Joiner.on("\n\t - ").join(this.tags.find().as(ItemTag.class)));
         builder.append("\n* Items : \n\t - ").append(Joiner.on("\n\t - ").join(this.items.find().as(Item.class)));
+        builder.append("\n* Orders : \n\t - ").append(Joiner.on("\n\t - ").join(this.orders.find().as(Order.class)));
+        builder.append("\n* Coupons : \n\t - ").append(Joiner.on("\n\t - ").join(this.coupons.find().as(Coupon.class)));
         return builder.toString();
     }
 

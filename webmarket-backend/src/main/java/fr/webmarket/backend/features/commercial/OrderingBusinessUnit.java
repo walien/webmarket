@@ -63,7 +63,7 @@ public class OrderingBusinessUnit {
 
             // Coupute amount and apply specific coupons
             for (final OrderLine line : lines) {
-                amount += line.getItem().getPrice() * line.getQuantity();
+                double lineAmount = line.getItem().getPrice() * line.getQuantity();
                 Collection<Coupon> itemCoupons = Collections2.filter(coupons, new Predicate<Coupon>() {
                     @Override
                     public boolean apply(Coupon coupon) {
@@ -71,8 +71,9 @@ public class OrderingBusinessUnit {
                     }
                 });
                 for (Coupon coupon : itemCoupons) {
-                    applyCoupon(coupon, amount);
+                    lineAmount = applyCoupon(coupon, lineAmount);
                 }
+                amount += lineAmount;
             }
 
             // Apply global coupons
