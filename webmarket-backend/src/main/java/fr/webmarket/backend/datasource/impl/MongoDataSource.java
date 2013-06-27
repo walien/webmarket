@@ -464,7 +464,7 @@ public class MongoDataSource implements DataSource {
     public boolean removeCoupon(String id) {
         WriteResult result = coupons.remove(new ObjectId(id));
         if (result.getError() == null) {
-            LoggerBundle.getDefaultLogger().debug("Coupon '{}' updated!", id);
+            LoggerBundle.getDefaultLogger().debug("Coupon '{}' removed!", id);
             return true;
         } else {
             LoggerBundle.getDefaultLogger().debug("Error while removing the coupon '{}' !", id);

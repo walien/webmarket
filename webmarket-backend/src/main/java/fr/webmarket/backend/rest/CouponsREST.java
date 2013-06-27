@@ -47,7 +47,6 @@ public class CouponsREST {
                 UserRole.ADMIN)) {
             return null;
         }
-
         return DataSourcesBundle.getDataSource().getCouponById(couponID);
     }
 
@@ -61,7 +60,19 @@ public class CouponsREST {
             return new ResponseWrapper().setStatus(false);
         }
         boolean result = DataSourcesBundle.getDataSource().addCoupon(coupon);
+        return new ResponseWrapper().setStatus(result);
+    }
 
+    @DELETE
+    @Path("{coupon-id}")
+    public ResponseWrapper removeCoupon(@QueryParam("sessionID") String sessionID,
+                                        @PathParam("coupon-id") String couponID) {
+
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
+            return new ResponseWrapper().setStatus(false);
+        }
+        boolean result = DataSourcesBundle.getDataSource().removeCoupon(couponID);
         return new ResponseWrapper().setStatus(result);
     }
 }
