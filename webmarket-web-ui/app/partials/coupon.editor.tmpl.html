@@ -39,12 +39,14 @@
             <label class="control-label" for="couponAmount">Amount  </label>
             <div class="controls">
                 <div class="input-append">
-                <input id="couponAmount" class="span4" type="text" ng-model="coupon.amount">
-                <span class="add-on" ng-show="coupon.type == 'AMOUNT'">{{'currency' | i18n}}</span>
-                <span class="add-on" ng-show="coupon.type == 'PERCENTAGE'">%</span>
+                    <input id="couponAmount" class="span4" type="text" ng-model="coupon.amount">
+                    <span class="add-on" ng-switch="coupon.type">
+                        <span ng-switch-when="AMOUNT">{{'currency' | i18n}}</span>
+                        <span ng-switch-when="PERCENTAGE">%</span>
+                        <span ng-switch-default>-</span>
+                    </span>
                 </div>
             </div>
         </div>
     </fieldset>
-
 </form>

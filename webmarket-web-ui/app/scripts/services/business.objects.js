@@ -237,9 +237,9 @@ angular.module(webmarketServicesModule).
                     sessionID: Session.getID()
                 }, fct);
             },
-            save: function (id, coupon, fct) {
+            save: function (coupon, fct) {
                 return Coupon._save({
-                    id: id,
+                    id: coupon.id,
                     sessionID: Session.getID()
                 }, coupon, fct);
             },

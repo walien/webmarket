@@ -22,11 +22,19 @@ angular.module(webmarketUIModule)
         $scope.coupon = {};
         $scope.isEditor = false;
 
-        // Edit mode
         if ($routeParams.couponID) {
             $scope.isEditor = true;
             $scope.coupon = Coupon.get($routeParams.couponID);
         }
 
-
+        $scope.saveCoupon = function () {
+            Coupon.save($scope.coupon, function (response) {
+                if (response.status) {
+                    Notification.info("Success", "Coupon was successfuly saved !");
+                    $scope.redirect('/admin/coupons');
+                } else {
+                    Notification.error("Error", "Error during coupon data changes...");
+                }
+            });
+        };
     });
