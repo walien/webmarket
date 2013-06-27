@@ -30,7 +30,7 @@ angular.module(webmarketUIModule)
         $scope.saveCoupon = function () {
             Coupon.save($scope.coupon, function (response) {
                 if (response.status) {
-                    Notification.info("Success", "Coupon was successfuly saved !");
+                    Notification.success("Success", "Coupon was successfuly saved !");
                     $scope.redirect('/admin/coupons');
                 } else {
                     Notification.error("Error", "Error during coupon data changes...");

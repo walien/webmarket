@@ -21,17 +21,13 @@ angular.module(webmarketUIModule)
 
         $scope.coupons = Coupon.query();
 
-        $scope.addCoupon = function () {
-
-        };
-
         $scope.removeCoupon = function (id) {
             Coupon.remove(id, function (response) {
                 if (response.status == true) {
                     Notification.success("Success", "Coupon " + id + " successfuly removed !");
                     $scope.coupons = Coupon.query();
                 } else {
-                    Notification.success("Error", "An error occured during coupon " + id + " deletion !");
+                    Notification.error("Error", "An error occured during coupon " + id + " deletion !");
                 }
             });
         };
