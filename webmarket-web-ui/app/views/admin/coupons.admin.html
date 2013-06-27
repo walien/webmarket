@@ -18,6 +18,8 @@
 
     <h3>Coupons List</h3>
 
+    <button class="btn btn-success"><i class="icon-white icon-plus"></i> Add coupon</button>
+
     <table class="table table-condensed">
         <thead>
         <tr>
@@ -25,6 +27,7 @@
             <td>Key</td>
             <td>Type</td>
             <td>Discount</td>
+            <td>Actions</td>
         </tr>
         </thead>
         <tr ng-repeat="coupon in coupons">
@@ -32,6 +35,7 @@
             <td>{{coupon.key}}</td>
             <td>{{coupon.type}}</td>
             <td>{{coupon.amount}} {{'currency' | i18n}}</td>
+            <td><button class="btn-mini btn-danger" ng-click="removeCoupon($index)"><i class="icon-white icon-trash"></i></button></td>
         </tr>
     </table>
 

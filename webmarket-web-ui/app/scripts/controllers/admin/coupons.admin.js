@@ -17,8 +17,26 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('CouponsAdminCtrl', function ($scope, $routeParams, $location, Coupon) {
+    .controller('CouponsAdminCtrl', function ($scope, $routeParams, $location, Notification, Coupon) {
 
         $scope.coupons = Coupon.query();
 
+        $scope.addCoupon = function () {
+
+        };
+
+        $scope.removeCoupon = function (index) {
+            var coupon = $scope.coupons[index];
+            if (!coupon) {
+                return;
+            }
+            Coupon.remove(coupon.id, function (response) {
+                if (response.status == true) {
+                    Notification.success("Success", "Coupon successfuly removed !");
+                    $scope.coupons = Coupon.query();
+                } else {
+                    Notification.success("Error", "An error occured during coupon deletion !");
+                }
+            });
+        };
     });
