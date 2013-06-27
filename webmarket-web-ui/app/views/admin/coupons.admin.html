@@ -18,7 +18,7 @@
 
     <h3>Coupons List</h3>
 
-    <button class="btn btn-success"><i class="icon-white icon-plus"></i> Add coupon</button>
+    <button class="btn btn-success" ng-click="redirect('/coupons/new')"><i class="icon-white icon-plus"></i> Add coupon</button>
 
     <table class="table table-condensed">
         <thead>
@@ -34,9 +34,14 @@
             <td>{{coupon.id}}</td>
             <td>{{coupon.key}}</td>
             <td>{{coupon.type}}</td>
-            <td>{{coupon.amount}} {{'currency' | i18n}}</td>
-            <td><button class="btn-mini btn-danger" ng-click="removeCoupon($index)"><i class="icon-white icon-trash"></i></button></td>
+            <td>{{coupon.amount}}
+                <span ng-switch='coupon.type'>
+                    <span ng-switch-when='PERCENTAGE'>%</span>
+                    <span ng-switch-when='AMOUNT'>{{'currency' | i18n}}</span>
+                </span>
+            </td>
+            <td><button class="btn-mini btn-warning" ng-click="redirect('/coupons/' + coupon.id + '/edit')"><i class="icon-white icon-edit"></i></button>
+            <button class="btn-mini btn-danger" ng-click="removeCoupon(coupon.id)"><i class="icon-white icon-trash"></i></button></td>
         </tr>
     </table>
-
 </div>

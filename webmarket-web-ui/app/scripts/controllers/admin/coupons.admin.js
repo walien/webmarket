@@ -25,17 +25,13 @@ angular.module(webmarketUIModule)
 
         };
 
-        $scope.removeCoupon = function (index) {
-            var coupon = $scope.coupons[index];
-            if (!coupon) {
-                return;
-            }
-            Coupon.remove(coupon.id, function (response) {
+        $scope.removeCoupon = function (id) {
+            Coupon.remove(id, function (response) {
                 if (response.status == true) {
-                    Notification.success("Success", "Coupon successfuly removed !");
+                    Notification.success("Success", "Coupon " + id + " successfuly removed !");
                     $scope.coupons = Coupon.query();
                 } else {
-                    Notification.success("Error", "An error occured during coupon deletion !");
+                    Notification.success("Error", "An error occured during coupon " + id + " deletion !");
                 }
             });
         };
