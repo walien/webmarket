@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.model.Cart;
+import fr.webmarket.backend.model.Coupon;
 import fr.webmarket.backend.model.OrderLine;
 
 import java.util.Collection;

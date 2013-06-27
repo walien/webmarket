@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fr.webmarket.backend.datasource.DataSource;
 import fr.webmarket.backend.datasource.EntitySequenceProvider;
-import fr.webmarket.backend.features.commercial.Coupon;
+import fr.webmarket.backend.model.Coupon;
 import fr.webmarket.backend.log.LoggerBundle;
 import fr.webmarket.backend.utils.MarshallingUtils;
 import fr.webmarket.backend.model.*;

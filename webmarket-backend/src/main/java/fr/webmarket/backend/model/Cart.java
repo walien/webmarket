@@ -1,7 +1,5 @@
 package fr.webmarket.backend.model;
 
-import fr.webmarket.backend.features.commercial.Coupon;
-
 import java.util.List;
 import java.util.Set;
 

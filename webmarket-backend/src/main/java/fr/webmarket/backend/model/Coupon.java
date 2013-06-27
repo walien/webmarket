@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package fr.webmarket.backend.features.commercial;
+package fr.webmarket.backend.model;
 
-import fr.webmarket.backend.model.Item;
 import org.jongo.marshall.jackson.oid.Id;
 import org.jongo.marshall.jackson.oid.ObjectId;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.webmarket.backend.features.commercial;
+package fr.webmarket.backend.model;
 
 public enum CouponType {
 

@@ -16,7 +16,7 @@
 
 package fr.webmarket.backend.rest;
 
-import fr.webmarket.backend.features.commercial.Coupon;
+import fr.webmarket.backend.model.Coupon;
 import fr.webmarket.backend.features.commercial.OrderingBusinessUnit;
 import fr.webmarket.backend.model.Cart;
 

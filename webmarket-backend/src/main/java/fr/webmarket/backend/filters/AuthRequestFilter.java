@@ -37,18 +37,17 @@ public class AuthRequestFilter implements ContainerRequestFilter {
 
         // The session ID as query parameter
         String sessionID = containerRequest.getQueryParameters().get("sessionID").get(0);
+        boolean isValidSession = ClientSessionManager.getInstance().checkSession(DigestUtils.parseSessionID(sessionID));
 
         // POST requests require authentication
         if ("POST".equals(containerRequest.getMethod())) {
             // Add item ==> POST /items
-            if ("items".equals(containerRequest.getPath())
-                    && !ClientSessionManager.getInstance().checkSession(DigestUtils.parseSessionID(sessionID))) {
+            if ("items".equals(containerRequest.getPath()) && !isValidSession) {
                 LoggerBundle.getDefaultLogger().info("A request with path '{}' was refused. Bad sessionID.", containerRequest.getPath());
                 rejectRequest();
             }
             // Update item ==> POST /items/:id
-            if (containerRequest.getPath().matches("items/\\d+")
-                    && !ClientSessionManager.getInstance().checkSession(DigestUtils.parseSessionID(sessionID))) {
+            if (containerRequest.getPath().matches("items/\\d+") && !isValidSession) {
                 LoggerBundle.getDefaultLogger().info("A request with path '{}' was refused. Bad sessionID.", containerRequest.getPath());
                 rejectRequest();
             }
@@ -57,8 +56,7 @@ public class AuthRequestFilter implements ContainerRequestFilter {
         // DELETE requests require authentication
         if ("DELETE".equals(containerRequest.getMethod())) {
             // Delete item ==> DELETE /items/:id
-            if (containerRequest.getPath().matches("items/\\d+")
-                    && !ClientSessionManager.getInstance().checkSession(DigestUtils.parseSessionID(sessionID))) {
+            if (containerRequest.getPath().matches("items/\\d+") && isValidSession) {
                 LoggerBundle.getDefaultLogger().info("A request with path '{}' was refused. Bad sessionID.", containerRequest.getPath());
                 rejectRequest();
             }

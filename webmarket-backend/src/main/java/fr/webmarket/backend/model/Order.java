@@ -16,7 +16,6 @@
 
 package fr.webmarket.backend.model;
 
-import fr.webmarket.backend.features.commercial.Coupon;
 import org.jongo.marshall.jackson.oid.Id;
 import org.jongo.marshall.jackson.oid.ObjectId;
 

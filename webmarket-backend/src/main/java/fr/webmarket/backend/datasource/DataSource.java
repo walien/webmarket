@@ -17,7 +17,7 @@
 package fr.webmarket.backend.datasource;
 
 import com.google.common.collect.ImmutableMap;
-import fr.webmarket.backend.features.commercial.Coupon;
+import fr.webmarket.backend.model.Coupon;
 import fr.webmarket.backend.model.Item;
 import fr.webmarket.backend.model.ItemTag;
 import fr.webmarket.backend.model.Order;
