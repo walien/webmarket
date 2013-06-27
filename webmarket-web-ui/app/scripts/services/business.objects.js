@@ -214,3 +214,40 @@ angular.module(webmarketServicesModule).
             }
         });
     });
+
+angular.module(webmarketServicesModule).
+    factory('Coupon', function ($resource, Session) {
+
+        var Coupon = $resource('/rest/coupons/:id', {id: '@id', sessionID: '@sessionID'}, {
+            _get: {method: 'GET'},
+            _query: {method: 'GET', isArray: true},
+            _save: {method: 'POST'},
+            _remove: {method: 'DELETE'}
+        });
+
+        return angular.extend(Coupon, {
+            get: function (id, fct) {
+                return Coupon._get({
+                    id: id,
+                    sessionID: Session.getID()
+                }, fct);
+            },
+            query: function (fct) {
+                return Coupon._query({
+                    sessionID: Session.getID()
+                }, fct);
+            },
+            save: function (id, coupon, fct) {
+                return Coupon._save({
+                    id: id,
+                    sessionID: Session.getID()
+                }, coupon, fct);
+            },
+            remove: function (id, fct) {
+                return Coupon._remove({
+                    id: id,
+                    sessionID: Session.getID()
+                }, fct);
+            }
+        });
+    });

@@ -18,4 +18,21 @@
 
     <h3>Coupons List</h3>
 
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Key</td>
+            <td>Type</td>
+            <td>Discount</td>
+        </tr>
+        </thead>
+        <tr ng-repeat="coupon in coupons">
+            <td>{{coupon.id}}</td>
+            <td>{{coupon.key}}</td>
+            <td>{{coupon.type}}</td>
+            <td>{{coupon.amount}} {{'currency' | i18n}}</td>
+        </tr>
+    </table>
+
 </div>

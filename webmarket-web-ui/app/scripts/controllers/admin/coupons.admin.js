@@ -17,6 +17,8 @@
 'use strict';
 
 angular.module(webmarketUIModule)
-    .controller('CouponsAdminCtrl', function ($scope, $routeParams, $location) {
+    .controller('CouponsAdminCtrl', function ($scope, $routeParams, $location, Coupon) {
+
+        $scope.coupons = Coupon.query();
 
     });
