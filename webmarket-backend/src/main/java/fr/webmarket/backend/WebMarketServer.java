@@ -16,7 +16,6 @@
 
 package fr.webmarket.backend;
 
-import fr.webmarket.backend.datasource.DataSourcesBundle;
 import fr.webmarket.backend.servers.JettyWebServer;
 
 /**
@@ -33,19 +32,6 @@ public class WebMarketServer {
     private static final int BIND_PORT = 8080;
 
     public static void main(String[] args) throws Exception {
-
-        // Init the datasource (depending on the provided parameter "datasource", eg "-datasource = 'mongo'")
-        boolean providedDS = false;
-        for (String arg : args) {
-            if (arg.startsWith("-datasource") && !providedDS) {
-                String ds = arg.substring(arg.indexOf('=') + 1);
-                DataSourcesBundle.initDataSource(ds);
-                providedDS = true;
-            }
-        }
-        if (!providedDS) {
-            DataSourcesBundle.initDataSource(null);
-        }
 
         // Instantiate the Jetty Web Server
         new JettyWebServer(WEB_XML_FILE, WEBAPP_RESOURCES,

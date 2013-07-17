@@ -9,6 +9,7 @@
     </parent>
     <artifactId>webmarket-backend</artifactId>
     <name>The WebMarket e-market platform backend module</name>
+    <packaging>war</packaging>
 
     <properties>
         <jetty.version>8.1.8.v20121106</jetty.version>
@@ -110,4 +111,54 @@
             <version>4.3-alpha1</version>
         </dependency>
     </dependencies>
+
+    <!-- Packaging -->
+    <build>
+        <plugins>
+            <!-- BUILD UI -->
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution>
+                        <id>BuildUI</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${basedir}/src/main/scripts/build-ui.sh</executable>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- WAR PACKAGE -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <warName>webmarket-${project.version}</warName>
+                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/../webmarket-web-ui/app</directory>
+                        </resource>
+                    </webResources>
+                    <outputDirectory>${basedir}/../install/build</outputDirectory>
+                </configuration>
+            </plugin>
+            <!-- JAR PACKAGE -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                    <outputDirectory>${basedir}/../install/build</outputDirectory>
+                    <jarname>webmarket-${project.version}.standalone</jarname>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

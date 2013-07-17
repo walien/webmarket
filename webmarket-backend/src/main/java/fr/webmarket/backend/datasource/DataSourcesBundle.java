@@ -27,15 +27,15 @@ public class DataSourcesBundle {
 
     public static void initDataSource(String name) {
         if ("mongo".equalsIgnoreCase(name)) {
-            dataSource = new MongoDataSource();
             LoggerBundle.getDefaultLogger().info("MongoDB will be used as datasource during this session.");
+            dataSource = new MongoDataSource();
         } else if ("memory".equalsIgnoreCase(name)) {
-            dataSource = new MemoryDataSource(new MemoryEntitySequenceProvider());
             LoggerBundle.getDefaultLogger().info("In-Memory DB will be used as datasource during this session.");
-        } else {
             dataSource = new MemoryDataSource(new MemoryEntitySequenceProvider());
+        } else {
             LoggerBundle.getDefaultLogger().warn("No specific datasource provided : the in-memory data source " +
                     "will be used during this session !");
+            dataSource = new MemoryDataSource(new MemoryEntitySequenceProvider());
         }
     }
 
