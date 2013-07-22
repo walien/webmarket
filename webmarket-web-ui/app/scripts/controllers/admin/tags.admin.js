@@ -27,12 +27,12 @@ angular.module(webmarketUIModule)
 
         /**
          * Open tag editing modal
-         * @param index
+         * @param tag
          */
-        $scope.openTagEditorModal = function (index) {
+        $scope.openTagEditorModal = function (tag) {
             // Edit existing one
-            if (index != undefined) {
-                $scope.selected = $scope.tags[index];
+            if (tag != undefined) {
+                $scope.selected = tag;
             } else {
                 $scope.selected = {};
             }
@@ -58,17 +58,16 @@ angular.module(webmarketUIModule)
 
         /**
          * Remove an existing tag
-         * @param index
+         * @param tag
          */
-        $scope.removeTag = function (index) {
-            var tag = $scope.tags[index];
+        $scope.removeTag = function (tag) {
             Tag.remove(tag, function (response) {
                 if (response.status) {
                     Notification.success('Tag removed', "The tag was successfuly removed !");
                 } else {
                     Notification.error('Error', "Error during tag removing...");
                 }
-                $scope.tags.splice(index, 1);
+                $scope.tags = Tag.query();
             });
         };
     });

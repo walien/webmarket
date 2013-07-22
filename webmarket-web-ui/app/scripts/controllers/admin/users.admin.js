@@ -31,10 +31,10 @@ angular.module(webmarketUIModule)
 
         /**
          * Remove a specific user
-         * @param index
+         * @param user
          */
-        $scope.removeUser = function (index) {
-            User.remove($scope.users[index], function (response) {
+        $scope.removeUser = function (user) {
+            User.remove(user, function (response) {
                 if (response.status == true) {
                     Notification.success("Removal", "The user has been removed successfuly");
                     $scope.users = User.query();

@@ -24,6 +24,11 @@ angular.module(webmarketUIModule)
         /////////////////
 
         $scope.user = {};
+        $scope.rpwd = {value: ""};
+        $scope.roles = [
+            {label: "Administrator", value: "ADMIN"},
+            {label: "Customer", value: "CUSTOMER"}
+        ];
         $scope.isEditor = false;
 
         //////////////////////////////
@@ -40,6 +45,12 @@ angular.module(webmarketUIModule)
         }
 
         $scope.saveUser = function () {
+
+            if($scope.rpwd.value != $scope.user.pwd){
+                Notification.error("Validation error", "Passwords are not the same !");
+                return;
+            }
+
             var handler = function (response) {
                 if (response.status == true) {
                     Notification.success("User", "The user has been successfuly updated !");

@@ -20,6 +20,10 @@ angular.module(webmarketUIModule)
     .controller('CouponEditorCtrl', function ($scope, $routeParams, $timeout, Coupon, Notification) {
 
         $scope.coupon = {};
+        $scope.types = [
+            { value: "PERCENTAGE", label: "Percentage"},
+            { value: "AMOUNT", label: "Fixed discount"}
+        ];
         $scope.isEditor = false;
 
         if ($routeParams.couponID) {

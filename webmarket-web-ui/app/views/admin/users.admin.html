@@ -29,7 +29,7 @@
                     <td>{{user.role}}</td>
                     <td>
                         <button class="btn btn-mini btn-warning" ng-click="redirect('/users/' + user.username + '/edit')"><i class="icon-white icon-edit"></i></button>
-                        <button class="btn btn-mini btn-danger" ng-click="removeUser($index)"><i class="icon-white icon-remove"></i></button>
+                        <button class="btn btn-mini btn-danger" ng-click="removeUser(user)"><i class="icon-white icon-remove"></i></button>
                     </td>
                 </tr>
                 </tbody>

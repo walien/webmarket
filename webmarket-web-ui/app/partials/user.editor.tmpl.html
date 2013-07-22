@@ -31,6 +31,15 @@
             <input id="pwd" type="password" placeholder="New Password" ng-model="user.pwd"/>
         </div>
     </div>
+
+    <div class="control-group">
+        <label class="control-label" for="r_pwd">Repeat password </label>
+
+        <div class="controls">
+            <input id="r_pwd" type="password" placeholder="Repeat password" ng-model="rpwd.value"/>
+        </div>
+    </div>
+
     <div class="control-group">
         <label class="control-label" for="firstName">First Name </label>
 
@@ -56,10 +65,7 @@
         <label class="control-label" for="role">Role </label>
 
         <div class="controls">
-            <select id="role" ng-model="user.role">
-                <option value="ADMIN">Administrator</option>
-                <option value="CUSTOMER">Customer</option>
-            </select>
+            <select id="role" ng-model="user.role" ng-options="r.value as r.label for r in roles"></select>
         </div>
     </div>
 </form>
