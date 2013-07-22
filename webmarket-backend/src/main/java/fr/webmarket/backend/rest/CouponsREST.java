@@ -34,7 +34,12 @@ public class CouponsREST {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public List<Coupon> getAllCoupons() throws IOException {
+    public List<Coupon> getAllCoupons(@QueryParam("sessionID") String sessionID) throws IOException {
+
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
+            return null;
+        }
         return new ArrayList<Coupon>(DataSourcesBundle.getDataSource().getCoupons().values());
     }
 
