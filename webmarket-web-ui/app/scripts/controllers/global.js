@@ -52,4 +52,13 @@ angular.module(webmarketUIModule)
         $scope.redirect = function (path) {
             $location.search('goto', null).path(path);
         };
+
+        /**
+         * Display details about a selected item
+         * @param id
+         */
+
+        $scope.showItemDetails = function (id) {
+            $location.path("/items/" + id + "/details");
+        };
     });

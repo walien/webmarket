@@ -31,16 +31,4 @@ angular.module(webmarketUIModule)
 
         $scope.items = Item.query();
 
-        //////////////////////////////
-        // SCOPE METHODS
-        //////////////////////////////
-
-        /**
-         * Display details about a selected item
-         * @param id
-         */
-
-        $scope.showItemDetails = function (id) {
-            $location.path("/items/" + id + "/details");
-        };
     });

@@ -50,7 +50,7 @@
             <td>{{coupon.key}}</td>
             <td>{{coupon.type}}</td>
             <td>
-                <a href="" ng-repeat="item in coupon.concernedItems" ng-click="showItemDetails(item.id)">{{item.id}} | </a>
+                <a href="" ng-repeat="item in coupon.concernedItems" ng-click="showItemDetails(item.id)">{{item.name}} | </a>
             </td>
             <td ng-switch="coupon.type">
                 <span ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</span>

@@ -51,7 +51,7 @@
                 <tr ng-repeat="line in order.lines">
                     <td>{{line.item.id}}</td>
                     <td><a href="" ng-click="redirect('/items/' + line.item.id + '/details')">{{line.item.brand}}
-                        -{{line.item.name}}</a></td>
+                        - {{line.item.name}}</a></td>
                     <td>{{line.quantity}}</td>
                     <td>{{line.item.price}} {{'currency' | i18n}}</td>
                 </tr>
@@ -70,7 +70,6 @@
                 <tr>
                     <th>Key</th>
                     <th>Type</th>
-                    <th>Concerned items</th>
                     <th>Discount</th>
                 </tr>
                 </thead>
@@ -78,9 +77,6 @@
                 <tr ng-repeat="coupon in order.coupons">
                     <td>{{coupon.key}}</td>
                     <td>{{coupon.type}}</td>
-                    <td>
-                        <a href="" ng-repeat="item in coupon.concernedItems" ng-click="showItemDetails(item.id)">{{item.id}} | </a>
-                    </td>
                     <td ng-switch="coupon.type">
                         <span ng-switch-when="PERCENTAGE">-{{coupon.amount}} %</span>
                         <span ng-switch-when="AMOUNT">-{{coupon.amount}} {{'currency' | i18n}}</span>

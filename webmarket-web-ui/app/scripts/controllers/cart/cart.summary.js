@@ -27,10 +27,6 @@ angular.module(webmarketUIModule)
             });
         };
 
-        $scope.showItemDetails = function (id) {
-            $location.path("/items/" + id + "/details");
-        };
-
         $scope.removeItem = function (item) {
             Cart.removeItem(item);
             $scope.compute();
