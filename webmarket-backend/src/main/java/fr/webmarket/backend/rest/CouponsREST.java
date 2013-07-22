@@ -68,6 +68,21 @@ public class CouponsREST {
         return new ResponseWrapper().setStatus(result);
     }
 
+    @POST
+    @Path("{coupon-id}")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public ResponseWrapper updateCoupon(@QueryParam("sessionID") String sessionID,
+                                        @PathParam("coupon-id") String couponID,
+                                        Coupon coupon) {
+
+        if (!ClientSessionManager.getInstance().checkSessionAndRights(DigestUtils.parseSessionID(sessionID),
+                UserRole.ADMIN)) {
+            return new ResponseWrapper().setStatus(false);
+        }
+        boolean result = DataSourcesBundle.getDataSource().updateCoupon(couponID, coupon);
+        return new ResponseWrapper().setStatus(result);
+    }
+
     @DELETE
     @Path("{coupon-id}")
     public ResponseWrapper removeCoupon(@QueryParam("sessionID") String sessionID,
